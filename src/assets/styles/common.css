@@ -1,0 +1,28 @@
+@import url("./navbar.css");
+
+body {
+    background-image: url("../images/fondo-inicio.webp");
+    object-fit: fill;
+    background-position: top center;
+}
+
+.btn-nexus{
+    background-image: url("../images/button-wood.webp");
+    object-fit: fill;
+    border-radius: 10px;
+    color: white;
+    width: auto;
+}
+
+.scroll-body{
+    max-height: 60h;
+    overflow-y: scroll;
+}
+
+.container-nexus{
+    margin: 18px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: rgba(222, 184, 135,0.75);
+    height: 78vh;
+}

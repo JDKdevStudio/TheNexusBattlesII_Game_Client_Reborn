@@ -1,0 +1,23 @@
+@import url("./common.css");
+
+.img_logo{
+    position:absolute;
+    top:-5%;
+    left: 50%;
+    height: auto;
+    max-height: 60%;
+    z-index: -1;
+    transform: translate(-55%);
+}
+
+.main_button{
+    font-weight: bold;
+    position: absolute;
+    top:65%;
+    left: 50%;
+    transform: translate(-65%);
+}
+
+.navbar-logo{
+    visibility: hidden;
+}
