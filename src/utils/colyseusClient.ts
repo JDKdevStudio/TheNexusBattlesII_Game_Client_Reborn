@@ -11,7 +11,6 @@
         "room_id": string,
         "room":Colyseus.Room
         "session_id":string
-
 */
 
 import { Client } from "colyseus.js";
@@ -21,12 +20,13 @@ export class ColyseusNexusClient{
     static colyseusNexusClient:Client = new Client('https://game.thenexusbattles2.cloud/server-0');
     static room_data:Map<String,String>= new Map<String,String>();
 
+    //Method to get the avaliable rooms in Redis Cache
     static nexusClientGetAvaliableRooms = async():Promise<NexusRoom[]> => {
-        let nexusRoomReturn:Array<NexusRoom> = [];
+        let nexusRoomReturn:Array<NexusRoom> = []; //Define return array
         try{
-            const rooms = await this.colyseusNexusClient.getAvailableRooms("room_battle");
+            const rooms = await this.colyseusNexusClient.getAvailableRooms("room_battle"); //Await colyseus query
 
-            rooms.forEach((room) => {
+            rooms.forEach((room) => { //For each room transfrom colyseus promise to NexusRoom Type
                 nexusRoomReturn.push({
                     roomId: room.roomId,
                     roomMedatadataNombre: room.metadata.nombre,
@@ -36,13 +36,10 @@ export class ColyseusNexusClient{
                 });
             });
 
-            return nexusRoomReturn;
+            return nexusRoomReturn; //Return final list
         }catch(error){
             console.log("Error fetching rooms.",error);
             return nexusRoomReturn;
         }
     }
-
-
-
 }

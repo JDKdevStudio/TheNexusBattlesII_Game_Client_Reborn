@@ -3,41 +3,46 @@ import 'bootstrap/dist/js/bootstrap.bundle.js';
 import { ColyseusNexusClient } from "../utils/colyseusClient";
 import { NexusRoom } from "../types/nexusRoom";
 
-$("#btn-create-room").on("click", function () {
-    $("#modal-create-room").load("../components/roomConfigComponent/roomConfig.html", () => {
-        $("#roomConfig").show();
+$("#btn-create-room").on("click", function () { //Create a room config modal
+    $("#modal-create-room").load("../templates/roomConfig.html", () => { //Load and append to HTML
+        $("#roomConfig").show(); //Show modal on load complete
+
+        $("#btn-up-modal-close, #btn-down-modal-close").on('click',function(){ //Add with multiple selectors close event to buttons
+            $("#roomConfig").hide();
+        });
     });
 })
 
+/*
+    This function lets you consult and draw to screen the current rooms in
+    the redis database.
+*/
 const loadRoomDataOnList = async () => {
-    $("#party-list").empty();
-    let availableRooms = await ColyseusNexusClient.nexusClientGetAvaliableRooms();
-    if (availableRooms.length > 0) {
-        $.get("../templates/partyListItem.html", function (data: string) {
+    $("#party-list").empty(); //Empty the view
+    let availableRooms = await ColyseusNexusClient.nexusClientGetAvaliableRooms(); //Get room data from colyseus redis driver
+    if (availableRooms.length > 0) { //If there's data
+        $.get("../templates/partyListItem.html", function (data: string){ //Get function lets you get the template from web server
             availableRooms.forEach((current_room: NexusRoom) => {
-                let response = data;
- 
+                let response = data; //Iterate through all rooms and draw them to screen
                 let placeholders: Record<string, string> = {
                     "{{id_placeholder}}": current_room.roomId,
                     "{{name_placeholder}}": current_room.roomMedatadataNombre,
                     "{{current_placeholder}}": current_room.roomMetadataClients,
                     "{{max_placeholder}}": current_room.roomMetadataMaxClients,
-                    "{{mode_placeholder}}": "TBD",
+                    "{{mode_placeholder}}": "TBD", //TODO: Implement metadata for gamemode
                     "{{bonus_placeholder}}": current_room.roomMetadataGanancia,
                 };
-
+                //Replace in template
                 for (let placeholder in placeholders) {
                     if (placeholders.hasOwnProperty(placeholder)) {
-                        console.log(placeholders[placeholder])
                         response = response.replace(placeholder, placeholders[placeholder]);
-                        console.log(response);
-
                     }
                 }
-                $('#party-list').append(response);
+                $('#party-list').append(response);//Finally append to UL in html
             });
         });
     }
 }
 
 $('#refresh-button').on('click', loadRoomDataOnList);
+$(loadRoomDataOnList);
