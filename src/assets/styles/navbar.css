@@ -1,0 +1,25 @@
+.navbar-nexus{
+    background-image: url("../images/navbar-background.webp");
+    object-fit: fill;
+}
+
+.navbar-nexus li a{
+    color: white;
+}
+
+.navbar-nexus li{
+    margin-right: 80px
+}
+
+.navbar-logo{
+    position:absolute;
+    top:-5%;
+    left: 50%;
+    width: auto;
+    height: auto;
+    max-height: 20%;
+    max-width: 20%;
+    z-index: 1;
+    visibility: visible;
+    transform: translate(-65%);
+}

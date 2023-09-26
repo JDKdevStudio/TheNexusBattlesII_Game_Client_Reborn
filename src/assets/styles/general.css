@@ -1,0 +1,10 @@
+@import url("./common.css");
+
+.party-list{
+    list-style-type: none;
+    padding: 0;
+}
+
+.party-list-item{
+    margin: 10px;
+}
