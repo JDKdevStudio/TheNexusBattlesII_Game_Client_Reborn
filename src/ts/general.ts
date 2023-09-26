@@ -4,14 +4,8 @@ import { ColyseusNexusClient } from "../utils/colyseusClient";
 import { NexusRoom } from "../types/nexusRoom";
 
 $("#btn-create-room").on("click", function () { //Create a room config modal
-    $("#modal-create-room").load("../templates/roomConfig.html", () => { //Load and append to HTML
         $("#roomConfig").show(); //Show modal on load complete
-
-        $("#btn-up-modal-close, #btn-down-modal-close").on('click',function(){ //Add with multiple selectors close event to buttons
-            $("#roomConfig").hide();
-        });
-    });
-})
+});
 
 /*
     This function lets you consult and draw to screen the current rooms in
