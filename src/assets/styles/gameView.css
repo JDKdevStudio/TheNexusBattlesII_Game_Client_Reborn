@@ -1,0 +1,46 @@
+@import url("./common.css");
+
+.party-list{
+    list-style-type: none;
+    padding: 0;
+}
+
+.party-list-item{
+    margin: 10px;
+}
+
+#game {
+    padding-right: 0%;
+}
+
+#chat {
+    padding-left: 0%;
+}
+
+.chat-footer {
+    padding-left: 0%;
+}
+
+.container-player{
+    background-color: rgba(255, 255, 255, 0.7);
+    margin-top: 20px;
+    width: 75%;
+    border-radius: 10px;
+    font-size: 2vw;
+    text-align: center;
+    height: 13vh;
+}
+
+.playerIcon {
+    background-color: #f2f28d;
+    margin: 10px;
+    margin-top: 15px;
+    max-height: 90%;
+    font-size: 3vw;
+    border-style: outset;
+    border-width: 2px;
+}
+
+.center {
+    padding-top: 3%;
+}
