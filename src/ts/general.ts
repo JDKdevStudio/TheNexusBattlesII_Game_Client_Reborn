@@ -2,11 +2,12 @@ import $ from "jquery";
 import 'bootstrap/dist/js/bootstrap.bundle.js';
 import { ColyseusNexusClient } from "../utils/colyseusClient";
 import { NexusRoom } from "../types/nexusRoom";
-import { realizarValidaciones } from "./roomConfig";
+import { validarNombreSala } from "./roomConfig"; 
 
-$("#btn-create-room").on("click", function () { //Create a room config modal
-        $("#roomConfig").show(); //Show modal on load complete
-        realizarValidaciones();
+$("#btn-create-room").on("click", function () { 
+    if (validarNombreSala()) { 
+        $("#roomConfig").show();
+    }
 });
 
 /*
