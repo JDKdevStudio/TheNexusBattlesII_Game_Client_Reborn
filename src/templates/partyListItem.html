@@ -1,10 +1,23 @@
 <li>
-    <div class="card party-list-item">
-        <div class="card-header">{{id_placeholder}}</div>
-        <div class="card-body">
-          <h5 class="card-title">{{name_placeholder}}</h5>
-          <p class="card-text">Jugadores: {{current_placeholder}}/{{max_placeholder}}. Modo: {{mode_placeholder}}. Ganancia: {{bonus_placeholder}}.</p>
-          <a href="#" class="btn btn-nexus">Unirte</a>
-        </div>
-      </div>
+  <div class="card party-list-item">
+    <div class="card-header">{{id_placeholder}}</div>
+    <div class="card-body">
+      <h5 class="card-title">{{name_placeholder}}</h5>
+      <p class="card-text">
+        <span>Jugadores: {{current_placeholder}}/{{max_placeholder}}</span>
+        <span class="icon-container">
+          <img src="assets/icons/person-fill.svg" alt="Icono de persona">
+        </span>
+        <span>Modo: {{mode_placeholder}}</span>
+        <span class="icon-container">
+          <img src="assets/icons/person-gear.svg" alt="Icono de engranaje">
+        </span>
+        <span>Ganancia: {{bonus_placeholder}}</span>
+        <span class="icon-container">
+          <img src="assets/icons/coin.svg">
+        </span>
+      </p>
+      <a href="#" class="btn btn-nexus">Unirte</a>
+    </div>
+  </div>
 </li>
