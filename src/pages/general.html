@@ -15,6 +15,7 @@
         <div id="navbar"></div>
     </header>
     <main>
+        <!--Vista principal de general-->
         <div class="container-fluid">
             <div class="row">
                 <div class="col-8">
@@ -79,13 +80,9 @@
                 </div>
             </div>
         </div>
+        <!--Vista principal de general-->
 
-
-
-
-
-
-
+        <!--Modal de creación de la sala-->
         <div id="modal-create-room">
             <div class="modal modal-nexus-background" id="roomConfig" data-bs-backdrop="false" data-bs-keyboard="false"
                 tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -108,16 +105,16 @@
                                 <div class="col-6">
                                     <label for="select-number-players">Número de jugadores</label>
                                     <select class="form-select" id="select-number-players" aria-label="Jugadores">
-                                        <option value="1" selected>2</option>
-                                        <option value="2">3</option>
-                                        <option value="3">4</option>
+                                        <option value="2" selected>2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
                                     </select>
                                 </div>
                                 <div class="col-6">
                                     <label for="select-equipos" disabled>Equipos</label>
                                     <select class="form-select" id="select-equipos" aria-label="Equipos">
                                         <option value="1">Si</option>
-                                        <option value="2" selected>No</option>
+                                        <option value="0" selected>No</option>
                                     </select>
                                 </div>
                             </div>
@@ -126,7 +123,7 @@
                                     <label for="select-recompensa-bool">Recompensa</label>
                                     <select class="form-select" id="select-recompensa-bool" aria-label="Recompensa">
                                         <option value="1">Si</option>
-                                        <option value="2" selected>No</option>
+                                        <option value="0" selected>No</option>
                                     </select>
                                 </div>
                                 <div class="col-6">
@@ -154,6 +151,7 @@
                 </div>
             </div>
         </div>
+        <!--Modal de creación de la sala-->
     </main>
     <script src="../ts/roomConfig.ts" type="module"></script>
     <script src="../ts/general.ts" type="module"></script>
