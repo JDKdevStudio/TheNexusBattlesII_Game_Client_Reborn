@@ -1,8 +1,8 @@
 @import url("./common.css");
 
-.img_logo{
-    position:absolute;
-    top:-5%;
+.img_logo {
+    position: absolute;
+    top: -5%;
     left: 50%;
     height: auto;
     max-height: 60%;
@@ -10,14 +10,27 @@
     transform: translate(-55%);
 }
 
-.main_button{
-    font-weight: bold;
-    position: absolute;
-    top:65%;
-    left: 50%;
-    transform: translate(-65%);
+.btn-nexus_main {
+    background-color: #007bff;
+    background-image: url("../images/button-wood.webp");
+    object-fit: fill;
+    border-radius: 10px;
+    color: #fff;
+    width: auto;
+    padding: 20px 40px;
+    font-size: 24px;
 }
 
-.navbar-logo{
+.main_button {
+    font-weight: bold;
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    transform: translateX(-55%);
+    box-shadow: 0 0 20px 10px rgba(255, 165, 0, 0.8);
+
+}
+
+.navbar-logo {
     visibility: hidden;
 }
