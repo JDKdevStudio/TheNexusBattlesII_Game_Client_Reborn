@@ -1,43 +1,58 @@
 import $ from "jquery";
 import Cookies from "js-cookie";
 
-export function realizarValidaciones(): boolean {
+// Validar nombre de la sala
+const palabrasProhibidas = /(hp|shakira|petro)/i; 
+
+export function validarNombreSala(): boolean {
     const nombreSalaInput = $("#room-name");
     const nombreSala = nombreSalaInput.val() as string;
-    const palabrasProhibidas = ["hp", "shakira", "petro"];
 
-    for (const palabra of palabrasProhibidas) {
-        if (nombreSala.toLowerCase().includes(palabra)) {
-            alert("El nombre de la sala no puede contener palabras obscenas, nombres de celebridades o conocidos.");
-            nombreSalaInput.val("");
-            return false;
-        }
+    if (palabrasProhibidas.test(nombreSala)) {
+        alert("El nombre de la sala no puede contener palabras obscenas, nombres de celebridades o conocidos.");
+        nombreSalaInput.val("");
+        return false;
     }
 
-    const numeroJugadores = parseInt($("#select-number-players").val() as string);
+    return true;
+}
 
+// Equipos
+export function bloquearEquiposSegunJugadores(): void {
+    const numeroJugadores = parseInt($("#select-number-players").val() as string);
     const equiposSelect = $("#select-equipos");
+
     if (numeroJugadores === 2 || numeroJugadores === 3) {
         equiposSelect.val(0);
         equiposSelect.prop("disabled", true);
     } else {
         equiposSelect.prop("disabled", false);
     }
+}
 
+// Recompensa
+export function gestionarRecompensa(): void {
     const recompensaSelect = $("#select-recompensa-bool");
-
     const cantidadRecompensaInput = $("#recompensa-cantidad");
+
     if (recompensaSelect.val() === "0") {
         cantidadRecompensaInput.val(0);
         cantidadRecompensaInput.prop("disabled", true);
     } else {
-        if(cantidadRecompensaInput.val() == 0)
-        cantidadRecompensaInput.val(1);
         cantidadRecompensaInput.prop("disabled", false);
     }
 
-    return true;
+    cantidadRecompensaInput.attr("min", "1");
 }
+
+// Cargar el modal con valores iniciales
+function cargarModal() {
+    bloquearEquiposSegunJugadores();
+    gestionarRecompensa();
+    $("#roomConfig").show();
+}
+
+$("#btn-create-room").on("click", cargarModal);
 
 /*
   Esta función permite enviar los datos que se obtienen del formulario
@@ -97,18 +112,18 @@ function enviarDatosFormulario(): void {
     });
 }
 
-// Control de eventos cambio num jugadores
+// Asociar las funciones de validación a eventos
 $("#select-number-players").on('change', function () {
-    realizarValidaciones();
+    bloquearEquiposSegunJugadores();
+    gestionarRecompensa();
 });
 
-// Control de eventos cambio de recompensa
 $("#select-recompensa-bool").on('change', function () {
-    realizarValidaciones();
+    gestionarRecompensa();
 });
 
 $("#btn-enviar").on('click', function () {
-    if (realizarValidaciones()) {
+    if (validarNombreSala()) {
         enviarDatosFormulario();
     } else {
         console.error("Las validaciones no pasaron. No se puede enviar el formulario.");
@@ -118,3 +133,5 @@ $("#btn-enviar").on('click', function () {
 $("#btn-up-modal-close, #btn-down-modal-close").on('click', function () {
     $("#roomConfig").hide();
 });
+
+
