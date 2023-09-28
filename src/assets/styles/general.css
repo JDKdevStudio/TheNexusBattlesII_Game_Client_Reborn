@@ -8,3 +8,12 @@
 .party-list-item{
     margin: 10px;
 }
+
+.value-container {
+    margin-right: 30px; /*separa el texto de jugadores, modo y ganancia*/
+}
+
+.card.party-list-item {
+    max-width: 98%; /* esto es para ajustar el ancho del party-list-item y que no se salga del contenedor row */
+    margin-left: 0%;
+}
