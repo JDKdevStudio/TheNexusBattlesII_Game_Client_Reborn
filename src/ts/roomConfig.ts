@@ -1,5 +1,7 @@
 import $ from "jquery";
 import Cookies from "js-cookie";
+import 'bootstrap/dist/js/bootstrap.bundle.js';
+import { main } from "@popperjs/core";
 
 // Validar nombre de la sala
 const palabrasProhibidas = /(hp|shakira|petro)/i; 
@@ -9,7 +11,26 @@ export function validarNombreSala(): boolean {
     const nombreSala = nombreSalaInput.val() as string;
 
     if (palabrasProhibidas.test(nombreSala)) {
-        alert("El nombre de la sala no puede contener palabras obscenas, nombres de celebridades o conocidos.");
+        
+        //Mensaje a mostrar en el modal
+        const message = "El nombre de la sala no puede contener palabras obscenas, nombres de celebridades o conocidos.";
+        //Cargar el modal 
+        $.get("../templates/modal.html", function(data) {
+            //Agregarlo a la vista
+            $(main).append(data);
+            //Mostrarlo
+            $("#alertModal").show();
+            //Evento para cerrarlo
+            $('#closeAlertModal, #closeButton').on('click', function () {
+                $("#alertModal").hide();
+            });
+            //Pasar el mensaje a la etiqueta P
+            $("#textMessage").text(message)
+        });
+        // Termina modal
+
+
+
         nombreSalaInput.val("");
         return false;
     }
