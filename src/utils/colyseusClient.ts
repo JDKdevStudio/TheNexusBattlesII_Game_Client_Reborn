@@ -1,3 +1,8 @@
+import { Client, Room } from "colyseus.js";
+import { NexusRoom } from "../types/nexusRoom";
+import { gameStateContext } from "./gameStateMachine/States/gameStateMachine";
+import Cookies from "js-cookie";
+
 /* 
     Welcome to Colyseus Nexus Client.
 
@@ -13,12 +18,12 @@
         "session_id":string
 */
 
-import { Client } from "colyseus.js";
-import { NexusRoom } from "../types/nexusRoom";
-
 export class ColyseusNexusClient{
     static colyseusNexusClient:Client = new Client('https://game.thenexusbattles2.cloud/server-0');
-    static room_data:Map<String,String>= new Map<String,String>();
+    static colyseusRoom:Room;
+    static sessionId:String;
+    static playerMap:Map<string,any>;
+    static gameStateMachine:gameStateContext;
 
     //Method to get the avaliable rooms in Redis Cache
     static nexusClientGetAvaliableRooms = async():Promise<NexusRoom[]> => {
@@ -41,5 +46,33 @@ export class ColyseusNexusClient{
             console.log("Error fetching rooms.",error);
             return nexusRoomReturn;
         }
+    }
+
+    static nexusClientCreateRoom = async():Promise<boolean> => {
+        try{
+            const cookie_data = {
+                numero_creditos: Cookies.get("NumeroRecompensa"),
+                numero_jugadores:Cookies.get("NumeroJugadores"),
+                nombre_sala: Cookies.get("NombreSala"),
+                equipos:Cookies.get("SetEquipos"),
+            };
+
+            this.colyseusNexusClient.create("room_battle",cookie_data).then((room:Room) => {this.colyseusRoom = room});
+            return true;
+        }catch{
+            return false;
+        }
+    }
+
+    static nexusClientJoinRoom = async():Promise<boolean> => {
+        return true;
+    }
+
+    static nexusClientHandleConnection = ():void => {
+
+    }
+     
+    static HandleJoinAction = (gameMachine:gameStateContext):void => {
+        
     }
 }

@@ -69,6 +69,7 @@ function enviarDatosFormulario(): void {
     let form_reward_number:string = $("#recompensa-cantidad").val() == undefined || $("#recompensa-cantidad").val() == "" ? "0" : $("#recompensa-cantidad").val()!.toString();
     
     //Limpiar las cookies de juego en caso de que se quiera crear una sala y sigan existiendo
+    Cookies.remove("Join");
     Cookies.remove('NombreSala');
     Cookies.remove('NumeroJugadores');
     Cookies.remove('SetEquipos');
@@ -81,7 +82,7 @@ function enviarDatosFormulario(): void {
         path: '/',
         //domain: 'juego.thenexusbattles2.cloud',
         secure: true,
-        sameSite: 'lax'
+        sameSite: "Lax"
     });
 
     //Cookie del número de jugadores
@@ -90,7 +91,7 @@ function enviarDatosFormulario(): void {
         path: '/',
         //domain: 'juego.thenexusbattles2.cloud',
         secure: true,
-        sameSite: 'lax'
+        sameSite: "Lax"
     });
 
     //Cookie del selector de equipos
@@ -99,7 +100,7 @@ function enviarDatosFormulario(): void {
         path: '/',
         //domain: 'juego.thenexusbattles2.cloud',
         secure: true,
-        sameSite: 'lax'
+        sameSite: "Lax"
     });
 
     //Cokie del valor de la recompensa
@@ -108,8 +109,11 @@ function enviarDatosFormulario(): void {
         path: '/',
         //domain: 'juego.thenexusbattles2.cloud',
         secure: true,
-        sameSite: 'lax'
+        sameSite: "Lax"
     });
+
+    //redirect
+    window.location.href = "./gameView.html";
 }
 
 // Asociar las funciones de validación a eventos
@@ -133,5 +137,3 @@ $("#btn-enviar").on('click', function () {
 $("#btn-up-modal-close, #btn-down-modal-close").on('click', function () {
     $("#roomConfig").hide();
 });
-
-
