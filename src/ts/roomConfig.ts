@@ -1,17 +1,18 @@
 import $ from "jquery";
 import Cookies from "js-cookie";
+import palabrasProhibidas from "./PalabrasProhibidas"
 
 // Validar nombre de la sala
-const palabrasProhibidas = /(hp|shakira|petro)/i; 
-
 export function validarNombreSala(): boolean {
     const nombreSalaInput = $("#room-name");
     const nombreSala = nombreSalaInput.val() as string;
 
-    if (palabrasProhibidas.test(nombreSala)) {
-        alert("El nombre de la sala no puede contener palabras obscenas, nombres de celebridades o conocidos.");
-        nombreSalaInput.val("");
-        return false;
+    for (const palabraProhibida of palabrasProhibidas) {
+        if (palabraProhibida.test(nombreSala)) {
+            alert("El nombre de la sala no puede contener palabras obscenas");
+            nombreSalaInput.val("");
+            return false;
+        }
     }
 
     return true;
@@ -133,5 +134,6 @@ $("#btn-enviar").on('click', function () {
 $("#btn-up-modal-close, #btn-down-modal-close").on('click', function () {
     $("#roomConfig").hide();
 });
+
 
 
