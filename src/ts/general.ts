@@ -1,7 +1,7 @@
 import $ from "jquery";
 import Cookies from "js-cookie";
 import 'bootstrap/dist/js/bootstrap.bundle.js';
-import { ColyseusNexusClient } from "../utils/colyseusClient";
+import { NexusClient } from "../utils/nexusClient";
 import { NexusRoom } from "../types/nexusRoom";
 import { validarNombreSala } from "./roomConfig";
 
@@ -18,7 +18,7 @@ $("#btn-create-room").on("click", function () {
 const loadRoomDataOnList = async (): Promise<boolean> => {
     try {
         $("#party-list").empty(); //Empty the view
-        let availableRooms = await ColyseusNexusClient.nexusClientGetAvaliableRooms(); //Get room data from colyseus redis driver
+        let availableRooms = await NexusClient.nexusClientGetAvaliableRooms(); //Get room data from colyseus redis driver
         if (availableRooms.length > 0) { //If there's data
             $.get("../templates/partyListItem.html", function (data: string) { //Get function lets you get the template from web server
                 availableRooms.forEach((current_room: NexusRoom) => {
@@ -27,9 +27,9 @@ const loadRoomDataOnList = async (): Promise<boolean> => {
                         "{{id_placeholder}}": current_room.roomId,
                         "{{name_placeholder}}": current_room.roomMedatadataNombre,
                         "{{current_placeholder}}": current_room.roomMetadataClients,
-                        "{{max_placeholder}}": current_room.roomMetadataMaxClients,
-                        "{{mode_placeholder}}": "TBD", //TODO: Implement metadata for gamemode
+                        "{{max_placeholder}}": current_room.roomMetadataMaximoClients,
                         "{{bonus_placeholder}}": current_room.roomMetadataGanancia,
+                        "{{mode_placeholder}}": current_room.roomMetadataEquipos,
                     };
                     //Replace in template
                     for (let placeholder in placeholders) {
