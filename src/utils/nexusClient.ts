@@ -85,6 +85,10 @@ export class NexusClient{
             return false;
         }
     }
+
+    static nexusClientGetPlayers = ():Map<string,any> =>{
+        return this.playerMap;
+    }
      
     private static HandleJoinAction = ():void => {
         //Initialize Waiting Room
