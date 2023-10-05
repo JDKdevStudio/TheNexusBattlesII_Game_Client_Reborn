@@ -4,15 +4,21 @@ import 'bootstrap/dist/js/bootstrap.bundle.js';
 import { NexusClient } from "../utils/nexusClient";
 import { NexusRoom } from "../types/nexusRoom";
 import { validarNombreSala } from "./roomConfig";
-import HeroDecoratorBase from "../classes/Decorator/decoratorBase";
-import HeroeType from "../types/heroeType";
-import HeroDecorator from "../classes/Decorator/decoratorHero";
+//import HeroDecoratorBase from "../classes/Decorator/decoratorBase";
+//import HeroeType from "../types/heroeType";
+//import HeroDecorator from "../classes/Decorator/decoratorHero";
+//import Chat from "../components/chatComponent/chatComponent";
 
 $("#btn-create-room").on("click", function () {
     if (validarNombreSala()) {
         $("#roomConfig").show();
     }
 });
+
+const initializeGeneralView = async():Promise<void> => {
+    loadRoomDataOnList();
+    NexusClient.nexusClientHandleGlobalRoom();
+}
 
 /*
     This function lets you consult and draw to screen the current rooms in
@@ -49,7 +55,7 @@ const loadRoomDataOnList = async (): Promise<boolean> => {
 }
 
 $('#refresh-button').on('click', loadRoomDataOnList);
-$(loadRoomDataOnList);
+$(initializeGeneralView);
 
 //Creates a function that allows buttons on playlist to generate a cookie w/ room ID.
 $("#party-list").on("click", ".join-party-button", function (this: HTMLElement) {
@@ -71,6 +77,7 @@ $("#party-list").on("click", ".join-party-button", function (this: HTMLElement) 
     window.location.href = "./gameView.html";
 });
 
+/*
 //Create Hero Base
 let myDefaultHero = new HeroDecoratorBase({
     vida:10,
@@ -87,6 +94,7 @@ console.log("Ataque: " + myDefaultHero.getAtaque());
 console.log("Defensa: " + myDefaultHero.getDefensa());
 console.log("Poder: " + myDefaultHero.getPoder());
 console.log("Daño:  " + myDefaultHero.getDano());
+
 
 //Create New Hero Decorator
 myDefaultHero = new HeroDecorator({
@@ -132,3 +140,4 @@ console.log("Ataque: " + myDefaultHero.getAtaque());
 console.log("Defensa: " + myDefaultHero.getDefensa());
 console.log("Poder: " + myDefaultHero.getPoder());
 console.log("Daño:  " + myDefaultHero.getDano());
+*/

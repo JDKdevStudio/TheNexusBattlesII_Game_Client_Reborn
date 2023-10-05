@@ -4,7 +4,7 @@ import { NexusClient } from "../../nexusClient";
 import { NexusPlayer } from "../../../types/nexusPlayer";
 import $ from "jquery";
 
-export default class stateWaitingRoom extends State {
+export class stateWaitingRoom extends State {
     drawToScreen(): void {
         gameStateContext.drawAnnouncer("Esperando jugadores");
         const players: Map<string, NexusPlayer> = NexusClient.nexusClientGetPlayers();
@@ -26,5 +26,12 @@ export default class stateWaitingRoom extends State {
                 $('#main-game-view').append(response);//Finally append to UL in html
             });
         });
+    }
+}
+
+export class stateInventory extends State {
+    drawToScreen(): void {
+        gameStateContext.drawAnnouncer("Inventario");
+        $("#main-game-view").empty();
     }
 }
