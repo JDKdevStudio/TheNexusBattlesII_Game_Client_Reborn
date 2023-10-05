@@ -3,11 +3,9 @@ import HeroDecoratorBase from "./decoratorBase";
 
 export default class HeroDecorator extends HeroDecoratorBase{
     private turnsRemaining:number = 0;
-    private debugID = "";
-    constructor(heroProperties: HeroeType, previousDecorator: HeroDecoratorBase,turnsRemaining:number,a:string) {
+    constructor(heroProperties: HeroeType, previousDecorator: HeroDecoratorBase,turnsRemaining:number) {
         super(heroProperties,previousDecorator);
         this.turnsRemaining = turnsRemaining;
-        this.debugID = a;
     }
 
     override getPoder(): number {

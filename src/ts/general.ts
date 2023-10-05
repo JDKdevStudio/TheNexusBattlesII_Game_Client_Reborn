@@ -96,7 +96,7 @@ myDefaultHero = new HeroDecorator({
     ataqueRnd:0,
     ataqueBase: 20,
     daño: 0
-} as HeroeType, myDefaultHero,1,"first decorator ");
+} as HeroeType, myDefaultHero,1);
 
 //Decorate the hero decorator
 myDefaultHero = new HeroDecorator({
@@ -106,7 +106,7 @@ myDefaultHero = new HeroDecorator({
     ataqueRnd:0,
     ataqueBase: 0,
     daño: 600
-} as HeroeType, myDefaultHero,2, "second decorator ");
+} as HeroeType, myDefaultHero,2);
 
 console.log("------------ TURNO 1 -------------");
 console.log("Vida: " + myDefaultHero.getVida());
