@@ -4,6 +4,9 @@ import 'bootstrap/dist/js/bootstrap.bundle.js';
 import { NexusClient } from "../utils/nexusClient";
 import { NexusRoom } from "../types/nexusRoom";
 import { validarNombreSala } from "./roomConfig";
+import HeroDecoratorBase from "../classes/Decorator/decoratorBase";
+import HeroeType from "../types/heroeType";
+import HeroDecorator from "../classes/Decorator/decoratorHero";
 
 $("#btn-create-room").on("click", function () {
     if (validarNombreSala()) {
@@ -46,7 +49,7 @@ const loadRoomDataOnList = async (): Promise<boolean> => {
 }
 
 $('#refresh-button').on('click', loadRoomDataOnList);
-//$(loadRoomDataOnList);
+$(loadRoomDataOnList);
 
 //Creates a function that allows buttons on playlist to generate a cookie w/ room ID.
 $("#party-list").on("click", ".join-party-button", function (this: HTMLElement) {
@@ -67,3 +70,65 @@ $("#party-list").on("click", ".join-party-button", function (this: HTMLElement) 
     //redirect
     window.location.href = "./gameView.html";
 });
+
+//Create Hero Base
+let myDefaultHero = new HeroDecoratorBase({
+    vida:10,
+    poder:1,
+    defensa:10,
+    ataqueRnd:3,
+    ataqueBase: 10,
+    daño: 0
+} as HeroeType);
+
+console.log("------------ TURNO 0 -------------");
+console.log("Vida: " + myDefaultHero.getVida());
+console.log("Ataque: " + myDefaultHero.getAtaque());
+console.log("Defensa: " + myDefaultHero.getDefensa());
+console.log("Poder: " + myDefaultHero.getPoder());
+console.log("Daño:  " + myDefaultHero.getDano());
+
+//Create New Hero Decorator
+myDefaultHero = new HeroDecorator({
+    vida:100,
+    poder:-1,
+    defensa:11000000000,
+    ataqueRnd:0,
+    ataqueBase: 20,
+    daño: 0
+} as HeroeType, myDefaultHero,1,"first decorator ");
+
+//Decorate the hero decorator
+myDefaultHero = new HeroDecorator({
+    vida:200,
+    poder:0,
+    defensa:0,
+    ataqueRnd:0,
+    ataqueBase: 0,
+    daño: 600
+} as HeroeType, myDefaultHero,2, "second decorator ");
+
+console.log("------------ TURNO 1 -------------");
+console.log("Vida: " + myDefaultHero.getVida());
+console.log("Ataque: " + myDefaultHero.getAtaque());
+console.log("Defensa: " + myDefaultHero.getDefensa());
+console.log("Poder: " + myDefaultHero.getPoder());
+console.log("Daño:  " + myDefaultHero.getDano());
+
+myDefaultHero.reduceTurnsRemaining();
+
+console.log("------------ TURNO 2 -------------");
+console.log("Vida: " + myDefaultHero.getVida());
+console.log("Ataque: " + myDefaultHero.getAtaque());
+console.log("Defensa: " + myDefaultHero.getDefensa());
+console.log("Poder: " + myDefaultHero.getPoder());
+console.log("Daño:  " + myDefaultHero.getDano());
+
+myDefaultHero.reduceTurnsRemaining();
+
+console.log("------------ TURNO 3 -------------");
+console.log("Vida: " + myDefaultHero.getVida());
+console.log("Ataque: " + myDefaultHero.getAtaque());
+console.log("Defensa: " + myDefaultHero.getDefensa());
+console.log("Poder: " + myDefaultHero.getPoder());
+console.log("Daño:  " + myDefaultHero.getDano());

@@ -59,7 +59,6 @@ export class gameStateContext {
                 break;
         }
         if(this.functionalState == undefined) console.error("State Machine Critical Error: Attempted to set an state that is undefined!")
-        this.drawToScreen();
     }
 
     //This function clears the game view then draws based upon current state object.

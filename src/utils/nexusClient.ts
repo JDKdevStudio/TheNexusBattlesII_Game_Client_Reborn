@@ -2,7 +2,7 @@ import { Client, Room } from "colyseus.js";
 import { NexusRoom } from "../types/nexusRoom";
 import { gameStateContext, stateType } from "./gameStateMachine/States/gameStateMachine";
 import Cookies from "js-cookie";
-import gameStateWaitingRoom from "./gameStateMachine/States/gameStateWaitingRoom";
+
 /* 
     Welcome to Colyseus Nexus Client.
 
@@ -95,13 +95,14 @@ export class NexusClient{
         gameStateContext.changeMachineState(stateType.WaitingRoom);
 
         //#region Define Game Status Sync based on Colyseus
-        this.colyseusRoom.state.clients.onAdd((client:any, key:any) => {   
+        this.colyseusRoom.state.clients.onAdd((client:NexusClient, key:string) => {   
             this.playerMap.set(key,client);
-            
-        })
+            if(gameStateContext.currentState == stateType.WaitingRoom) gameStateContext.drawToScreen();
+        });
     
-        this.colyseusRoom.state.clients.onRemove((key:any) => {
+        this.colyseusRoom.state.clients.onRemove((_:NexusClient,key:string) => {
             this.playerMap.delete(key);
+            if(gameStateContext.currentState == stateType.WaitingRoom) gameStateContext.drawToScreen();
         });
         //#endregion
     }
