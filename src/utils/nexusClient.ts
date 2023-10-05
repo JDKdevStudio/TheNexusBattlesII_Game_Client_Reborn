@@ -66,9 +66,7 @@ export class NexusClient{
     }
 
     static nexusClientHandleGlobalRoom = async():Promise<void> => {
-        this.colyseusNexusClient.joinOrCreate("global_room",{
-            name:this.localUsername
-        }).then( (room) => {
+        this.colyseusNexusClient.joinOrCreate("global_room").then( (room) => {
             this.colyseusRoom = room;
             this.sessionId = room.sessionId;
             this.HandleGlobalJoinAction();  
@@ -124,13 +122,19 @@ export class NexusClient{
         //#region Define Game Status Sync based on Colyseus
         this.colyseusRoom.state.clients.onAdd((client:NexusPlayer, key:string) => {   
             this.playerMap.set(key,client);
-            this.HandleChatInteraction(ColyseusChatMessageTypes.OnJoinMessage,client.username,"Se ha unido!");
-            if(gameStateContext.currentState == stateType.WaitingRoom) gameStateContext.drawToScreen();
+            
+            if(gameStateContext.currentState == stateType.WaitingRoom){
+                gameStateContext.drawToScreen();
+                this.HandleChatInteraction(ColyseusChatMessageTypes.OnJoinMessage,client.username,"Se ha unido!");
+            } 
         });
     
-        this.colyseusRoom.state.clients.onRemove((_:NexusClient,key:string) => {
+        this.colyseusRoom.state.clients.onRemove((client:NexusPlayer,key:string) => {
             this.playerMap.delete(key);
-            if(gameStateContext.currentState == stateType.WaitingRoom) gameStateContext.drawToScreen();
+            if(gameStateContext.currentState == stateType.WaitingRoom) {
+                gameStateContext.drawToScreen();
+                this.HandleChatInteraction(ColyseusChatMessageTypes.OnJoinMessage,client.username,"Ha salido!");
+            }
             //TODO: Codigo en caso de desconexión
         });
         //#endregion
@@ -154,7 +158,7 @@ export class NexusClient{
         gameStateContext.currentState = stateType.GeneralScreen;
         this.ChatGenerator();
 
-        this.colyseusRoom.onMessage(ColyseusMessagesTypes.ChatRemoteUpdate,([_,message])=>{
+        this.colyseusRoom.onMessage(ColyseusMessagesTypes.ChatRemoteUpdate,(message)=>{
             this.HandleChatInteraction(ColyseusChatMessageTypes.OtherMessage,
                     message.username,
                     message.text
