@@ -23,7 +23,7 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <h2>Lista de Partidas</h2>
+                                    <h2><b>Lista de Partidas</b></h2>
                                 </div>
                                 <div class="col-4">
                                     <button type="button" id="btn-create-room" class="btn btn-nexus float-end">Crear una
@@ -35,77 +35,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <ul class="party-list" id="party-list">
-                                        <li>
-                                            <div class="card party-list-item">
-                                              <div class="card-header card-id-room">1</div>
-                                              <div class="card-body">
-                                                <h5 class="card-title">{{name_placeholder}}</h5>
-                                                <p class="card-text">
-                                                  <span class="icon-container">
-                                                    <img src="../assets/icons/person-fill.svg">
-                                                  </span>
-                                                  <span class="value-container">Jugadores: {{current_placeholder}}/{{max_placeholder}}</span>
-                                                  <span class="icon-container">
-                                                    <img src="../assets/icons/person-gear.svg">
-                                                  </span>
-                                                  <span class="value-container">Modo: {{mode_placeholder}}</span>
-                                                  <span class="icon-container">
-                                                    <img src="../assets/icons/coin.svg">
-                                                  </span>
-                                                  <span>Ganancia: {{bonus_placeholder}}</span>
-                                                </p>
-                                                <button class="btn btn-nexus join-party-button">Unirte</button>
-                                              </div>
-                                            </div>
-                                          </li>
 
-                                          <li>
-                                            <div class="card party-list-item">
-                                              <div class="card-header card-id-room">2</div>
-                                              <div class="card-body">
-                                                <h5 class="card-title">{{name_placeholder}}</h5>
-                                                <p class="card-text">
-                                                  <span class="icon-container">
-                                                    <img src="../assets/icons/person-fill.svg">
-                                                  </span>
-                                                  <span class="value-container">Jugadores: {{current_placeholder}}/{{max_placeholder}}</span>
-                                                  <span class="icon-container">
-                                                    <img src="../assets/icons/person-gear.svg">
-                                                  </span>
-                                                  <span class="value-container">Modo: {{mode_placeholder}}</span>
-                                                  <span class="icon-container">
-                                                    <img src="../assets/icons/coin.svg">
-                                                  </span>
-                                                  <span>Ganancia: {{bonus_placeholder}}</span>
-                                                </p>
-                                                <button class="btn btn-nexus join-party-button">Unirte</button>
-                                              </div>
-                                            </div>
-                                          </li>
-
-                                          <li>
-                                            <div class="card party-list-item">
-                                              <div class="card-header card-id-room">{{id_placeholder}}</div>
-                                              <div class="card-body">
-                                                <h5 class="card-title">{{name_placeholder}}</h5>
-                                                <p class="card-text">
-                                                  <span class="icon-container">
-                                                    <img src="../assets/icons/person-fill.svg">
-                                                  </span>
-                                                  <span class="value-container">Jugadores: {{current_placeholder}}/{{max_placeholder}}</span>
-                                                  <span class="icon-container">
-                                                    <img src="../assets/icons/person-gear.svg">
-                                                  </span>
-                                                  <span class="value-container">Modo: {{mode_placeholder}}</span>
-                                                  <span class="icon-container">
-                                                    <img src="../assets/icons/coin.svg">
-                                                  </span>
-                                                  <span>Ganancia: {{bonus_placeholder}}</span>
-                                                </p>
-                                                <button class="btn btn-nexus join-party-button">Unirte</button>
-                                              </div>
-                                            </div>
-                                          </li>
                                     </ul>
                                 </div>
                             </div>
@@ -119,34 +49,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-4">
-                    <div class="card container-nexus">
-                        <div class="card-header">
-                            <h2>Chat Global</h2>
-                        </div>
-                        <div class="card-body scroll-body">
-                            <ul class="party-list" id="chat-list">
-
-                            </ul>
-                        </div>
-                        <div class="card-footer text-body-secondary">
-                            <div class="row">
-                                <div class="col-10 chat-footer">
-                                    <input type="text" class="form-control" id="chat-input" aria-describedby="Chat"
-                                        placeholder="Escribe un mensaje ...">
-                                </div>
-                                <div class="col-2">
-                                    <button type="button" class="btn btn-nexus">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
-                                            <path
-                                                d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col-4" id="chat-insert">
+                    
                 </div>
             </div>
         </div>

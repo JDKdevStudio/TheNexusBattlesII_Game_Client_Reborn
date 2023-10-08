@@ -1,6 +1,6 @@
 import { State } from "./gameStateInferface";
 import $ from "jquery";
-import gameStateWaitingRoom from "./gameStateWaitingRoom";
+import {stateWaitingRoom,stateInventory} from "./gameStates";
 
 /*
     Welcome to the main game view's state machine!
@@ -22,6 +22,7 @@ import gameStateWaitingRoom from "./gameStateWaitingRoom";
 */
 
 export enum stateType {
+    GeneralScreen,
     ConnectionError,
     WaitingRoom,
     Inventory,
@@ -38,28 +39,33 @@ export class gameStateContext {
     //Let's you change between states from a remote object. When a state is changed the screen is redrawn.
     static changeMachineState(newState: stateType) {
         switch (newState) {
+            case stateType.GeneralScreen:
+                console.log("State Machine: OK!");
+                break;
             case stateType.ConnectionError:
-                console.error("Connection State not defined yet.");
+                console.error("Connection Error Scene not defined yet.");
                 break;
             case stateType.WaitingRoom:
                 this.currentState = stateType.WaitingRoom;
-                this.functionalState = new gameStateWaitingRoom;
+                this.functionalState = new stateWaitingRoom;
                 break;
             case stateType.Inventory:
-                console.error("Connection State not defined yet.");
+                this.currentState = stateType.Inventory;
+                this.functionalState = new stateInventory;
                 break;
             case stateType.Gameplay:
-                console.error("Connection State not defined yet.");
+                console.error("Gameplay Scene not defined yet.");
                 break;
             case stateType.Results:
-                console.error("Connection State not defined yet.");
+                console.error("Results Scene not defined yet.");
                 break;
             case stateType.Rewards:
-                console.error("Connection State not defined yet.");
+                console.error("Rewards Scene not defined yet.");
+                break;
+            default:
+                console.error("State Machine Critical Error: Attempted to set an state that is undefined!");
                 break;
         }
-        if(this.functionalState == undefined) console.error("State Machine Critical Error: Attempted to set an state that is undefined!")
-        this.drawToScreen();
     }
 
     //This function clears the game view then draws based upon current state object.
