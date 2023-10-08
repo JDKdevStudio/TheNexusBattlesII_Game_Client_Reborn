@@ -1,1 +1,2 @@
-export default class CardController{}
+export default class CardController{
+}

@@ -1,11 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test</title>
+    <link rel="stylesheet" href="../assets/styles/bootstrap.scss">
+    <link rel="stylesheet" href="../components/cardComponent/style/cardStyle.css">
 </head>
+
 <body>
-    
+    <div class="card cardComponent" style="width: 150px;">
+        <!--Sección: título de la carta-->
+        <div class="container-fluid cardComponent-section cardComponent-text">Olaf el guerrero</div>
+        <!--Sección: imagen de la carta-->
+        <div class="container-fluid cardComponent-section">
+            <img src="../assets/images/card_sample.webp" class="cardComponent-image" alt="..." style="height: 150px;">
+            <img src="../assets/icons/icono_sample.png" class="cardComponent-icon">
+        </div>
+        <!--Sección: barra de vida-->
+        <div class="container-fluid cardComponent-lifebar">
+            <span style="z-index: 1;">27</span>
+            <span class="cardComponent-lifebar-progress"></span>
+        </div>
+        <!--Sección: Estadísticas tipo héroe-->
+        <div class="container-fluid cardComponent-section">
+            
+        </div>
+    </div>
 </body>
+
 </html>
