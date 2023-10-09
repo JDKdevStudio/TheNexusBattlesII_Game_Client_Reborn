@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Nexus Battles 2</title>
+    <link rel="stylesheet" href="../assets/styles/bootstrap.scss">
+    <link rel="stylesheet" href="../assets/styles/gameView.css">
+    <script src="../utils/pageCommonInit.ts" type="module"></script>
+</head>
+
+<body>
+    <header>
+        <div id="navbar"></div>
+    </header>
+
+    <main>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-10" id="game">
+                    <div class="card container-nexus">
+                        <div class="card-header">
+                            <h4>Placeholder</h4>
+                        </div>
+                        <div class="card-body">
+                            <!-- Vista selector de cartas -->
+                            <div class="row selector-text">
+                                <p>Selecciona tus cartas...</p>
+                            </div>
+                            <div class="container-fluid selection">
+                                <div class="row" id="cardlist">
+                                    <!-- Listado de cartas -->
+                                    <!-- LIMPIAR!!! -->
+                                    <div class="col-2 card-col" id="card1">1</div>
+                                    <div class="col-2 card-col" id="card2">2</div>
+                                    <div class="col-2 card-col" id="card3">3</div>
+                                    <div class="col-2 card-col" id="card4">4</div>
+                                    <div class="col-2 card-col" id="card5">5</div>
+                                    <div class="col-2 card-col" id="card6">6</div>
+                                    <div class="col-2 card-col" id="card7">7</div>
+                                    <div class="col-2 card-col" id="card8">8</div>
+                                    <div class="col-2 card-col" id="card9">9</div>
+                                    <div class="col-2 card-col" id="card10">10</div>
+                                    <div class="col-2 card-col" id="card11">11</div>
+                                    <div class="col-2 card-col" id="card12">12</div>
+                                    <div class="col-2 card-col" id="card13">13</div>
+                                    <div class="col-2 card-col" id="card14">14</div>
+                                    <div class="col-2 card-col" id="card15">15</div>
+                                    <div class="col-2 card-col" id="card16">16</div>
+                                    <!-- Listado de cartas -->
+                                </div>
+                            </div>
+                            <!-- Vista selector de cartas -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2" id="chat">
+                    <div class="card container-nexus">
+                        <div class="card-header">
+                            <h2>Chat Global</h2>
+                        </div>
+                        <div class="card-body scroll-body">
+                            <ul class="party-list" id="chat-list"></ul>
+                        </div>
+                        <div class="card-footer text-body-secondary">
+                            <div class="row">
+                                <div class="col-10 chat-footer">
+                                    <input type="text" class="form-control" id="chat-input" aria-describedby="Chat"
+                                        placeholder="Escribe un mensaje ...">
+                                </div>
+                                <div class="col-2">
+                                    <button type="button" class="btn btn-nexus">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+                                            <path
+                                                d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+
+</html>
