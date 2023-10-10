@@ -1,5 +1,7 @@
 import $ from "jquery";
 import Cookies from "js-cookie";
+import ModalGeneral from '../components/modalGeneral/modalGeneral';
+import 'bootstrap/dist/js/bootstrap.bundle.js';
 import palabrasProhibidas from "./PalabrasProhibidas"
 
 // Validar nombre de la sala
@@ -9,12 +11,11 @@ export function validarNombreSala(): boolean {
 
     for (const palabraProhibida of palabrasProhibidas) {
         if (palabraProhibida.test(nombreSala)) {
-            alert("El nombre de la sala no puede contener palabras obscenas");
+            new ModalGeneral("Advertencia", "No se pueden ingresar campos con insultos nombres de famosos o politicos.");
             nombreSalaInput.val("");
             return false;
         }
     }
-
     return true;
 }
 
