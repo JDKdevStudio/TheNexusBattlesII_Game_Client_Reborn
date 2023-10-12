@@ -1,11 +1,11 @@
 @import url("./common.css");
 
-.party-list{
+.party-list {
     list-style-type: none;
     padding: 0;
 }
 
-.party-list-item{
+.party-list-item {
     margin: 10px;
 }
 
@@ -21,7 +21,7 @@
     padding-left: 0%;
 }
 
-.container-player{
+.container-player {
     background-color: rgba(255, 255, 255, 0.7);
     margin-top: 20px;
     width: 75%;
@@ -29,6 +29,29 @@
     font-size: 2vw;
     text-align: center;
     height: 13vh;
+}
+
+.selector-text {
+    background-color: rgba(255, 255, 255, 0.7);
+    margin: 20px 30% auto 30%;
+    border-radius: 10px;
+    font-size: 1.3vw;
+    text-align: center;
+    height: 5vh;
+}
+
+.selection {
+    margin: 20px auto auto auto;
+    height: 45vh;
+    overflow-y: scroll;
+}
+
+.card-col { /* ELIMINAR!!! */
+    background-color: rgba(255, 255, 255, 0.7);
+    margin: auto 5px 20px 10px;
+    width: 18vw;
+    height: 43vh;
+    text-align: center;
 }
 
 .playerIcon {
