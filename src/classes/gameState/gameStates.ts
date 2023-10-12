@@ -1,7 +1,7 @@
 import { gameStateContext } from "./gameStateMachine";
 import { State } from "./gameStateInferface"
-import { NexusClient } from "../../nexusClient";
-import { NexusPlayer } from "../../../types/nexusPlayer";
+import { NexusClient } from "../nexusClient/nexusClient";
+import { NexusPlayer } from "../../types/nexusPlayer";
 import $ from "jquery";
 
 export class stateWaitingRoom extends State {

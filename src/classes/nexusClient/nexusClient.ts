@@ -1,16 +1,16 @@
 import { Client, Room } from "colyseus.js";
-import { NexusRoom } from "../types/nexusRoom";
-import { gameStateContext, stateType } from "./gameStateMachine/States/gameStateMachine";
+import { NexusRoom } from "../../types/nexusRoom";
+import { gameStateContext, stateType } from "../gameState/gameStateMachine";
 import Cookies from "js-cookie";
-import { NexusPlayer } from "../types/nexusPlayer";
-import { Player } from "../types/colyseusRelayPlayer";
-import Chat from "../components/chatComponent/chatComponent";
-import $ from "jquery";
+import { NexusPlayer } from "../../types/nexusPlayer";
+import Chat from "../../components/chatComponent/chatComponent";
+import Component from "../gameMediator/componentClass";
+import Mediator from "../gameMediator/mediatorInterface";
 
 /* 
     Welcome to Colyseus Nexus Client.
 
-    This abstract class will implement most of the methods needed for
+    This class will implement most of the methods needed for
     The Nexus Battles II Online Battles.
 
     colyseusNexusClient: Colyseus.Client
@@ -25,6 +25,7 @@ import $ from "jquery";
 export enum ColyseusMessagesTypes{
     RoomHasReachedPlayerMax = 0,
     ChatRemoteUpdate = 1,
+    PlayerSyncTurnRandomRoll = 2
 }
 
 enum ColyseusChatMessageTypes{
@@ -33,16 +34,19 @@ enum ColyseusChatMessageTypes{
     OnLeaveMessage = 2
 }
 
-export class NexusClient{
-    static colyseusNexusClient:Client = new Client(import.meta.env.VITE_COLYSEUS_URL);
-    private static colyseusRoom:Room;
-    private static localUsername:string = "Nexus Player";
-    private static sessionId:String;
-    private static playerMap:Map<string,any> =  new Map<string,any>();
-    private static chatComponent:Chat;
+export class NexusClient extends Component{
+    colyseusNexusClient:Client = new Client(import.meta.env.VITE_COLYSEUS_URL);
+    private  colyseusRoom:Room;
+    private  localUsername:string = "Nexus Player";
+    private  sessionId:String;
+    private  playerMap:Map<string,any> =  new Map<string,any>();
+
+    constructor(dialog:Mediator){
+        super(dialog);
+    }
 
     //Method to get the avaliable rooms in Redis Cache
-    static nexusClientGetAvaliableRooms = async():Promise<NexusRoom[]> => {
+    nexusClientGetAvaliableRooms = async():Promise<NexusRoom[]> => {        
         let nexusRoomReturn:Array<NexusRoom> = []; //Define return array
         try{
             const rooms = await this.colyseusNexusClient.getAvailableRooms("room_battle"); //Await colyseus query
@@ -65,7 +69,7 @@ export class NexusClient{
         }
     }
 
-    static nexusClientHandleGlobalRoom = async():Promise<void> => {
+    nexusClientHandleGlobalRoom = async():Promise<void> => {
         this.colyseusNexusClient.joinOrCreate("global_room").then( (room) => {
             this.colyseusRoom = room;
             this.sessionId = room.sessionId;
@@ -73,7 +77,7 @@ export class NexusClient{
         });
     }
 
-    static nexusClientCreateRoom = async():Promise<boolean> => {
+    nexusClientCreateRoom = async():Promise<boolean> => {
         try{
             const cookie_data = {
                 numero_creditos: Cookies.get("NumeroRecompensa"),
@@ -94,7 +98,7 @@ export class NexusClient{
         }
     }
 
-    static nexusClientJoinRoom = async():Promise<boolean> => {
+    nexusClientJoinRoom = async():Promise<boolean> => {
         try{
             const joining_id = Cookies.get("Join");
             if(joining_id != undefined) {
@@ -110,14 +114,13 @@ export class NexusClient{
         }
     }
 
-    static nexusClientGetPlayers = ():Map<string,any> =>{
+    nexusClientGetPlayers = ():Map<string,any> =>{
         return this.playerMap;
     }
      
-    private static HandleJoinAction = ():void => {
+    private  HandleJoinAction = ():void => {
         //Initialize Waiting Room
         gameStateContext.changeMachineState(stateType.WaitingRoom);
-        this.ChatGenerator();
 
         //#region Define Game Status Sync based on Colyseus
         this.colyseusRoom.state.clients.onAdd((client:NexusPlayer, key:string) => {   
@@ -154,9 +157,8 @@ export class NexusClient{
         });
     }
 
-    private static HandleGlobalJoinAction = ():void => {
+    private  HandleGlobalJoinAction = ():void => {
         gameStateContext.currentState = stateType.GeneralScreen;
-        this.ChatGenerator();
 
         this.colyseusRoom.onMessage(ColyseusMessagesTypes.ChatRemoteUpdate,(message)=>{
             this.HandleChatInteraction(ColyseusChatMessageTypes.OtherMessage,
@@ -166,35 +168,36 @@ export class NexusClient{
         });
     }
 
-    private static HandleChatInteraction = (type:ColyseusChatMessageTypes,player_name:string,message:string):void => {
+    private  HandleChatInteraction = (type:ColyseusChatMessageTypes,player_name:string,message:string):void => {
         switch(type){
             case ColyseusChatMessageTypes.OtherMessage:
-                this.chatComponent.insertNewMessage(player_name,message);    
+                this.dialog.notify(this,"newChatMessage",{
+                    player_name:player_name,
+                    message_content:message
+                }); 
                 break;
 
             case ColyseusChatMessageTypes.OnJoinMessage:
             case ColyseusChatMessageTypes.OnLeaveMessage:
                 if(gameStateContext.currentState != stateType.GeneralScreen) 
-                    this.chatComponent.insertNewMessage(player_name,message);    
+                    this.dialog.notify(this,"newChatMessage",{
+                        player_name:player_name,
+                        message_content:message
+                    }); 
                 break;
 
             default:
-                console.error("Chat Error: Trying to compute an undefined type of message!");
+                console.error("Nexus Client Error: Trying to compute an undefined type of message!");
                 break;
         }
     }
 
-    static SendChatMessage = (message:string):void =>{
+    SendChatMessage = (message:string):void =>{
         this.colyseusRoom.send(ColyseusMessagesTypes.ChatRemoteUpdate,{
             username: this.localUsername,
             text: message
         });
 
         this.HandleChatInteraction(ColyseusChatMessageTypes.OtherMessage,this.localUsername,message);
-    }
-
-    private static ChatGenerator = ():void => {
-        this.chatComponent = new Chat();
-        this.chatComponent.init($("#chat-insert"));
     }
 }

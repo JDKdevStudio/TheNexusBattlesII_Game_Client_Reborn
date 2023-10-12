@@ -1,9 +1,9 @@
-import { NexusClient } from "../../../utils/nexusClient";
+import Chat from "../chatComponent";
 import { chatMessageType } from "../types/messageType";
 import ChatView from "../view/chatView";
 
 export default class ChatController{
-    constructor(private readonly view:ChatView){}
+    constructor(private readonly view:ChatView,private readonly chat:Chat){}
 
     init =(node:JQuery<HTMLDivElement>):void =>{
         this.view.init(node,this.sendMessage);
@@ -15,7 +15,6 @@ export default class ChatController{
 
     sendMessage = (message:string):void =>{
         console.log("sending");
-        
-        NexusClient.SendChatMessage(message);
+        this.chat.dialog.notify(this.chat,"sendChatMessage",message);
     }
 }
