@@ -1,13 +1,12 @@
-import { gameStateContext } from "./gameStateMachine";
 import { State } from "./gameStateInferface"
-import { NexusClient } from "../nexusClient/nexusClient";
 import { NexusPlayer } from "../../types/nexusPlayer";
 import $ from "jquery";
 
-export class stateWaitingRoom extends State {
+export class stateWaitingRoom extends State{
     drawToScreen(): void {
-        gameStateContext.drawAnnouncer("Esperando jugadores");
-        const players: Map<string, NexusPlayer> = NexusClient.nexusClientGetPlayers();
+        this.machine.drawAnnouncer("Esperando jugadores");
+        const players: Map<string, NexusPlayer> = this.machine.dialog.notify(this.machine,"nexusClientGetPlayers",{}) as unknown as Map<string,NexusPlayer>;
+        // NexusClient.nexusClientGetPlayers();
         
         $.get("../../templates/waitingRoomPlayer.html", function (data: string) { //Get function lets you get the template from web server
             $("#main-game-view").empty();
@@ -31,7 +30,7 @@ export class stateWaitingRoom extends State {
 
 export class stateInventory extends State {
     drawToScreen(): void {
-        gameStateContext.drawAnnouncer("Inventario");
+        this.machine.drawAnnouncer("Inventario");
         $("#main-game-view").empty();
     }
 }

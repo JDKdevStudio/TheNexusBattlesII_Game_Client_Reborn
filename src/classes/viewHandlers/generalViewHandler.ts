@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import { NexusRoom } from "../../types/nexusRoom";
 import $ from "jquery";
 
-export default class generalViewHandler extends Component{
+export default class GeneralViewHandler extends Component{
     constructor(dialog:Mediator){
         super(dialog);
     }

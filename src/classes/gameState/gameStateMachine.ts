@@ -1,6 +1,8 @@
 import { State } from "./gameStateInferface";
 import $ from "jquery";
 import {stateWaitingRoom,stateInventory} from "./gameStates";
+import Component from "../gameMediator/componentClass";
+import Mediator from "../gameMediator/mediatorInterface";
 
 /*
     Welcome to the main game view's state machine!
@@ -31,13 +33,22 @@ export enum stateType {
     Rewards
 }
 
-export class gameStateContext {
+export class gameStateContext extends Component {
     //Reference to the object of a class that is a children of an interface
-    static functionalState: State;
-    static currentState: stateType;
+    functionalState: State;
+    currentState: stateType;
+
+    constructor(dialog:Mediator){
+        super(dialog);
+    }
+
+    init():void{
+        this.changeMachineState(stateType.WaitingRoom);
+        this.drawToScreen();
+    }
 
     //Let's you change between states from a remote object. When a state is changed the screen is redrawn.
-    static changeMachineState(newState: stateType) {
+    changeMachineState(newState: stateType) {
         switch (newState) {
             case stateType.GeneralScreen:
                 console.log("State Machine: OK!");
@@ -47,11 +58,11 @@ export class gameStateContext {
                 break;
             case stateType.WaitingRoom:
                 this.currentState = stateType.WaitingRoom;
-                this.functionalState = new stateWaitingRoom;
+                this.functionalState = new stateWaitingRoom(this);
                 break;
             case stateType.Inventory:
                 this.currentState = stateType.Inventory;
-                this.functionalState = new stateInventory;
+                this.functionalState = new stateInventory(this);
                 break;
             case stateType.Gameplay:
                 console.error("Gameplay Scene not defined yet.");
@@ -69,12 +80,12 @@ export class gameStateContext {
     }
 
     //This function clears the game view then draws based upon current state object.
-    static drawToScreen() {
+    drawToScreen() {
         this.functionalState.drawToScreen();
     }
 
     //This function can be accesed to change the announcer's text
-    static drawAnnouncer(message: string) {
+    drawAnnouncer(message: string) {
         $("#room-announcer").text(message);
     }
 }

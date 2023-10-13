@@ -1,6 +1,6 @@
 import Chat from "../../../components/chatComponent/chatComponent";
 import { chatMessageType } from "../../../components/chatComponent/types/messageType";
-import generalViewHandler from "../../viewHandlers/generalViewHandler";
+import GeneralViewHandler from "../../viewHandlers/generalViewHandler";
 import { NexusClient } from "../../nexusClient/nexusClient";
 import Component from "../componentClass";
 import Mediator from "../mediatorInterface";
@@ -8,12 +8,12 @@ import Mediator from "../mediatorInterface";
 export default class GeneralDialog implements Mediator{
     private nexusClient:NexusClient;
     private chatComponent:Chat;
-    private generalView: generalViewHandler;
+    private generalView: GeneralViewHandler;
 
     constructor(){
         this.nexusClient = new NexusClient(this);
         this.chatComponent = new Chat(this);
-        this.generalView = new generalViewHandler(this);
+        this.generalView = new GeneralViewHandler(this);
     }
 
     init = () =>{
@@ -35,7 +35,7 @@ export default class GeneralDialog implements Mediator{
         }
     }
 
-    private handleGeneralViewEvent = (event:string,args:any):any => {
+    private handleGeneralViewEvent = (event:string,_:any):any => {
         let operationResult = undefined;
         switch(event){
             case "nexusJoinGlobalRoom":
@@ -60,7 +60,7 @@ export default class GeneralDialog implements Mediator{
 
     private handleNexusClientEvent = (event:string,args:any):void =>{
         switch(event){
-            case "newChatMessage":
+            case "newChatGeneralMessage":
                 const message = args as chatMessageType;
                 this.chatComponent.insertNewMessage(message.player_name,message.message_content);  
             break;

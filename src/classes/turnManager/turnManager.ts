@@ -1,3 +1,6 @@
+import Component from "../gameMediator/componentClass";
+import Mediator from "../gameMediator/mediatorInterface";
+
 /* 
     Turn Manager
 
@@ -6,12 +9,14 @@
 
     Guarda la ronda actual, el turno actual y el asignado.
 */
-export default class TurnManager{
+export default class TurnManager extends Component{
     currentRound:Number = 0;
     currentTurn:Number = 0;
     assignedTurn:Number = 0;
 
-    constructor(){}
+    constructor(mediator:Mediator){
+        super(mediator);
+    }
 
     //Genera un número aleatorio de 1 a la cantidad de jugadores
     generateRandomTurnForQueue = (max:number):number => {

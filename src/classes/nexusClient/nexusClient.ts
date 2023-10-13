@@ -22,33 +22,33 @@ import Mediator from "../gameMediator/mediatorInterface";
         "session_id":string
 */
 
-export enum ColyseusMessagesTypes{
+export enum ColyseusMessagesTypes {
     RoomHasReachedPlayerMax = 0,
     ChatRemoteUpdate = 1,
     PlayerSyncTurnRandomRoll = 2
 }
 
-enum ColyseusChatMessageTypes{
+enum ColyseusChatMessageTypes {
     OnJoinMessage = 0,
     OtherMessage = 1,
     OnLeaveMessage = 2
 }
 
-export class NexusClient extends Component{
-    colyseusNexusClient:Client = new Client(import.meta.env.VITE_COLYSEUS_URL);
-    private  colyseusRoom:Room;
-    private  localUsername:string = "Nexus Player";
-    private  sessionId:String;
-    private  playerMap:Map<string,any> =  new Map<string,any>();
+export class NexusClient extends Component {
+    colyseusNexusClient: Client = new Client(import.meta.env.VITE_COLYSEUS_URL);
+    private colyseusRoom: Room;
+    private localUsername: string = "Nexus Player";
+    private sessionId: String;
+    private playerMap: Map<string, any> = new Map<string, any>();
 
-    constructor(dialog:Mediator){
+    constructor(dialog: Mediator) {
         super(dialog);
     }
 
     //Method to get the avaliable rooms in Redis Cache
-    nexusClientGetAvaliableRooms = async():Promise<NexusRoom[]> => {        
-        let nexusRoomReturn:Array<NexusRoom> = []; //Define return array
-        try{
+    nexusClientGetAvaliableRooms = async (): Promise<NexusRoom[]> => {
+        let nexusRoomReturn: Array<NexusRoom> = []; //Define return array
+        try {
             const rooms = await this.colyseusNexusClient.getAvailableRooms("room_battle"); //Await colyseus query
 
             rooms.forEach((room) => { //For each room transfrom colyseus promise to NexusRoom Type
@@ -63,127 +63,128 @@ export class NexusClient extends Component{
             });
 
             return nexusRoomReturn; //Return final list
-        }catch(error){
-            console.log("Error fetching rooms.",error);
+        } catch (error) {
+            console.log("Error fetching rooms.", error);
             return nexusRoomReturn;
         }
     }
 
-    nexusClientHandleGlobalRoom = async():Promise<void> => {
-        this.colyseusNexusClient.joinOrCreate("global_room").then( (room) => {
+    nexusClientHandleGlobalRoom = async (): Promise<void> => {
+        this.colyseusNexusClient.joinOrCreate("global_room").then((room) => {
             this.colyseusRoom = room;
             this.sessionId = room.sessionId;
-            this.HandleGlobalJoinAction();  
+            this.HandleGlobalJoinAction();
         });
     }
 
-    nexusClientCreateRoom = async():Promise<boolean> => {
-        try{
+    nexusClientCreateRoom = async (): Promise<boolean> => {
+        try {
             const cookie_data = {
                 numero_creditos: Cookies.get("NumeroRecompensa"),
-                numero_jugadores:Cookies.get("NumeroJugadores"),
+                numero_jugadores: Cookies.get("NumeroJugadores"),
                 nombre_sala: Cookies.get("NombreSala"),
-                equipos:Cookies.get("SetEquipos")
+                equipos: Cookies.get("SetEquipos")
             };
 
-            this.colyseusNexusClient.create("room_battle",cookie_data).then((room:Room) => {
+            this.colyseusNexusClient.create("room_battle", cookie_data).then((room: Room) => {
                 this.colyseusRoom = room;
                 this.sessionId = room.sessionId;
-                this.HandleJoinAction();    
+                this.HandleJoinAction();
             });
-        
+
             return true;
-        }catch{
+        } catch {
             return false;
         }
     }
 
-    nexusClientJoinRoom = async():Promise<boolean> => {
-        try{
+    nexusClientJoinRoom = async (): Promise<boolean> => {
+        try {
             const joining_id = Cookies.get("Join");
-            if(joining_id != undefined) {
-                this.colyseusNexusClient.joinById(joining_id,{}).then((room:Room) => {
+            if (joining_id != undefined) {
+                this.colyseusNexusClient.joinById(joining_id, {}).then((room: Room) => {
                     this.colyseusRoom = room;
                     this.sessionId = room.sessionId;
-                    this.HandleJoinAction();  
+                    this.HandleJoinAction();
                 });
             }
             return true;
-        }catch{
+        } catch {
             return false;
         }
     }
 
-    nexusClientGetPlayers = ():Map<string,any> =>{
+    nexusClientGetPlayers = (): Map<string, any> => {
         return this.playerMap;
     }
-     
-    private  HandleJoinAction = ():void => {
+
+    private HandleJoinAction = (): void => {
         //Initialize Waiting Room
-        gameStateContext.changeMachineState(stateType.WaitingRoom);
+        this.dialog.notify(this, "nexusJoinedRoom", {});
 
         //#region Define Game Status Sync based on Colyseus
-        this.colyseusRoom.state.clients.onAdd((client:NexusPlayer, key:string) => {   
-            this.playerMap.set(key,client);
-            
-            if(gameStateContext.currentState == stateType.WaitingRoom){
+        this.colyseusRoom.state.clients.onAdd((client: NexusPlayer, key: string) => {
+            this.playerMap.set(key, client);
+
+
+
+            if (gameStateContext.currentState == stateType.WaitingRoom) {
                 gameStateContext.drawToScreen();
-                this.HandleChatInteraction(ColyseusChatMessageTypes.OnJoinMessage,client.username,"Se ha unido!");
-            } 
+                this.HandleChatInteraction(ColyseusChatMessageTypes.OnJoinMessage, client.username, "Se ha unido!");
+            }
         });
-    
-        this.colyseusRoom.state.clients.onRemove((client:NexusPlayer,key:string) => {
+
+        this.colyseusRoom.state.clients.onRemove((client: NexusPlayer, key: string) => {
             this.playerMap.delete(key);
-            if(gameStateContext.currentState == stateType.WaitingRoom) {
+            if (gameStateContext.currentState == stateType.WaitingRoom) {
                 gameStateContext.drawToScreen();
-                this.HandleChatInteraction(ColyseusChatMessageTypes.OnJoinMessage,client.username,"Ha salido!");
+                this.HandleChatInteraction(ColyseusChatMessageTypes.OnJoinMessage, client.username, "Ha salido!");
             }
             //TODO: Codigo en caso de desconexión
         });
         //#endregion
 
-        this.colyseusRoom.onMessage(ColyseusMessagesTypes.RoomHasReachedPlayerMax,()=>{
-            setTimeout(()=>{
+        this.colyseusRoom.onMessage(ColyseusMessagesTypes.RoomHasReachedPlayerMax, () => {
+            setTimeout(() => {
                 gameStateContext.changeMachineState(stateType.Inventory);
                 gameStateContext.drawToScreen();
-            },1000);
+            }, 1000);
         });
 
-        this.colyseusRoom.onMessage(ColyseusMessagesTypes.ChatRemoteUpdate,(message)=>{
+        this.colyseusRoom.onMessage(ColyseusMessagesTypes.ChatRemoteUpdate, (message) => {
             this.HandleChatInteraction(ColyseusChatMessageTypes.OtherMessage,
-                    message.username,
-                    message.text
-                );
+                message.username,
+                message.text
+            );
         });
     }
 
-    private  HandleGlobalJoinAction = ():void => {
+    private HandleGlobalJoinAction = (): void => {
         gameStateContext.currentState = stateType.GeneralScreen;
 
-        this.colyseusRoom.onMessage(ColyseusMessagesTypes.ChatRemoteUpdate,(message)=>{
+        this.colyseusRoom.onMessage(ColyseusMessagesTypes.ChatRemoteUpdate, (message) => {
             this.HandleChatInteraction(ColyseusChatMessageTypes.OtherMessage,
-                    message.username,
-                    message.text
-                );
+                message.username,
+                message.text
+            );
         });
     }
 
-    private  HandleChatInteraction = (type:ColyseusChatMessageTypes,player_name:string,message:string):void => {
-        switch(type){
+    private HandleChatInteraction = (type: ColyseusChatMessageTypes, player_name: string, message: string): void => {
+        switch (type) {
             case ColyseusChatMessageTypes.OtherMessage:
-                this.dialog.notify(this,"newChatMessage",{
-                    player_name:player_name,
-                    message_content:message
-                }); 
+                this.dialog.notify(this, "newChatGeneralMessage", {
+                    player_name: player_name,
+                    message_content: message
+                });
                 break;
 
             case ColyseusChatMessageTypes.OnJoinMessage:
             case ColyseusChatMessageTypes.OnLeaveMessage:
-                if(gameStateContext.currentState != stateType.GeneralScreen) 
-                    this.dialog.notify(this,"newChatMessage",{
-                        player_name:player_name,
-                        message_content:message
-                    }); 
+                this.dialog.notify(this, "newChatStatusMessage", {
+                    player_name: player_name,
+                    message_content: message
+                });
                 break;
 
             default:
@@ -192,12 +193,12 @@ export class NexusClient extends Component{
         }
     }
 
-    SendChatMessage = (message:string):void =>{
-        this.colyseusRoom.send(ColyseusMessagesTypes.ChatRemoteUpdate,{
+    SendChatMessage = (message: string): void => {
+        this.colyseusRoom.send(ColyseusMessagesTypes.ChatRemoteUpdate, {
             username: this.localUsername,
             text: message
         });
 
-        this.HandleChatInteraction(ColyseusChatMessageTypes.OtherMessage,this.localUsername,message);
+        this.HandleChatInteraction(ColyseusChatMessageTypes.OtherMessage, this.localUsername, message);
     }
 }
