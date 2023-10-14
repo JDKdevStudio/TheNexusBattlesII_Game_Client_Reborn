@@ -9,8 +9,6 @@ export default class ChatView {
 
         //Añadir el control!
         $("#chat-insert").on("click", "#send-chat-button", () => {
-            console.log("click!");
-
             const data = $("#chat-input").val();
             if (data != "") {
                 sendMessageFunction(data == undefined ? "Hola!" : data.toString());

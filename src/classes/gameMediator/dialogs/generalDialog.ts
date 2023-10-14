@@ -46,6 +46,7 @@ export default class GeneralDialog implements Mediator{
                 operationResult = this.nexusClient.nexusClientGetAvaliableRooms();
             break;
         }
+    
         return operationResult;
     }
 

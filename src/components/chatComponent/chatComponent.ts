@@ -12,9 +12,7 @@ export default class Chat extends Component{
         this.controller =  new ChatController(new ChatView(),this);
     }
 
-    init = (node:JQuery<HTMLDivElement>):void => {
-        console.log(node);
-        
+    init = (node:JQuery<HTMLDivElement>):void => {      
         this.controller.init(node);
     }
 

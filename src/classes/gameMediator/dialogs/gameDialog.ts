@@ -1,14 +1,13 @@
 import Chat from "../../../components/chatComponent/chatComponent";
 import { chatMessageType } from "../../../components/chatComponent/types/messageType";
-import GeneralViewHandler from "../../viewHandlers/generalViewHandler";
 import { NexusClient } from "../../nexusClient/nexusClient";
 import Component from "../componentClass";
 import Mediator from "../mediatorInterface";
-import { gameStateContext } from "../../gameState/gameStateMachine";
+import { gameStateContext, stateType } from "../../gameState/gameStateMachine";
 import TurnManager from "../../turnManager/turnManager";
 import GameViewHandler from "../../viewHandlers/gameViewHandler";
 
-export default class GeneralDialog implements Mediator{
+export default class GameDialog implements Mediator{
     private nexusClient:NexusClient;
     private chatComponent:Chat;
     private stateMachine: gameStateContext;
@@ -20,6 +19,7 @@ export default class GeneralDialog implements Mediator{
         this.chatComponent = new Chat(this);
         this.stateMachine = new gameStateContext(this);
         this.turnManager = new TurnManager(this);
+        this.gameViewHandler = new GameViewHandler(this);
     }
 
     init = () =>{
@@ -38,6 +38,10 @@ export default class GeneralDialog implements Mediator{
         if(sender == this.gameViewHandler){
             this.handleViewEvent(event,args);
         }
+
+        if(sender == this.stateMachine){
+            return this.handleStateMachineEvent(event,args);
+        }
     }
 
     private handleViewEvent(event:string, args:any){
@@ -45,7 +49,9 @@ export default class GeneralDialog implements Mediator{
             case "nexusStartMatch":
                 if(args.parameter == 0){
                     this.nexusClient.nexusClientCreateRoom();
-                }else if(args.parameter == 2){
+                }else if(args.parameter == 1){
+                    console.log("joining");
+                    
                     this.nexusClient.nexusClientJoinRoom();
                 }
 
@@ -75,9 +81,34 @@ export default class GeneralDialog implements Mediator{
                 this.stateMachine.init();
             break;
 
-            case "":
-                
+            case "nexusClientJoinedRoom":
+                if (this.stateMachine.currentState == stateType.WaitingRoom) {
+                    this.stateMachine.drawToScreen();
+                    this.chatComponent.insertNewMessage(args.username,"Se ha unido!");
+                }
+            break;
+
+            case "nexusClientLeftRoom":
+                if(this.stateMachine.currentState == stateType.WaitingRoom){
+                    this.stateMachine.drawToScreen();
+                    this.chatComponent.insertNewMessage(args.username,"Ha salido!");
+                }    
+            break;
+
+            case "nexusRoomReady":
+                this.stateMachine.changeMachineState(stateType.Inventory);
+                this.stateMachine.drawToScreen();
             break;
         }
+    }
+
+    private handleStateMachineEvent(event:string,args:any):any{
+        let myReturn:any = -1;
+        switch(event){
+            case "nexusClientGetPlayers":
+                myReturn = this.nexusClient.nexusClientGetPlayers();
+            break;
+        }
+        return myReturn;
     }
 }

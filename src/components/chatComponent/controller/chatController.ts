@@ -14,7 +14,6 @@ export default class ChatController{
     }
 
     sendMessage = (message:string):void =>{
-        console.log("sending");
         this.chat.dialog.notify(this.chat,"sendChatMessage",message);
     }
 }

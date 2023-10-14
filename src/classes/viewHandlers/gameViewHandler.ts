@@ -1,6 +1,7 @@
 import Component from "../gameMediator/componentClass";
 import Mediator from "../gameMediator/mediatorInterface";
 import Cookies from "js-cookie";
+import $ from "jquery";
 
 export default class GameViewHandler extends Component{
     constructor(dialog:Mediator){
@@ -20,7 +21,7 @@ export default class GameViewHandler extends Component{
         if(joinOrCreate != -1)
             this.dialog.notify(this,"nexusStartMatch",{
                 parameter: joinOrCreate,
-                chatNode: $("chat-insert")
+                chatNode: $("#chat-insert")
             });
     }
 }

@@ -1,9 +1,7 @@
 import { Client, Room } from "colyseus.js";
 import { NexusRoom } from "../../types/nexusRoom";
-import { gameStateContext, stateType } from "../gameState/gameStateMachine";
 import Cookies from "js-cookie";
 import { NexusPlayer } from "../../types/nexusPlayer";
-import Chat from "../../components/chatComponent/chatComponent";
 import Component from "../gameMediator/componentClass";
 import Mediator from "../gameMediator/mediatorInterface";
 
@@ -125,29 +123,23 @@ export class NexusClient extends Component {
         //#region Define Game Status Sync based on Colyseus
         this.colyseusRoom.state.clients.onAdd((client: NexusPlayer, key: string) => {
             this.playerMap.set(key, client);
-
-
-
-            if (gameStateContext.currentState == stateType.WaitingRoom) {
-                gameStateContext.drawToScreen();
-                this.HandleChatInteraction(ColyseusChatMessageTypes.OnJoinMessage, client.username, "Se ha unido!");
-            }
+            this.dialog.notify(this,"nexusClientJoinedRoom",{
+                username: client.username
+            });
         });
 
         this.colyseusRoom.state.clients.onRemove((client: NexusPlayer, key: string) => {
             this.playerMap.delete(key);
-            if (gameStateContext.currentState == stateType.WaitingRoom) {
-                gameStateContext.drawToScreen();
-                this.HandleChatInteraction(ColyseusChatMessageTypes.OnJoinMessage, client.username, "Ha salido!");
-            }
+            this.dialog.notify(this,"nexusClientLeftRoom",{
+                username: client.username
+            });
             //TODO: Codigo en caso de desconexión
         });
         //#endregion
 
         this.colyseusRoom.onMessage(ColyseusMessagesTypes.RoomHasReachedPlayerMax, () => {
             setTimeout(() => {
-                gameStateContext.changeMachineState(stateType.Inventory);
-                gameStateContext.drawToScreen();
+                this.dialog.notify(this,"nexusRoomReady",{});
             }, 1000);
         });
 
@@ -160,8 +152,6 @@ export class NexusClient extends Component {
     }
 
     private HandleGlobalJoinAction = (): void => {
-        gameStateContext.currentState = stateType.GeneralScreen;
-
         this.colyseusRoom.onMessage(ColyseusMessagesTypes.ChatRemoteUpdate, (message) => {
             this.HandleChatInteraction(ColyseusChatMessageTypes.OtherMessage,
                 message.username,
