@@ -54,6 +54,67 @@
     text-align: center;
 }
 
+.container-battle {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr)
+}
+
+.player-col { /* Tamaño de las cartas en mockup de battle.html, eliminar si es necesario */
+    width: 140px;
+}
+
+/* Quitar colores!! */
+
+.enemy {
+    background-color: rgba(255, 57, 57, 0.7);
+    grid-row-start: 1;
+    grid-column-start: 3;
+    grid-column-end: 4;
+    justify-self: center;
+}
+
+.user {
+    background-color: rgba(255, 255, 255, 0.7);
+    grid-row-start: 3;
+    grid-column-start: 3;
+    grid-column-end: 4;
+    justify-self: center;
+}
+
+.side-1 {
+    background-color: rgba(120, 120, 120, 0.7);
+    grid-row-start: 2;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    justify-self: left;
+}
+
+.side-2 {
+    background-color: rgba(120, 120, 120, 0.7);
+    grid-row-start: 2;
+    grid-column-start: 5;
+    grid-column-end: 6;
+    justify-self: right;
+}
+
+.card-deck {
+    background-color: rgba(177, 223, 71, 0.7);
+    grid-row-start: 3;
+    grid-column-start: 2;
+    grid-column-end: 3;
+    width: 140px;
+    justify-self: right;
+}
+
+.card-hand {
+    background-color: rgba(91, 160, 240, 0.7);
+    grid-row-start: 3;
+    grid-column-start: 4;
+    grid-column-end: 5;
+    width: 200px;
+    justify-self: left;
+}
+
 .playerIcon {
     background-color: #f2f28d;
     margin: 10px;
