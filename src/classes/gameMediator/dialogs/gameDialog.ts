@@ -50,8 +50,6 @@ export default class GameDialog implements Mediator{
                 if(args.parameter == 0){
                     this.nexusClient.nexusClientCreateRoom();
                 }else if(args.parameter == 1){
-                    console.log("joining");
-                    
                     this.nexusClient.nexusClientJoinRoom();
                 }
 
@@ -64,7 +62,7 @@ export default class GameDialog implements Mediator{
         switch(event){
             case "sendChatMessage":
                 const message = args.toString();
-                this.nexusClient.SendChatMessage(message);
+                this.nexusClient.sendChatMessage(message);
             break;
         }
     }
@@ -96,8 +94,16 @@ export default class GameDialog implements Mediator{
             break;
 
             case "nexusRoomReady":
-                this.stateMachine.changeMachineState(stateType.Inventory);
-                this.stateMachine.drawToScreen();
+                //this.stateMachine.changeMachineState(stateType.Inventory);
+                //this.stateMachine.drawToScreen();
+                console.log("READY UP!");
+                
+                this.stateMachine.changeMachineState(stateType.Gameplay);
+                this.stateMachine.communicatorBreaker("init");
+            break;
+            
+            case "nexusGetTurn":
+                this.turnManager.setAssignerTurn(args.turn);
             break;
         }
     }
@@ -107,6 +113,10 @@ export default class GameDialog implements Mediator{
         switch(event){
             case "nexusClientGetPlayers":
                 myReturn = this.nexusClient.nexusClientGetPlayers();
+            break;
+
+            case "clientLoadedGameView":
+                this.nexusClient.sendClientGameViewLoaded();
             break;
         }
         return myReturn;

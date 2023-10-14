@@ -1,6 +1,6 @@
 import { State } from "./gameStateInferface";
 import $ from "jquery";
-import {stateWaitingRoom,stateInventory} from "./gameStates";
+import {stateWaitingRoom,stateInventory, stateInGame} from "./gameStates";
 import Component from "../gameMediator/componentClass";
 import Mediator from "../gameMediator/mediatorInterface";
 
@@ -35,7 +35,7 @@ export enum stateType {
 
 export class gameStateContext extends Component {
     //Reference to the object of a class that is a children of an interface
-    functionalState: State;
+    private functionalState: State;
     currentState: stateType;
 
     constructor(dialog:Mediator){
@@ -65,7 +65,8 @@ export class gameStateContext extends Component {
                 this.functionalState = new stateInventory(this);
                 break;
             case stateType.Gameplay:
-                console.error("Gameplay Scene not defined yet.");
+                this.currentState = stateType.Gameplay;
+                this.functionalState = new stateInGame(this);
                 break;
             case stateType.Results:
                 console.error("Results Scene not defined yet.");
@@ -87,5 +88,9 @@ export class gameStateContext extends Component {
     //This function can be accesed to change the announcer's text
     drawAnnouncer(message: string) {
         $("#room-announcer").text(message);
+    }
+
+    communicatorBreaker(type:string):void{
+        this.functionalState.communicatorBreaker(type);
     }
 }

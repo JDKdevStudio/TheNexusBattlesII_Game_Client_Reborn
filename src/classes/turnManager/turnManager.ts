@@ -18,9 +18,9 @@ export default class TurnManager extends Component{
         super(mediator);
     }
 
-    //Genera un número aleatorio de 1 a la cantidad de jugadores
-    generateRandomTurnForQueue = (max:number):number => {
-        return Math.ceil(Math.random() * (max - 1) + 1)
+    setAssignerTurn(turn:number){
+        console.log("Got Turn: ", turn);
+        this.assignedTurn = turn;
     }
 
     handleTurnProgress = ()=>{

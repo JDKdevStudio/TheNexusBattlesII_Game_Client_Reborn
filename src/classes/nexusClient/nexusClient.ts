@@ -23,7 +23,8 @@ import Mediator from "../gameMediator/mediatorInterface";
 export enum ColyseusMessagesTypes {
     RoomHasReachedPlayerMax = 0,
     ChatRemoteUpdate = 1,
-    PlayerSyncTurnRandomRoll = 2
+    ClientGameViewLoaded = 2,
+    RemoteGetOrder = 3
 }
 
 enum ColyseusChatMessageTypes {
@@ -71,7 +72,7 @@ export class NexusClient extends Component {
         this.colyseusNexusClient.joinOrCreate("global_room").then((room) => {
             this.colyseusRoom = room;
             this.sessionId = room.sessionId;
-            this.HandleGlobalJoinAction();
+            this.handleGlobalJoinAction();
         });
     }
 
@@ -87,7 +88,7 @@ export class NexusClient extends Component {
             this.colyseusNexusClient.create("room_battle", cookie_data).then((room: Room) => {
                 this.colyseusRoom = room;
                 this.sessionId = room.sessionId;
-                this.HandleJoinAction();
+                this.handleJoinAction();
             });
 
             return true;
@@ -103,7 +104,7 @@ export class NexusClient extends Component {
                 this.colyseusNexusClient.joinById(joining_id, {}).then((room: Room) => {
                     this.colyseusRoom = room;
                     this.sessionId = room.sessionId;
-                    this.HandleJoinAction();
+                    this.handleJoinAction();
                 });
             }
             return true;
@@ -116,7 +117,7 @@ export class NexusClient extends Component {
         return this.playerMap;
     }
 
-    private HandleJoinAction = (): void => {
+    private handleJoinAction = (): void => {
         //Initialize Waiting Room
         this.dialog.notify(this, "nexusJoinedRoom", {});
 
@@ -144,23 +145,27 @@ export class NexusClient extends Component {
         });
 
         this.colyseusRoom.onMessage(ColyseusMessagesTypes.ChatRemoteUpdate, (message) => {
-            this.HandleChatInteraction(ColyseusChatMessageTypes.OtherMessage,
+            this.handleChatInteraction(ColyseusChatMessageTypes.OtherMessage,
                 message.username,
                 message.text
             );
         });
+
+        this.colyseusRoom.onMessage(ColyseusMessagesTypes.RemoteGetOrder,(message)=>{
+            this.dialog.notify(this,"nexusGetTurn",message);
+        });
     }
 
-    private HandleGlobalJoinAction = (): void => {
+    private handleGlobalJoinAction = (): void => {
         this.colyseusRoom.onMessage(ColyseusMessagesTypes.ChatRemoteUpdate, (message) => {
-            this.HandleChatInteraction(ColyseusChatMessageTypes.OtherMessage,
+            this.handleChatInteraction(ColyseusChatMessageTypes.OtherMessage,
                 message.username,
                 message.text
             );
         });
     }
 
-    private HandleChatInteraction = (type: ColyseusChatMessageTypes, player_name: string, message: string): void => {
+    private handleChatInteraction = (type: ColyseusChatMessageTypes, player_name: string, message: string): void => {
         switch (type) {
             case ColyseusChatMessageTypes.OtherMessage:
                 this.dialog.notify(this, "newChatGeneralMessage", {
@@ -183,12 +188,16 @@ export class NexusClient extends Component {
         }
     }
 
-    SendChatMessage = (message: string): void => {
+    sendChatMessage = (message: string): void => {
         this.colyseusRoom.send(ColyseusMessagesTypes.ChatRemoteUpdate, {
             username: this.localUsername,
             text: message
         });
 
-        this.HandleChatInteraction(ColyseusChatMessageTypes.OtherMessage, this.localUsername, message);
+        this.handleChatInteraction(ColyseusChatMessageTypes.OtherMessage, this.localUsername, message);
+    }
+
+    sendClientGameViewLoaded = ():void =>{
+        this.colyseusRoom.send(ColyseusMessagesTypes.ClientGameViewLoaded);
     }
 }
