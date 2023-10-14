@@ -1,15 +1,18 @@
+import Component from "../../classes/gameMediator/componentClass";
+import Mediator from "../../classes/gameMediator/mediatorInterface";
 import ChatController from "./controller/chatController";
 import { chatMessageType } from "./types/messageType";
 import ChatView from "./view/chatView";
 
-export default class Chat{
+export default class Chat extends Component{
     private readonly controller:ChatController;
 
-    constructor(){
-        this.controller =  new ChatController(new ChatView());
+    constructor(dialog:Mediator){
+        super(dialog);
+        this.controller =  new ChatController(new ChatView(),this);
     }
 
-    init = (node:JQuery<HTMLDivElement>):void => {
+    init = (node:JQuery<HTMLDivElement>):void => {      
         this.controller.init(node);
     }
 

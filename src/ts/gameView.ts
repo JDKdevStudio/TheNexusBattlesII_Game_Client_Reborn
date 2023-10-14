@@ -1,10 +1,8 @@
-import { NexusClient } from "../utils/nexusClient";
-import Cookies from "js-cookie";
+import $ from "jquery";
+import 'bootstrap/dist/js/bootstrap.bundle.js';
+import GameDialog from "../classes/gameMediator/dialogs/gameDialog";
 
-if(Cookies.get("Join") == undefined){
-    console.log("Creating a Room");
-    NexusClient.nexusClientCreateRoom();
-}else{
-    console.log("Joining a Room");
-    NexusClient.nexusClientJoinRoom();
-}
+$(()=>{
+    const gameDialog = new GameDialog();
+    gameDialog.init();
+});
