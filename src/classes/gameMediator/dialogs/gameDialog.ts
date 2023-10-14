@@ -18,7 +18,7 @@ export default class GameDialog implements Mediator{
         this.nexusClient = new NexusClient(this);
         this.chatComponent = new Chat(this);
         this.stateMachine = new gameStateContext(this);
-        this.turnManager = new TurnManager(this);
+        this.turnManager = new TurnManager(this,this.nexusClient.nexusClientGetPlayers().size);
         this.gameViewHandler = new GameViewHandler(this);
     }
 
@@ -41,6 +41,18 @@ export default class GameDialog implements Mediator{
 
         if(sender == this.stateMachine){
             return this.handleStateMachineEvent(event,args);
+        }
+
+        if(sender == this.turnManager){
+            this.handleTurnManagerEvent(event,args);
+        }
+    }
+
+    private handleTurnManagerEvent(event:string,args:any){
+        switch(event){
+            case "newRound":
+                this.stateMachine.drawAnnouncer("Turno: " + args.turn);  
+            break;
         }
     }
 
@@ -95,14 +107,13 @@ export default class GameDialog implements Mediator{
 
             case "nexusRoomReady":
                 //this.stateMachine.changeMachineState(stateType.Inventory);
-                //this.stateMachine.drawToScreen();
-                console.log("READY UP!");
-                
+                //this.stateMachine.drawToScreen();                
                 this.stateMachine.changeMachineState(stateType.Gameplay);
                 this.stateMachine.communicatorBreaker("init");
             break;
             
             case "nexusGetTurn":
+                this.stateMachine.communicatorBreaker("matchStart");
                 this.turnManager.setAssignerTurn(args.turn);
             break;
         }
