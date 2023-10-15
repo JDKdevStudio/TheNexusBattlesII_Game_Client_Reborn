@@ -48,13 +48,13 @@ export default class GeneralViewHandler extends Component {
     loadRoomDataOnList = async (): Promise<boolean> => {
         try {
             $("#party-list").empty(); //Empty the view
-            console.log("CLICKED!");
+            //console.log("CLICKED!");
 
             const availableRoomsPromise = this.dialog.notify(this, "nexusSearchRooms", {}) as any;
             availableRoomsPromise.then((availableRooms: any) => {
                 //await NexusClient.nexusClientGetAvaliableRooms(); //Get room data from colyseus redis driver
                 if (availableRooms.length > 0) { //If there's data
-                    console.log("DATA FOUIND");
+                    //console.log("DATA FOUIND");
 
                     $.get("../../templates/partyListItem.html", function (data: string) { //Get function lets you get the template from web server
                         availableRooms.forEach((current_room: NexusRoom) => {

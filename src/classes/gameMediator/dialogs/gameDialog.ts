@@ -17,8 +17,8 @@ export default class GameDialog implements Mediator{
     constructor(){
         this.nexusClient = new NexusClient(this);
         this.chatComponent = new Chat(this);
-        this.stateMachine = new gameStateContext(this);
-        this.turnManager = new TurnManager(this,this.nexusClient.nexusClientGetPlayers().size);
+        this.stateMachine = new gameStateContext(this);        
+        this.turnManager = new TurnManager(this);
         this.gameViewHandler = new GameViewHandler(this);
     }
 
@@ -53,6 +53,24 @@ export default class GameDialog implements Mediator{
             case "newRound":
                 this.stateMachine.drawAnnouncer("Turno: " + args.turn);  
             break;
+
+            case "yourTurn":
+                this.stateMachine.communicatorBreaker("yourTurn");    
+            break;
+
+            case "notYourTurn":
+                this.stateMachine.drawAnnouncer("Turno: " + args.turn);  
+                this.stateMachine.communicatorBreaker("notYourTurn");    
+            break;
+
+            case "updateCounterData":
+                this.stateMachine.drawAnnouncer(`Es tu turno! (Restante: ${args.timer}s)`);
+            break;
+
+            case "actionFinishTurn":
+                this.stateMachine.drawAnnouncer("Comunicando...");
+                this.nexusClient.sendClientFinishedTurn();
+            break;
         }
     }
 
@@ -67,6 +85,10 @@ export default class GameDialog implements Mediator{
 
                 this.chatComponent.init(args.chatNode);
             break;
+
+            case "ClientSkipAction":
+                this.turnManager.actionFinishTurn();
+                break;
         }
     }
 
@@ -114,7 +136,11 @@ export default class GameDialog implements Mediator{
             
             case "nexusGetTurn":
                 this.stateMachine.communicatorBreaker("matchStart");
-                this.turnManager.setAssignerTurn(args.turn);
+                this.turnManager.setAssignerTurn(args.turn,this.nexusClient.nexusClientGetPlayers().size);
+            break;
+                
+            case "playerHasTerminatedTurn":
+                this.turnManager.handleTurnProgress();    
             break;
         }
     }

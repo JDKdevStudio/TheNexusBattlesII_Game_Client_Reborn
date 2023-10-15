@@ -24,7 +24,8 @@ export enum ColyseusMessagesTypes {
     RoomHasReachedPlayerMax = 0,
     ChatRemoteUpdate = 1,
     ClientGameViewLoaded = 2,
-    RemoteGetOrder = 3
+    RemoteGetOrder = 3,
+    ClientHasTerminatedTurn = 4
 }
 
 enum ColyseusChatMessageTypes {
@@ -154,6 +155,10 @@ export class NexusClient extends Component {
         this.colyseusRoom.onMessage(ColyseusMessagesTypes.RemoteGetOrder,(message)=>{
             this.dialog.notify(this,"nexusGetTurn",message);
         });
+
+        this.colyseusRoom.onMessage(ColyseusMessagesTypes.ClientHasTerminatedTurn,()=>{
+            this.dialog.notify(this,"playerHasTerminatedTurn",{});
+        });
     }
 
     private handleGlobalJoinAction = (): void => {
@@ -199,5 +204,9 @@ export class NexusClient extends Component {
 
     sendClientGameViewLoaded = ():void =>{
         this.colyseusRoom.send(ColyseusMessagesTypes.ClientGameViewLoaded);
+    }
+
+    sendClientFinishedTurn = ():void => {
+        this.colyseusRoom.send(ColyseusMessagesTypes.ClientHasTerminatedTurn);
     }
 }

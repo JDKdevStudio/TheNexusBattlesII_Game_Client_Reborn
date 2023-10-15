@@ -90,7 +90,7 @@ export class gameStateContext extends Component {
         $("#room-announcer").text(message);
     }
 
-    communicatorBreaker(type:string):void{
+    communicatorBreaker(type:string,args:any = undefined):void{
         this.functionalState.communicatorBreaker(type);
     }
 }

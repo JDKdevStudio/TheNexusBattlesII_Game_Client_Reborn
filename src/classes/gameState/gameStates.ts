@@ -43,12 +43,18 @@ export class stateInGame extends State{
         this.playerMap = new Map<string,any>();
     }
 
-    override communicatorBreaker(type:string):void{
+    override communicatorBreaker(type:string,args:any):void{
         switch(type){
             case "init":
                 this.init();
                 break;
             case "updateStats":
+                break;
+            case "yourTurn":
+                $("#btn-skip").prop('disabled',false);
+                break;
+            case "notYourTurn":
+                $("#btn-skip").prop('disabled',true);
                 break;
         }
     }
@@ -60,7 +66,13 @@ export class stateInGame extends State{
         });
 
         this.drawToScreen();
-        this.machine.dialog.notify(this.machine,"clientLoadedGameView",{})
+        this.machine.dialog.notify(this.machine,"clientLoadedGameView",{});
+
+        $("#main-game-view").on('click',".btn-skip",()=>{
+            console.log("CLIKED");
+            
+            this.machine.dialog.notify(this.machine,"ClientSkipAction",{});
+        });
     }
 
     updateCardStats(id:string,stats:any){
@@ -70,6 +82,10 @@ export class stateInGame extends State{
 
     drawToScreen(): void {
         this.machine.drawAnnouncer("Esperando Inicio de Partida...");
-        $("#main-game-view").empty();
+
+        $.get("../../layouts/inGameLayout.html", function (data: string) { 
+            $("#main-game-view").empty(); 
+            $('#main-game-view').append(data);
+        });
     }
 }
