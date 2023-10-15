@@ -82,7 +82,6 @@ export default class GameDialog implements Mediator{
                 }else if(args.parameter == 1){
                     this.nexusClient.nexusClientJoinRoom();
                 }
-
                 this.chatComponent.init(args.chatNode);
             break;
 
@@ -136,6 +135,7 @@ export default class GameDialog implements Mediator{
             
             case "nexusGetTurn":
                 this.stateMachine.communicatorBreaker("matchStart");
+                this.stateMachine.communicatorBreaker("notYourTurn");
                 this.turnManager.setAssignerTurn(args.turn,this.nexusClient.nexusClientGetPlayers().size);
             break;
                 
@@ -154,6 +154,10 @@ export default class GameDialog implements Mediator{
 
             case "clientLoadedGameView":
                 this.nexusClient.sendClientGameViewLoaded();
+            break;
+
+            case "ClientSkipAction":
+                this.turnManager.actionFinishTurn();
             break;
         }
         return myReturn;

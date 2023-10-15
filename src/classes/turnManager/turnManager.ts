@@ -21,7 +21,6 @@ export default class TurnManager extends Component {
     }
 
     setAssignerTurn(turn: number,maxNumber:number): void {
-        console.log("Got Turn: ", turn);
         this.assignedTurn = turn;
         this.maxNumber = maxNumber;
         this.sendUpdateRoundSignal();
@@ -56,7 +55,6 @@ export default class TurnManager extends Component {
         this.intervID = setInterval(() => {
             if (timeleft > -1) timeleft--;
             if (timeleft == 0) {
-                console.log("FINISH!");
                 this.actionFinishTurn();
             } else {
                 this.dialog.notify(this,"updateCounterData",{timer:timeleft});

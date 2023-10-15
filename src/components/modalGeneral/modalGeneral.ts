@@ -10,8 +10,8 @@ export default class ModalGeneral {
         this.message = message;
         this.toggleModal();
     }
-   
-    toggleModal =():void=>{
+
+    toggleModal = (): void => {
         $.get("../components/modalGeneral/modal.html", (data) => {
             $(main).append(data);
 
@@ -19,18 +19,12 @@ export default class ModalGeneral {
             $("#alertModal .modal-title").text(this.title);
             $("#alertModal #textMessage").text(this.message);
 
-            console.log($("#closeButton"))
-            console.log($("#closeAlertModal"))
             $("#closeButton, #closeAlertModal").on('click', function () {
                 $("#alertModal").hide();
             });
-            
-            
+
         }).fail((error) => {
             console.error("Error al cargar el archivo modal.html:", error);
         });
-        
     }
-
-  
 }

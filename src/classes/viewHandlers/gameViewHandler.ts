@@ -11,10 +11,8 @@ export default class GameViewHandler extends Component{
     init = async():Promise<void> => {
         let joinOrCreate = -1;
         if(Cookies.get("Join") == undefined){
-            console.log("Creating a Room");
             joinOrCreate = 0;
         }else{
-            console.log("Joining a Room");
             joinOrCreate = 1;
         }
         

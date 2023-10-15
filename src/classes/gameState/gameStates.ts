@@ -51,10 +51,10 @@ export class stateInGame extends State{
             case "updateStats":
                 break;
             case "yourTurn":
-                $("#btn-skip").prop('disabled',false);
+                $(".btn-skip").prop('disabled',false);
                 break;
-            case "notYourTurn":
-                $("#btn-skip").prop('disabled',true);
+            case "notYourTurn":                
+                $(".btn-skip").prop('disabled',true);
                 break;
         }
     }
@@ -69,8 +69,6 @@ export class stateInGame extends State{
         this.machine.dialog.notify(this.machine,"clientLoadedGameView",{});
 
         $("#main-game-view").on('click',".btn-skip",()=>{
-            console.log("CLIKED");
-            
             this.machine.dialog.notify(this.machine,"ClientSkipAction",{});
         });
     }
