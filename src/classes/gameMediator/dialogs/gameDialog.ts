@@ -17,7 +17,7 @@ export default class GameDialog implements Mediator{
     constructor(){
         this.nexusClient = new NexusClient(this);
         this.chatComponent = new Chat(this);
-        this.stateMachine = new gameStateContext(this);
+        this.stateMachine = new gameStateContext(this);        
         this.turnManager = new TurnManager(this);
         this.gameViewHandler = new GameViewHandler(this);
     }
@@ -42,6 +42,36 @@ export default class GameDialog implements Mediator{
         if(sender == this.stateMachine){
             return this.handleStateMachineEvent(event,args);
         }
+
+        if(sender == this.turnManager){
+            this.handleTurnManagerEvent(event,args);
+        }
+    }
+
+    private handleTurnManagerEvent(event:string,args:any){
+        switch(event){
+            case "newRound":
+                this.stateMachine.drawAnnouncer("Turno: " + args.turn);  
+            break;
+
+            case "yourTurn":
+                this.stateMachine.communicatorBreaker("yourTurn");    
+            break;
+
+            case "notYourTurn":
+                this.stateMachine.drawAnnouncer("Turno: " + args.turn);  
+                this.stateMachine.communicatorBreaker("notYourTurn");    
+            break;
+
+            case "updateCounterData":
+                this.stateMachine.drawAnnouncer(`Es tu turno! (Restante: ${args.timer}s)`);
+            break;
+
+            case "actionFinishTurn":
+                this.stateMachine.drawAnnouncer("Comunicando...");
+                this.nexusClient.sendClientFinishedTurn();
+            break;
+        }
     }
 
     private handleViewEvent(event:string, args:any){
@@ -50,13 +80,14 @@ export default class GameDialog implements Mediator{
                 if(args.parameter == 0){
                     this.nexusClient.nexusClientCreateRoom();
                 }else if(args.parameter == 1){
-                    console.log("joining");
-                    
                     this.nexusClient.nexusClientJoinRoom();
                 }
-
                 this.chatComponent.init(args.chatNode);
             break;
+
+            case "ClientSkipAction":
+                this.turnManager.actionFinishTurn();
+                break;
         }
     }
 
@@ -64,7 +95,7 @@ export default class GameDialog implements Mediator{
         switch(event){
             case "sendChatMessage":
                 const message = args.toString();
-                this.nexusClient.SendChatMessage(message);
+                this.nexusClient.sendChatMessage(message);
             break;
         }
     }
@@ -96,8 +127,20 @@ export default class GameDialog implements Mediator{
             break;
 
             case "nexusRoomReady":
-                this.stateMachine.changeMachineState(stateType.Inventory);
-                this.stateMachine.drawToScreen();
+                //this.stateMachine.changeMachineState(stateType.Inventory);
+                //this.stateMachine.drawToScreen();                
+                this.stateMachine.changeMachineState(stateType.Gameplay);
+                this.stateMachine.communicatorBreaker("init");
+            break;
+            
+            case "nexusGetTurn":
+                this.stateMachine.communicatorBreaker("matchStart");
+                this.stateMachine.communicatorBreaker("notYourTurn");
+                this.turnManager.setAssignerTurn(args.turn,this.nexusClient.nexusClientGetPlayers().size);
+            break;
+                
+            case "playerHasTerminatedTurn":
+                this.turnManager.handleTurnProgress();    
             break;
         }
     }
@@ -107,6 +150,14 @@ export default class GameDialog implements Mediator{
         switch(event){
             case "nexusClientGetPlayers":
                 myReturn = this.nexusClient.nexusClientGetPlayers();
+            break;
+
+            case "clientLoadedGameView":
+                this.nexusClient.sendClientGameViewLoaded();
+            break;
+
+            case "ClientSkipAction":
+                this.turnManager.actionFinishTurn();
             break;
         }
         return myReturn;

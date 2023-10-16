@@ -9,21 +9,65 @@ import Mediator from "../gameMediator/mediatorInterface";
 
     Guarda la ronda actual, el turno actual y el asignado.
 */
-export default class TurnManager extends Component{
-    currentRound:Number = 0;
-    currentTurn:Number = 0;
-    assignedTurn:Number = 0;
+export default class TurnManager extends Component {
+    private currentRound: number = 1;
+    private currentTurn: number = 1;
+    private assignedTurn: number = -1;
+    private maxNumber: number = -1;
+    private intervID: any;
 
-    constructor(mediator:Mediator){
+    constructor(mediator: Mediator) {
         super(mediator);
     }
 
-    //Genera un número aleatorio de 1 a la cantidad de jugadores
-    generateRandomTurnForQueue = (max:number):number => {
-        return Math.ceil(Math.random() * (max - 1) + 1)
+    setAssignerTurn(turn: number,maxNumber:number): void {
+        this.assignedTurn = turn;
+        this.maxNumber = maxNumber;
+        this.sendUpdateRoundSignal();
+        this.checkForTurnActive();
     }
 
-    handleTurnProgress = ()=>{
-        
+    checkForTurnActive(): void {
+        if (this.currentTurn == this.assignedTurn) {
+            this.dialog.notify(this, "yourTurn", { turn: this.currentRound });
+            this.countdown();
+        } else {
+            this.dialog.notify(this, "notYourTurn", { turn: this.currentRound });
+        }
+    }
+
+    handleTurnProgress = (): void => {
+        this.currentTurn += 1;
+        if (this.currentTurn > this.maxNumber) {
+            this.currentRound += 1;
+            this.currentTurn = 1;
+            this.sendUpdateRoundSignal();
+        }
+        this.checkForTurnActive();
+    }
+
+    private sendUpdateRoundSignal = (): void => {
+        this.dialog.notify(this, "newRound", { turn: this.currentRound });
+    }
+
+    countdown = (): void => {
+        let timeleft = 60;
+        this.intervID = setInterval(() => {
+            if (timeleft > -1) timeleft--;
+            if (timeleft == 0) {
+                this.actionFinishTurn();
+            } else {
+                this.dialog.notify(this,"updateCounterData",{timer:timeleft});
+            }
+        }, 1000);
+    }
+
+    removeTimer = () => {
+        clearInterval(this.intervID);
+    }
+
+    actionFinishTurn = () => {
+        this.removeTimer();
+        this.dialog.notify(this,"actionFinishTurn",{});
     }
 }
