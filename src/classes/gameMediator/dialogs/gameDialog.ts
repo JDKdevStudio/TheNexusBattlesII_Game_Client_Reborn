@@ -6,6 +6,7 @@ import Mediator from "../mediatorInterface";
 import { gameStateContext, stateType } from "../../gameState/gameStateMachine";
 import TurnManager from "../../turnManager/turnManager";
 import GameViewHandler from "../../viewHandlers/gameViewHandler";
+import InventoryManager from "../../inventoryManager/inventoryManager";
 
 export default class GameDialog implements Mediator{
     private nexusClient:NexusClient;
@@ -13,6 +14,7 @@ export default class GameDialog implements Mediator{
     private stateMachine: gameStateContext;
     private turnManager:TurnManager;
     private gameViewHandler:GameViewHandler;
+    private inventoryManager:InventoryManager;
 
     constructor(){
         this.nexusClient = new NexusClient(this);
@@ -20,6 +22,7 @@ export default class GameDialog implements Mediator{
         this.stateMachine = new gameStateContext(this);        
         this.turnManager = new TurnManager(this);
         this.gameViewHandler = new GameViewHandler(this);
+        this.inventoryManager = new InventoryManager(this);
     }
 
     init = () =>{

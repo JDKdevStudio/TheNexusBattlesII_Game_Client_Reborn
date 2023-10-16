@@ -6,40 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test</title>
     <link rel="stylesheet" href="../assets/styles/bootstrap.scss">
-    <link rel="stylesheet" href="../components/cardComponent/style/cardStyle.css">
 </head>
 
-<body>
-    <div class="card cardComponent" style="width: 150px; height: 250px;">
+<body style="display: flex; flex-direction: column-reverse;">
+    <div class="card cardComponent">
         <!--Sección: título de la carta-->
         <div class="container-fluid cardComponent-section cardComponent-text text-center">Olaf el guerrero</div>
         <!--Sección: imagen de la carta-->
         <div class="container-fluid cardComponent-section">
-            <img src="../assets/images/card_sample.webp" class="cardComponent-image" alt="..." style="height: 100px;">
+            <img src="../assets/images/card_sample.webp" class="cardComponent-image" alt="..." style="height: 150px;">
             <img src="../assets/icons/icono_sample.png" class="cardComponent-icon">
-        </div>
-        <!--Sección: barra de vida-->
-        <div class="container-fluid cardComponent-lifebar">
-            <span style="z-index: 1; font-size: xx-small;">27</span>
-            <span class="cardComponent-lifebar-progress"></span>
-        </div>
-        <!--Sección: Estadísticas tipo héroe-->
-        <div class="container-fluid cardComponent-section">
-            <div class="cardComponent-heroe-section">
-                <span class="cardComponent-heroe-text">Ataque: <span style="color: greenyellow;">+12</span></span>
-                <span class="cardComponent-heroe-text">Daño: +12</span>
-            </div>
-            <div class="cardComponent-heroe-section">
-                <span class="cardComponent-heroe-text">Poder: +1</span>
-                <span class="cardComponent-heroe-text">Defensa: +12</span>
-            </div>
-        </div>
-        <!--Sección: Botónes de interacción héroe-->
-        <div class="cardComponent-section">
-            <span>Daño efectivo: 41</span>
-            <button>Mejoras</button>
-            <button>Pasar</button>
-            <i class="bi bi-bullseye"></i>
         </div>
     </div>
 
