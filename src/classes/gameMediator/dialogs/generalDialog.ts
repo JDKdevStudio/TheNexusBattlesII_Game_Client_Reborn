@@ -54,7 +54,7 @@ export default class GeneralDialog implements Mediator{
         switch(event){
             case "sendChatMessage":
                 const message = args.toString();
-                this.nexusClient.SendChatMessage(message);
+                this.nexusClient.sendChatMessage(message);
             break;
         }
     }
