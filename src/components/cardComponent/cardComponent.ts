@@ -12,7 +12,7 @@ export default class CardComponent {
     private view: CardView = new CardView()
     public controller: CardController = new CardController(this.view, this.model)
 
-    constructor(node: JQuery<HTMLElement>, cardType: CardStatusHandler, cardData: string | HeroeType | ConsumibleType) {
-        this.controller.init(node, cardType, cardData)
+    constructor(node: JQuery<HTMLElement>, cardType: CardStatusHandler, cardData: string | HeroeType | ConsumibleType,isLocalCard:boolean) {
+        this.controller.init(node, cardType, cardData,isLocalCard)
     }
 }
