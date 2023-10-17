@@ -1,6 +1,5 @@
 import CardView from "./view/cardView";
 import "../cardComponent/style/cardStyle.css"
-import $ from "jquery"
 import { CardStatusHandler } from "./enum/cardStatusEnum";
 import CardController from "./controller/cardController";
 import CardModel from "./model/cardModel";
