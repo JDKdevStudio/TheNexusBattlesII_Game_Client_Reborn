@@ -162,6 +162,10 @@ export default class GameDialog implements Mediator{
             case "ClientSkipAction":
                 this.turnManager.actionFinishTurn();
             break;
+
+            case "getSessionID":
+                myReturn = this.nexusClient.sessionId;    
+            break;
         }
         return myReturn;
     }

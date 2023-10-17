@@ -1,14 +1,13 @@
 .cardComponent {
-    width: 185px; 
-    height: 300px;
+    width: 180px; 
+    height: 250px;
     display: flex;
     align-items: center;
     justify-content: space-around;
     background-color: rgb(17, 19, 18);
     border: 1px solid #ffff00;
-    margin-bottom: 145px;
     padding: 1px;
-    border-radius: 3px;
+    border-radius: 10px;
 }
 
 .cardComponent-section {

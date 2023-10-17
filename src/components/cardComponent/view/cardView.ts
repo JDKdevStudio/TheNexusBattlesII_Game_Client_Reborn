@@ -9,7 +9,7 @@ export default class CardView {
         <div class="container-fluid cardComponent-section cardComponent-text text-center" id="cardTitle"></div>
         <!--Sección: imagen de la carta-->
         <div class="container-fluid cardComponent-section">
-            <img class="cardComponent-image" style="height: 150px;">
+            <img class="cardComponent-image" style="height: 100px;">
             <img class="cardComponent-icon">
         </div>
     </div>
