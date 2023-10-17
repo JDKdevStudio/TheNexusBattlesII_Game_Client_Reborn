@@ -18,4 +18,8 @@ export default class CardComponent {
         this.viewContext = viewContext;        
         this.controller.init(node, cardType, cardData,isLocalCard,this)     
     }
+
+    notifyTurnSkip():void{
+        this.viewContext.dialog.notify(this.viewContext, "ClientSkipAction", {})
+    }
 }

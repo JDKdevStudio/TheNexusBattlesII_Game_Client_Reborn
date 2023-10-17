@@ -19,11 +19,9 @@ export default class CardView {
 
     render = (node: JQuery<HTMLElement>, componentBreaker?: CardComponent): void => {
         node.append(this.cardElement);
-        console.log(componentBreaker);
-
         if (componentBreaker != undefined){
             $("#btnSkip").on("click",() => {
-                componentBreaker.stateMachine.dialog.notify(componentBreaker.stateMachine, "ClientSkipAction", {})
+                componentBreaker.notifyTurnSkip();
             });
         }
     }

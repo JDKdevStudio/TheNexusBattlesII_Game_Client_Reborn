@@ -90,7 +90,7 @@ export default class GameDialog implements Mediator{
 
             case "ClientSkipAction":
                 this.turnManager.actionFinishTurn();
-                break;
+            break;
         }
     }
 
@@ -141,7 +141,6 @@ export default class GameDialog implements Mediator{
             break;
             
             case "nexusGetTurn":
-                //this.stateMachine.communicatorBreaker("matchStart",{});
                 this.gameViewHandler.disableButtonsForTurnAction();
                 this.nexusClient.sendLocalCardID("650f38ee7aaeb67f7dfc712e");
                 this.turnManager.setAssignerTurn(args.turn,this.nexusClient.nexusClientGetPlayers().size);
@@ -168,10 +167,6 @@ export default class GameDialog implements Mediator{
 
             case "clientLoadedGameView":
                 this.nexusClient.sendClientGameViewLoaded();
-            break;
-
-            case "ClientSkipAction":
-                this.turnManager.actionFinishTurn();
             break;
 
             case "getSessionID":
