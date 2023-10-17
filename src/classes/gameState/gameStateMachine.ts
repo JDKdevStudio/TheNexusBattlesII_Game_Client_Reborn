@@ -66,7 +66,7 @@ export class gameStateContext extends Component {
                 break;
             case stateType.Gameplay:
                 this.currentState = stateType.Gameplay;
-                this.functionalState = new stateInGame(this);
+                this.functionalState = new stateInGame(this,this.dialog.notify(this,"getSessionID",{}) as unknown as string);
                 break;
             case stateType.Results:
                 console.error("Results Scene not defined yet.");

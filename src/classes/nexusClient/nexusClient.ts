@@ -38,7 +38,7 @@ export class NexusClient extends Component {
     colyseusNexusClient: Client = new Client(import.meta.env.VITE_COLYSEUS_URL);
     private colyseusRoom: Room;
     private localUsername: string = "Nexus Player";
-    private sessionId: String;
+    sessionId: String;
     private playerMap: Map<string, any> = new Map<string, any>();
 
     constructor(dialog: Mediator) {
