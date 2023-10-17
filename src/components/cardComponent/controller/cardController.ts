@@ -7,11 +7,11 @@ import CardView from "../view/cardView";
 export default class CardController {
     constructor(private readonly view: CardView, private readonly model: CardModel) { }
 
-    init = (node: JQuery<HTMLElement>, cardType: CardStatusHandler, cardData: string | HeroeType | ConsumibleType): void => {
+    init = (node: JQuery<HTMLElement>, cardType: CardStatusHandler, cardData: string | HeroeType | ConsumibleType, isLocalCard: boolean): void => {
         const cardTypeHandler: { [key in CardStatusHandler]: () => void } = {
             [CardStatusHandler.InventoryHeroe]: () => this.renderInventoryHeroe(node, cardData as string | HeroeType),
             [CardStatusHandler.InventoryConsumible]: () => this.renderInventoryConsumible(node, cardData as string | ConsumibleType),
-            [CardStatusHandler.GameHeroe]: () => this.renderGameHeroe(node, cardData as string | HeroeType),
+            [CardStatusHandler.GameHeroe]: () => this.renderGameHeroe(node, cardData as string | HeroeType, isLocalCard),
             [CardStatusHandler.GameConsumible]: () => this.renderGameConsumible(node, cardData as string | ConsumibleType)
         }
         cardTypeHandler[cardType]()
@@ -32,12 +32,12 @@ export default class CardController {
         this.view.render(node)
     }
 
-    private renderGameHeroe = async (node: JQuery<HTMLElement>, cardData: string | HeroeType): Promise<void> => {
+    private renderGameHeroe = async (node: JQuery<HTMLElement>, cardData: string | HeroeType, isLocalCard: boolean): Promise<void> => {
         const data = await this.model.getHeroe(cardData)
         this.view.renderCardHeader(data)
         this.view.renderHeroeLifeBar(data.vida)
         this.view.renderHeroeStats(data)
-        this.view.renderHeroeButtons()
+        if (isLocalCard) { this.view.renderHeroeButtons() }
         this.view.render(node)
     }
 
