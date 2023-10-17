@@ -97,15 +97,15 @@ export class stateInGame extends State {
         const playersInSession = this.machine.dialog.notify(this.machine, "nexusClientGetPlayers", {}) as unknown as Map<string, NexusPlayer>;
         playersInSession.forEach((player) => {
             if (player.sessionID == this.localSessionID)
-                this.playerMap.set(player.sessionID, new CardComponent($("#bottom"), CardStatusHandler.GameHeroe, "650f38ee7aaeb67f7dfc712e", true));
+                this.playerMap.set(player.sessionID, new CardComponent($("#bottom"), CardStatusHandler.GameHeroe, "650f38ee7aaeb67f7dfc712e", true,this.machine));
             else{
                 if(identifier<playersInSession.size)
                 if(identifier == 0){
-                    this.playerMap.set(player.sessionID, new CardComponent($("#top"), CardStatusHandler.GameHeroe, "650f38ee7aaeb67f7dfc712e", false));
+                    this.playerMap.set(player.sessionID, new CardComponent($("#top"), CardStatusHandler.GameHeroe, "650f38ee7aaeb67f7dfc712e", false,this.machine));
                 }else if(identifier == 1){
-                    this.playerMap.set(player.sessionID, new CardComponent($("#left"), CardStatusHandler.GameHeroe, "650f38ee7aaeb67f7dfc712e", false));
+                    this.playerMap.set(player.sessionID, new CardComponent($("#left"), CardStatusHandler.GameHeroe, "650f38ee7aaeb67f7dfc712e", false,this.machine));
                 }else{
-                    this.playerMap.set(player.sessionID, new CardComponent($("#right"), CardStatusHandler.GameHeroe, "650f38ee7aaeb67f7dfc712e", false));
+                    this.playerMap.set(player.sessionID, new CardComponent($("#right"), CardStatusHandler.GameHeroe, "650f38ee7aaeb67f7dfc712e", false,this.machine));
                 }
                 identifier ++;
             }
