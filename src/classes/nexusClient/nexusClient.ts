@@ -25,7 +25,8 @@ export enum ColyseusMessagesTypes {
     ChatRemoteUpdate = 1,
     ClientGameViewLoaded = 2,
     RemoteGetOrder = 3,
-    ClientHasTerminatedTurn = 4
+    ClientHasTerminatedTurn = 4,
+    ClientSyncHeroCard = 5
 }
 
 enum ColyseusChatMessageTypes {
@@ -38,7 +39,7 @@ export class NexusClient extends Component {
     colyseusNexusClient: Client = new Client(import.meta.env.VITE_COLYSEUS_URL);
     private colyseusRoom: Room;
     private localUsername: string = "Nexus Player";
-    sessionId: String;
+    sessionId: string;
     private playerMap: Map<string, any> = new Map<string, any>();
 
     constructor(dialog: Mediator) {
@@ -141,7 +142,7 @@ export class NexusClient extends Component {
 
         this.colyseusRoom.onMessage(ColyseusMessagesTypes.RoomHasReachedPlayerMax, () => {
             setTimeout(() => {
-                this.dialog.notify(this,"nexusRoomReady",{});
+                this.dialog.notify(this,"nexusFinishInventory",{});
             }, 1000);
         });
 
@@ -158,6 +159,12 @@ export class NexusClient extends Component {
 
         this.colyseusRoom.onMessage(ColyseusMessagesTypes.ClientHasTerminatedTurn,()=>{
             this.dialog.notify(this,"playerHasTerminatedTurn",{});
+        });
+
+        this.colyseusRoom.onMessage(ColyseusMessagesTypes.ClientSyncHeroCard,(message)=>{
+            console.log("FROM CLYSEUS: ",message);
+            
+            this.dialog.notify(this,"registerRemotePlayerCard",message);
         });
     }
 
@@ -208,5 +215,11 @@ export class NexusClient extends Component {
 
     sendClientFinishedTurn = ():void => {
         this.colyseusRoom.send(ColyseusMessagesTypes.ClientHasTerminatedTurn);
+    }
+
+    sendLocalCardID = (cardID:string):void =>{
+        this.colyseusRoom.send(ColyseusMessagesTypes.ClientSyncHeroCard,{
+            cardID: cardID
+        })
     }
 }

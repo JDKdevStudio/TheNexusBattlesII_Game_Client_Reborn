@@ -8,8 +8,4 @@ export abstract class State {
     }
     
     abstract drawToScreen(): void;
-
-    communicatorBreaker(_:string,__:any = undefined): void {
-        console.error("Attemped to use communication breaker with a state that doesn't use it. \nIs this desired?");
-    }
 }

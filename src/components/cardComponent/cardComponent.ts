@@ -5,17 +5,17 @@ import CardController from "./controller/cardController";
 import CardModel from "./model/cardModel";
 import HeroeType from "../../types/heroeType";
 import ConsumibleType from "../../types/consumibleType";
-import { gameStateContext } from "../../classes/gameState/gameStateMachine";
+import GameViewHandler from "../../classes/viewHandlers/gameViewHandler";
 
 export default class CardComponent {
     private model: CardModel = new CardModel()
     private view: CardView = new CardView()
     public controller: CardController = new CardController(this.view, this.model)
-    stateMachine:gameStateContext;
+    viewContext:GameViewHandler;
 
     constructor(node: JQuery<HTMLElement>, cardType: CardStatusHandler, cardData: string | HeroeType | ConsumibleType,isLocalCard:boolean,
-            stateMachine:gameStateContext) {
-        this.stateMachine = stateMachine;        
+            viewContext:GameViewHandler) {
+        this.viewContext = viewContext;        
         this.controller.init(node, cardType, cardData,isLocalCard,this)     
     }
 }

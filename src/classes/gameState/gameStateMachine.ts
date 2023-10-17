@@ -66,7 +66,7 @@ export class gameStateContext extends Component {
                 break;
             case stateType.Gameplay:
                 this.currentState = stateType.Gameplay;
-                this.functionalState = new stateInGame(this,this.dialog.notify(this,"getSessionID",{}) as unknown as string);
+                this.functionalState = new stateInGame(this);
                 break;
             case stateType.Results:
                 console.error("Results Scene not defined yet.");
@@ -88,9 +88,5 @@ export class gameStateContext extends Component {
     //This function can be accesed to change the announcer's text
     drawAnnouncer(message: string) {
         $("#room-announcer").text(message);
-    }
-
-    communicatorBreaker(type:string,args:any = undefined):void{
-        this.functionalState.communicatorBreaker(type);
     }
 }
