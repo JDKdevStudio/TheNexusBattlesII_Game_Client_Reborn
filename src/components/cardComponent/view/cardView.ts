@@ -17,6 +17,8 @@ export default class CardView {
     </div>
     `)
 
+    get getCardElement(){return this.cardElement}
+
     render = (node: JQuery<HTMLElement>, componentBreaker?: CardComponent): void => {
         node.append(this.cardElement);
         if (componentBreaker != undefined){
