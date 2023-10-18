@@ -23,10 +23,6 @@ export default class InventoryView {
     }
 
     renderInventoryCard = ():JQuery<HTMLElement>=>{
-        const cardContainer = $(`
-        <div class="col-2 card-col justify-content-center align-items-center"></div>
-        `)
-        this.inventoryElement.find("#cardlist").append(cardContainer)
-        return cardContainer
+        return this.inventoryElement.find("#cardlist")
     }
 }

@@ -48,4 +48,8 @@ export default class CardController {
         this.view.renderCardDesc(data.descripcion)
         this.view.render(node)
     }
+
+    public getCardNode = ():JQuery<HTMLElement>=>{
+        return this.view.getCardElement
+    }
 }

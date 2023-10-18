@@ -11,7 +11,7 @@ export default class CardComponent {
     private model: CardModel = new CardModel()
     private view: CardView = new CardView()
     public controller: CardController = new CardController(this.view, this.model)
-    viewContext:GameViewHandler|undefined;
+    viewContext?:GameViewHandler;
 
     constructor(node: JQuery<HTMLElement>, cardType: CardStatusHandler, cardData: string | HeroeType | ConsumibleType,isLocalCard:boolean,
             viewContext?:GameViewHandler) {

@@ -5,9 +5,5 @@
 }
 
 .card-col {
-    background-color: rgba(255, 255, 255, 0.7);
     margin: auto 5px 20px 10px;
-    width: 18vw;
-    height: 43vh;
-    display: flex;
 }
