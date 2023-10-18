@@ -160,5 +160,6 @@ export default class InventoryController {
         ]
         //shuffle consumibles
         deckGenerated.consumibles.sort(() => Math.floor(Math.random() - 0.5))
+        //Integración a la stateMachine/InventoryManager here--->
     }
 }
