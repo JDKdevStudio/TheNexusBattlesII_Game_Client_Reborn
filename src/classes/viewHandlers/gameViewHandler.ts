@@ -5,10 +5,16 @@ import $ from "jquery";
 import CardComponent from "../../components/cardComponent/cardComponent";
 import { CardStatusHandler } from "../../components/cardComponent/enum/cardStatusEnum";
 
-export default class GameViewHandler extends Component{
+export enum EnemyCardInteractions{
+    None,
+    Attack
+}
+
+export class GameViewHandler extends Component{
     playerMap: Map<string, any>;
     localSessionID: string;
     identifier: number = 0;
+    current_action: EnemyCardInteractions = EnemyCardInteractions.None;
     
     constructor(dialog:Mediator, localSessionID: string){
         super(dialog);
@@ -58,5 +64,9 @@ export default class GameViewHandler extends Component{
 
     disableButtonsForTurnAction = ():void =>{
         console.error("IMPLEMENTATION MISSING FOR DISABLE BUTTONS!");
+    }
+
+    setCurrentAction = (newAction:EnemyCardInteractions):void =>{
+        this.current_action = newAction;
     }
 }

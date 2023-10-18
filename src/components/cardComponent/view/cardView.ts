@@ -24,6 +24,11 @@ export default class CardView {
                 console.log("Clicked on skip!")
                 componentBreaker.notifyTurnSkip();
             });
+
+            $("#btnAttack").on("click",() => {
+                console.log("En Guardia!")
+                componentBreaker.notifyTurnSkip();
+            });
         }
     }
 
@@ -75,7 +80,7 @@ export default class CardView {
             <span class="cardComponent-heroe-text">Daño efectivo: 12</span>
             <img src="../assets/icons/upgrade.svg">
             <button type="button" class="btn" id = "btnSkip"><img src="../assets/icons/skip.svg"></button>
-            <img src="../assets/icons/attack.svg">
+            <button type="button" class="btn" id = "btnAttack"><img src="../assets/icons/attack.svg"></button>
         </div>
         `);
     }

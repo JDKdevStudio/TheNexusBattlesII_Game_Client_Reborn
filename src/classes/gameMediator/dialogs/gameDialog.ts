@@ -5,7 +5,7 @@ import Component from "../componentClass";
 import Mediator from "../mediatorInterface";
 import { gameStateContext, stateType } from "../../gameState/gameStateMachine";
 import TurnManager from "../../turnManager/turnManager";
-import GameViewHandler from "../../viewHandlers/gameViewHandler";
+import {GameViewHandler} from "../../viewHandlers/gameViewHandler";
 import InventoryManager from "../../inventoryManager/inventoryManager";
 
 export default class GameDialog implements Mediator{

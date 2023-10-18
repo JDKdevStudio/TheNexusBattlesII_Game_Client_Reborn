@@ -5,7 +5,7 @@ import CardController from "./controller/cardController";
 import CardModel from "./model/cardModel";
 import HeroeType from "../../types/heroeType";
 import ConsumibleType from "../../types/consumibleType";
-import GameViewHandler from "../../classes/viewHandlers/gameViewHandler";
+import {GameViewHandler, EnemyCardInteractions} from "../../classes/viewHandlers/gameViewHandler";
 
 export default class CardComponent {
     private model: CardModel = new CardModel()
@@ -24,9 +24,15 @@ export default class CardComponent {
     }
 
     notifyTurnSkip():void{
-        //Che
         if(this.isThisTheLocalCard() && this.viewContext){
             this.viewContext.dialog.notify(this.viewContext, "ClientSkipAction", {})
+            this.viewContext.setCurrentAction(EnemyCardInteractions.None);
+        }
+    }
+
+    notifyAttackButtonPressed():void{
+        if(this.isThisTheLocalCard() && this.viewContext){
+            this.viewContext.setCurrentAction(EnemyCardInteractions.Attack);
         }
     }
 }

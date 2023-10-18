@@ -84,7 +84,8 @@ export class NexusClient extends Component {
                 numero_creditos: Cookies.get("NumeroRecompensa"),
                 numero_jugadores: Cookies.get("NumeroJugadores"),
                 nombre_sala: Cookies.get("NombreSala"),
-                equipos: Cookies.get("SetEquipos")
+                equipos: Cookies.get("SetEquipos"),
+                username: this.localUsername
             };
 
             this.colyseusNexusClient.create("room_battle", cookie_data).then((room: Room) => {
@@ -103,7 +104,7 @@ export class NexusClient extends Component {
         try {
             const joining_id = Cookies.get("Join");
             if (joining_id != undefined) {
-                this.colyseusNexusClient.joinById(joining_id, {}).then((room: Room) => {
+                this.colyseusNexusClient.joinById(joining_id, {username:this.localUsername}).then((room: Room) => {
                     this.colyseusRoom = room;
                     this.sessionId = room.sessionId;
                     this.handleJoinAction();
