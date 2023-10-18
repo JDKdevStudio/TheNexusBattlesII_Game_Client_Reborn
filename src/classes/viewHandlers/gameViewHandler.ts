@@ -4,34 +4,37 @@ import Cookies from "js-cookie";
 import $ from "jquery";
 import CardComponent from "../../components/cardComponent/cardComponent";
 import { CardStatusHandler } from "../../components/cardComponent/enum/cardStatusEnum";
+import InventoryManager from "../inventoryManager/inventoryManager";
+import HeroeType from "../../types/heroeType";
 
-export enum EnemyCardInteractions{
+export enum EnemyCardInteractions {
     None,
     Attack
 }
 
-export class GameViewHandler extends Component{
+export class GameViewHandler extends Component {
     playerMap: Map<string, any>;
     localSessionID: string;
     identifier: number = 0;
     current_action: EnemyCardInteractions = EnemyCardInteractions.None;
-    
-    constructor(dialog:Mediator, localSessionID: string){
+    inventoryManager: InventoryManager = new InventoryManager(this);
+
+    constructor(dialog: Mediator, localSessionID: string) {
         super(dialog);
         this.localSessionID = localSessionID;
         this.playerMap = new Map<string, any>();
     }
 
-    init = async():Promise<void> => {
+    init = async (): Promise<void> => {
         let joinOrCreate = -1;
-        if(Cookies.get("Join") == undefined){
+        if (Cookies.get("Join") == undefined) {
             joinOrCreate = 0;
-        }else{
+        } else {
             joinOrCreate = 1;
         }
-        
-        if(joinOrCreate != -1)
-            this.dialog.notify(this,"nexusStartMatch",{
+
+        if (joinOrCreate != -1)
+            this.dialog.notify(this, "nexusStartMatch", {
                 parameter: joinOrCreate,
                 chatNode: $("#chat-insert")
             });
@@ -42,10 +45,9 @@ export class GameViewHandler extends Component{
         currentCard.update(stats);
     }
 
-    drawLocalPlayer = ():void =>{
-        console.log("Drawn Player!");
-        
-        this.playerMap.set(this.localSessionID, new CardComponent($("#bottom"), CardStatusHandler.GameHeroe, "650f38ee7aaeb67f7dfc712e", true,this));
+    drawLocalPlayer = (): void => {
+        this.playerMap.set(this.localSessionID,
+            new CardComponent($("#bottom"), CardStatusHandler.GameHeroe, this.inventoryManager.getLocalHeroData(), true, this));
     }
 
     drawNewPlayer = (sessionID: string, cardID: string) => {
@@ -53,34 +55,38 @@ export class GameViewHandler extends Component{
             let node = "#top";
             if (this.identifier == 1) node = "#left"
             else if (this.identifier == 2) node = "#right"
-            this.playerMap.set(sessionID, new CardComponent($(node), CardStatusHandler.GameHeroe, cardID, false,this));
-            this.identifier++;
-            this.playerMap.get(sessionID).controller.getCardNode().on("click",()=>{
-                this.dialog.notify(this,"rivalCardPressed",{
-                    currentAction: this.current_action,
-                    remoteID: sessionID
+
+            this.inventoryManager.getCardDataByID(cardID).then((card) => {
+                this.playerMap.set(sessionID, new CardComponent($(node), CardStatusHandler.GameHeroe,
+                    card, false, this));
+                this.identifier++;
+                this.playerMap.get(sessionID).controller.getCardNode().on("click", () => {
+                    this.dialog.notify(this, "rivalCardPressed", {
+                        currentAction: this.current_action,
+                        remoteID: sessionID
+                    });
                 });
             });
         }
     }
 
-    enableButtonsForTurnAction = ():void =>{
+    enableButtonsForTurnAction = (): void => {
         console.error("IMPLEMENTATION MISSING FOR ENABLE BUTTONS! ENABLED BY DEFAULT?");
     }
 
-    disableButtonsForTurnAction = ():void =>{
+    disableButtonsForTurnAction = (): void => {
         console.error("IMPLEMENTATION MISSING FOR DISABLE BUTTONS!");
     }
 
-    setCurrentAction = (newAction:EnemyCardInteractions):void =>{
+    setCurrentAction = (newAction: EnemyCardInteractions): void => {
         this.current_action = newAction;
     }
 
-    handleRemoteAnim = (sessionID:string) =>{
+    handleRemoteAnim = (sessionID: string) => {
         let effectToPlay = "";
-        if(sessionID == this.localSessionID){
+        if (sessionID == this.localSessionID) {
             effectToPlay = "pulsate"
-        }else{
+        } else {
             effectToPlay = "shake"
         }
 

@@ -144,7 +144,7 @@ export class NexusClient extends Component {
 
         this.colyseusRoom.onMessage(ColyseusMessagesTypes.RoomHasReachedPlayerMax, () => {
             setTimeout(() => {
-                this.dialog.notify(this,"nexusFinishInventory",{});
+                this.dialog.notify(this,"nexusRoomReady",{});
             }, 1000);
         });
 

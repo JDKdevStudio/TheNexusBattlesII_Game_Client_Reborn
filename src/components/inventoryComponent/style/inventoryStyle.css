@@ -1,7 +1,8 @@
 .selection {
     margin: 20px auto auto auto;
-    height: 45vh;
+    max-height:55vh;
     overflow-y: scroll;
+    overflow-x:hidden;
 }
 
 .card-col {

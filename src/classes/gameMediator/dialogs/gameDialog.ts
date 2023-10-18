@@ -6,7 +6,6 @@ import Mediator from "../mediatorInterface";
 import { gameStateContext, stateType } from "../../gameState/gameStateMachine";
 import TurnManager from "../../turnManager/turnManager";
 import {GameViewHandler, EnemyCardInteractions} from "../../viewHandlers/gameViewHandler";
-import InventoryManager from "../../inventoryManager/inventoryManager";
 
 export default class GameDialog implements Mediator{
     private nexusClient:NexusClient;
@@ -14,7 +13,6 @@ export default class GameDialog implements Mediator{
     private stateMachine: gameStateContext;
     private turnManager:TurnManager;
     private gameViewHandler:GameViewHandler;
-    private inventoryManager:InventoryManager;
 
     constructor(){
         this.nexusClient = new NexusClient(this);
@@ -22,7 +20,6 @@ export default class GameDialog implements Mediator{
         this.stateMachine = new gameStateContext(this);        
         this.turnManager = new TurnManager(this);
         this.gameViewHandler = new GameViewHandler(this,this.nexusClient.sessionId);
-        this.inventoryManager = new InventoryManager(this);
     }
 
     init = () =>{
@@ -48,10 +45,6 @@ export default class GameDialog implements Mediator{
 
         if(sender == this.turnManager){
             this.handleTurnManagerEvent(event,args);
-        }
-
-        if(sender == this.inventoryManager){
-            this.handleInventoryManager(event,args);
         }
     }
 
@@ -165,7 +158,7 @@ export default class GameDialog implements Mediator{
             
             case "nexusGetTurn":
                 this.gameViewHandler.disableButtonsForTurnAction();
-                this.nexusClient.sendLocalCardID("650f38ee7aaeb67f7dfc712e");
+                this.nexusClient.sendLocalCardID(this.gameViewHandler.inventoryManager.heroInitialID);
                 this.turnManager.setAssignerTurn(args.turn,this.nexusClient.nexusClientGetPlayers().size);
             break;
                 
@@ -198,15 +191,11 @@ export default class GameDialog implements Mediator{
             case "getSessionID":
                 myReturn = this.nexusClient.sessionId;    
             break;
-        }
-        return myReturn;
-    }
 
-    private handleInventoryManager(event:string,args:any):any{
-        let myReturn = undefined;
-        switch(event){
-            case "":
-                myReturn = this.gameViewHandler; 
+            case "getDataFromInventory":
+                this.gameViewHandler.inventoryManager.setFromInventory(args.cardDictionary,args.cardDeck);
+                this.stateMachine.changeMachineState(stateType.Gameplay);
+                this.stateMachine.drawToScreen();
             break;
         }
         return myReturn;

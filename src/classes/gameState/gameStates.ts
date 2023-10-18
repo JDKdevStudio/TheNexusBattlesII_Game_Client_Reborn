@@ -2,6 +2,7 @@ import { State } from "./gameStateInferface"
 import { NexusPlayer } from "../../types/nexusPlayer";
 import $ from "jquery";
 import { gameStateContext } from "./gameStateMachine";
+import InventoryComponent from "../../components/inventoryComponent/inventoryComponent";
 
 export class stateWaitingRoom extends State {
     drawToScreen(): void {
@@ -32,6 +33,9 @@ export class stateInventory extends State {
     drawToScreen(): void {
         this.machine.drawAnnouncer("Inventario");
         $("#main-game-view").empty();
+        new InventoryComponent($("#main-game-view"),(args:any)=>{
+            this.machine.dialog.notify(this.machine,"getDataFromInventory",args);
+        });
     }
 }
 
