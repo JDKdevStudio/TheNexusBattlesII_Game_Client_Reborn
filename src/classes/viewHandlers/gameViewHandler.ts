@@ -1,7 +1,7 @@
 import Component from "../gameMediator/componentClass";
 import Mediator from "../gameMediator/mediatorInterface";
 import Cookies from "js-cookie";
-import $ from "jquery";
+import $, { Callbacks } from "jquery";
 import CardComponent from "../../components/cardComponent/cardComponent";
 import { CardStatusHandler } from "../../components/cardComponent/enum/cardStatusEnum";
 
@@ -75,4 +75,15 @@ export class GameViewHandler extends Component{
     setCurrentAction = (newAction:EnemyCardInteractions):void =>{
         this.current_action = newAction;
     }
+
+    handleRemoteAnim = (sessionID:string) =>{
+        let effectToPlay = "";
+        if(sessionID == this.localSessionID){
+            effectToPlay = "pulsate"
+        }else{
+            effectToPlay = "shake"
+        }
+
+        this.playerMap.get(sessionID).controller.getCardNode().effect(effectToPlay);
+    };
 }

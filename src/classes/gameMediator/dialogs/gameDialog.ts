@@ -105,13 +105,12 @@ export default class GameDialog implements Mediator{
                         
                         if((players.get(args.remoteID).team != players.get(this.nexusClient.sessionId).team) || (players.get(args.remoteID).team == -1)){
                             console.log("Attack!")
-                            //TODO: Change this to the actual sending new values
+                            this.nexusClient.sendClientAttack(args.remoteID);
                             this.turnManager.actionFinishTurn();
                             this.gameViewHandler.setCurrentAction(EnemyCardInteractions.None);
                         }else{
                             console.log("Cant Attack Team Members!");      
-                        }
-                        
+                        }                   
                     break;
                 }
             break;
@@ -177,6 +176,10 @@ export default class GameDialog implements Mediator{
 
             case "registerRemotePlayerCard":
                 this.gameViewHandler.drawNewPlayer(args.remoteID,args.cardID);
+            break;
+
+            case "remoteAttackRecieved":
+                this.gameViewHandler.handleRemoteAnim(args.remoteID);
             break;
         }
     }

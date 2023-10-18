@@ -26,7 +26,8 @@ export enum ColyseusMessagesTypes {
     ClientGameViewLoaded = 2,
     RemoteGetOrder = 3,
     ClientHasTerminatedTurn = 4,
-    ClientSyncHeroCard = 5
+    ClientSyncHeroCard = 5,
+    ClientSendAttackedWho = 6,
 }
 
 enum ColyseusChatMessageTypes {
@@ -165,6 +166,10 @@ export class NexusClient extends Component {
         this.colyseusRoom.onMessage(ColyseusMessagesTypes.ClientSyncHeroCard,(message)=>{
             this.dialog.notify(this,"registerRemotePlayerCard",message);
         });
+
+        this.colyseusRoom.onMessage(ColyseusMessagesTypes.ClientSendAttackedWho,(message)=>{
+            this.dialog.notify(this,"remoteAttackRecieved",message);
+        });
     }
 
     private handleGlobalJoinAction = (): void => {
@@ -219,6 +224,12 @@ export class NexusClient extends Component {
     sendLocalCardID = (cardID:string):void =>{
         this.colyseusRoom.send(ColyseusMessagesTypes.ClientSyncHeroCard,{
             cardID: cardID
+        })
+    }
+
+    sendClientAttack = (remoteID:string):void =>{
+        this.colyseusRoom.send(ColyseusMessagesTypes.ClientSendAttackedWho,{
+            remoteID: remoteID
         })
     }
 }
