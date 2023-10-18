@@ -162,8 +162,6 @@ export class NexusClient extends Component {
         });
 
         this.colyseusRoom.onMessage(ColyseusMessagesTypes.ClientSyncHeroCard,(message)=>{
-            console.log("FROM CLYSEUS: ",message);
-            
             this.dialog.notify(this,"registerRemotePlayerCard",message);
         });
     }

@@ -147,11 +147,11 @@ export default class GameDialog implements Mediator{
             break;
                 
             case "playerHasTerminatedTurn":
+                console.log("Message from colyseus")
                 this.turnManager.handleTurnProgress();    
             break;
 
             case "registerRemotePlayerCard":
-                console.log("in statemachine ", args);
                 this.gameViewHandler.drawNewPlayer(args.remoteID,args.cardID);
             break;
         }

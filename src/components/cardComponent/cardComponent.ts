@@ -19,8 +19,14 @@ export default class CardComponent {
         this.controller.init(node, cardType, cardData,isLocalCard,this)     
     }
     
+    isThisTheLocalCard():boolean{
+        return this == this.viewContext?.playerMap.get(this.viewContext.localSessionID);
+    }
+
     notifyTurnSkip():void{
-        if(this.viewContext != undefined)
-        this.viewContext.dialog.notify(this.viewContext, "ClientSkipAction", {})
+        //Che
+        if(this.isThisTheLocalCard() && this.viewContext){
+            this.viewContext.dialog.notify(this.viewContext, "ClientSkipAction", {})
+        }
     }
 }
