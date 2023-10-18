@@ -1,7 +1,8 @@
-export interface InventorySelectionType{
-    heroe:number,
-    armas:number,
-    armaduras:number,
-    items:number,
-    epicas:number
+export interface InventorySelectionType {
+    heroe: string[],
+    armas: string[],
+    armaduras: string[],
+    items: string[],
+    epicas: string[]
+    epicasHeroe: string[]
 }

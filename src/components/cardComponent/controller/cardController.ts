@@ -49,6 +49,7 @@ export default class CardController {
     public getCardNode = ():JQuery<HTMLElement>=>{
         return this.view.getCardElement
     }
+    public getCardSelection=():boolean=>{return this.isSelected}
 
     public setCardSelection =():boolean=>{
         this.isSelected =!this.isSelected
