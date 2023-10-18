@@ -29,7 +29,7 @@ export default class CardView {
 
             $("#btnAttack").on("click",() => {
                 console.log("En Guardia!")
-                componentBreaker.notifyTurnSkip();
+                componentBreaker.notifyAttackButtonPressed();
             });
         }
     }
@@ -81,8 +81,8 @@ export default class CardView {
         <div class="cardComponent-section">
             <span class="cardComponent-heroe-text">Daño efectivo: 12</span>
             <img src="../assets/icons/upgrade.svg">
-            <button type="button" class="btn" id = "btnSkip"><img src="../assets/icons/skip.svg"></button>
-            <button type="button" class="btn" id = "btnAttack"><img src="../assets/icons/attack.svg"></button>
+            <a id = "btnSkip"><img src="../assets/icons/skip.svg"></a>
+            <a id = "btnAttack"><img src="../assets/icons/attack.svg"></a>
         </div>
         `);
     }

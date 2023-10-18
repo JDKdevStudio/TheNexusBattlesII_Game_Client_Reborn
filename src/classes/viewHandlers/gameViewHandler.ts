@@ -55,6 +55,12 @@ export class GameViewHandler extends Component{
             else if (this.identifier == 2) node = "#right"
             this.playerMap.set(sessionID, new CardComponent($(node), CardStatusHandler.GameHeroe, cardID, false,this));
             this.identifier++;
+            this.playerMap.get(sessionID).controller.getCardNode().on("click",()=>{
+                this.dialog.notify(this,"rivalCardPressed",{
+                    currentAction: this.current_action,
+                    remoteID: sessionID
+                });
+            });
         }
     }
 
