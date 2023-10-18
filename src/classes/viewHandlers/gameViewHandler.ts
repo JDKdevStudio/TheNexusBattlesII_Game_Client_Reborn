@@ -5,7 +5,6 @@ import $ from "jquery";
 import CardComponent from "../../components/cardComponent/cardComponent";
 import { CardStatusHandler } from "../../components/cardComponent/enum/cardStatusEnum";
 import InventoryManager from "../inventoryManager/inventoryManager";
-import HeroeType from "../../types/heroeType";
 
 export enum EnemyCardInteractions {
     None,
@@ -83,13 +82,13 @@ export class GameViewHandler extends Component {
     }
 
     handleRemoteAnim = (sessionID: string) => {
-        let effectToPlay = "";
+        /*let effectToPlay = "";
         if (sessionID == this.localSessionID) {
             effectToPlay = "pulsate"
         } else {
             effectToPlay = "shake"
         }
 
-        this.playerMap.get(sessionID).controller.getCardNode().effect(effectToPlay);
+        this.playerMap.get(sessionID).controller.getCardNode().effect(effectToPlay);*/
     };
 }

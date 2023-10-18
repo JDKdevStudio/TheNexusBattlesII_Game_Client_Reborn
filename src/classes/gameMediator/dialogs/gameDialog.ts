@@ -149,12 +149,6 @@ export default class GameDialog implements Mediator{
                 this.stateMachine.changeMachineState(stateType.Inventory);
                 this.stateMachine.drawToScreen();                
             break;
-
-            case "nexusFinishInventory":
-                this.stateMachine.changeMachineState(stateType.Gameplay);
-                this.stateMachine.drawToScreen();
-                this.gameViewHandler.drawLocalPlayer();
-            break;
             
             case "nexusGetTurn":
                 this.gameViewHandler.disableButtonsForTurnAction();
@@ -196,6 +190,7 @@ export default class GameDialog implements Mediator{
                 this.gameViewHandler.inventoryManager.setFromInventory(args.cardDictionary,args.cardDeck);
                 this.stateMachine.changeMachineState(stateType.Gameplay);
                 this.stateMachine.drawToScreen();
+                this.gameViewHandler.drawLocalPlayer();
             break;
         }
         return myReturn;
