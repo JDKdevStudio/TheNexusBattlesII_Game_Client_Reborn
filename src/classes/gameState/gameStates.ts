@@ -3,11 +3,11 @@ import { NexusPlayer } from "../../types/nexusPlayer";
 import $ from "jquery";
 import { gameStateContext } from "./gameStateMachine";
 
-export class stateWaitingRoom extends State{
+export class stateWaitingRoom extends State {
     drawToScreen(): void {
         this.machine.drawAnnouncer("Esperando jugadores");
-        const players: Map<string, NexusPlayer> = this.machine.dialog.notify(this.machine,"nexusClientGetPlayers",{}) as unknown as Map<string,NexusPlayer>;
-        
+        const players: Map<string, NexusPlayer> = this.machine.dialog.notify(this.machine, "nexusClientGetPlayers", {}) as unknown as Map<string, NexusPlayer>;
+
         $.get("../../templates/waitingRoomPlayer.html", function (data: string) { //Get function lets you get the template from web server
             $("#main-game-view").empty();
             players.forEach((current_player: NexusPlayer) => {
@@ -35,55 +35,27 @@ export class stateInventory extends State {
     }
 }
 
-export class stateInGame extends State{
-    playerMap:Map<string,any>;
-
-    constructor(machine:gameStateContext){
+export class stateInGame extends State {
+    constructor(machine: gameStateContext) {
         super(machine);
-        this.playerMap = new Map<string,any>();
     }
-
-    override communicatorBreaker(type:string,args:any):void{
-        switch(type){
-            case "init":
-                this.init();
-                break;
-            case "updateStats":
-                break;
-            case "yourTurn":
-                $(".btn-skip").prop('disabled',false);
-                break;
-            case "notYourTurn":                
-                $(".btn-skip").prop('disabled',true);
-                break;
-        }
-    }
-
-    init():void{
-        const playersInSession = this.machine.dialog.notify(this.machine,"nexusClientGetPlayers",{}) as unknown as Map<string,NexusPlayer>;
-        playersInSession.forEach((player)=>{
-            this.playerMap.set(player.sessionID,{});
-        });
-
-        this.drawToScreen();
-        this.machine.dialog.notify(this.machine,"clientLoadedGameView",{});
-
-        $("#main-game-view").on('click',".btn-skip",()=>{
-            this.machine.dialog.notify(this.machine,"ClientSkipAction",{});
-        });
-    }
-
-    updateCardStats(id:string,stats:any){
-        const currentCard = this.playerMap.get(id);
-        currentCard.update(stats);
-    }
-
+    
     drawToScreen(): void {
         this.machine.drawAnnouncer("Esperando Inicio de Partida...");
-
-        $.get("../../layouts/inGameLayout.html", function (data: string) { 
-            $("#main-game-view").empty(); 
-            $('#main-game-view').append(data);
-        });
+        $("#main-game-view").empty();
+        $('#main-game-view').append(
+            `<div class="container-battle">
+            <!-- Vista batalla -->
+            <div class="col-2 player-col enemy" id="top"></div> <!-- Jugador enemigo -->
+            <div class="col-2 player-col side-1" id="left"></div> <!-- Jugador extra 1 -->
+            <div class="col-2 player-col side-2" id="right"></div> <!-- Jugador extra 2 -->
+            <div class="col-2 player-col user" id="bottom"></div> <!-- Jugador principal -->
+            <div class="col-2 card-deck"></div> <!-- Baraja -->
+            <div class="col-2 card-hand"></div> <!-- Mano de juego -->
+            <!-- Vista batalla -->
+        </div>
+        `
+        );   
+        this.machine.dialog.notify(this.machine, "clientLoadedGameView", {});
     }
 }

@@ -40,33 +40,24 @@
     height: 5vh;
 }
 
-.selection {
-    margin: 20px auto auto auto;
-    height: 45vh;
-    overflow-y: scroll;
-}
 
-.card-col { /* ELIMINAR!!! */
-    background-color: rgba(255, 255, 255, 0.7);
-    margin: auto 5px 20px 10px;
-    width: 18vw;
-    height: 43vh;
-    text-align: center;
-}
 
 .container-battle {
     display: grid;
-    grid-template-columns: repeat(5, 1fr)
+    height: 63vh;
+    grid-template-columns: 20% 10% 20% 10% 20% 10%;
+    grid-template-rows: 30% 24% 20%;
+    justify-content: center;
 }
 
 .player-col { /* Tamaño de las cartas en mockup de battle.html, eliminar si es necesario */
-    width: 140px;
+    height: auto;
 }
 
 /* Quitar colores!! */
 
 .enemy {
-    background-color: rgba(255, 57, 57, 0.7);
+    /*background-color: rgba(255, 57, 57, 0.7);*/
     grid-row-start: 1;
     grid-column-start: 3;
     grid-column-end: 4;
@@ -74,7 +65,7 @@
 }
 
 .user {
-    background-color: rgba(255, 255, 255, 0.7);
+    /*background-color: rgba(255, 255, 255, 0.7);*/
     grid-row-start: 3;
     grid-column-start: 3;
     grid-column-end: 4;
@@ -82,7 +73,7 @@
 }
 
 .side-1 {
-    background-color: rgba(120, 120, 120, 0.7);
+    /*background-color: rgba(120, 120, 120, 0.7);*/
     grid-row-start: 2;
     grid-column-start: 1;
     grid-column-end: 2;
@@ -90,7 +81,7 @@
 }
 
 .side-2 {
-    background-color: rgba(120, 120, 120, 0.7);
+    /*background-color: rgba(120, 120, 120, 0.7);*/
     grid-row-start: 2;
     grid-column-start: 5;
     grid-column-end: 6;
@@ -180,7 +171,6 @@
     }
   
   }
-
 @media (max-width: 1225px){
 
     .playerIcon {

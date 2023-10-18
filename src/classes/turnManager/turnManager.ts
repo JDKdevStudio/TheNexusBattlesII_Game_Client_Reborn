@@ -24,7 +24,7 @@ export default class TurnManager extends Component {
         this.assignedTurn = turn;
         this.maxNumber = maxNumber;
         this.sendUpdateRoundSignal();
-        this.checkForTurnActive();
+        this.checkForTurnActive();   
     }
 
     checkForTurnActive(): void {

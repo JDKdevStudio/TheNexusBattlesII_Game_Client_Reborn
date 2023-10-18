@@ -89,8 +89,4 @@ export class gameStateContext extends Component {
     drawAnnouncer(message: string) {
         $("#room-announcer").text(message);
     }
-
-    communicatorBreaker(type:string,args:any = undefined):void{
-        this.functionalState.communicatorBreaker(type);
-    }
 }

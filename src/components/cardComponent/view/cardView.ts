@@ -1,22 +1,33 @@
 import $ from "jquery";
 import HeroeType from "../../../types/heroeType";
 import ConsumibleType from "../../../types/consumibleType";
+import CardComponent from "../cardComponent";
 
 export default class CardView {
+
     private cardElement: JQuery<HTMLDivElement> = $(`
     <div class="card cardComponent">
         <!--Sección: título de la carta-->
         <div class="container-fluid cardComponent-section cardComponent-text text-center" id="cardTitle"></div>
         <!--Sección: imagen de la carta-->
         <div class="container-fluid cardComponent-section">
-            <img class="cardComponent-image" style="height: 150px;">
+            <img class="cardComponent-image" style="height: 100px;">
             <img class="cardComponent-icon">
         </div>
     </div>
     `)
 
-    render = (node: JQuery<HTMLElement>): void => {
-        node.append(this.cardElement)
+    get getCardElement(){return this.cardElement}
+
+    //Renders
+    render = (node: JQuery<HTMLElement>, componentBreaker?: CardComponent): void => {
+        node.append(this.cardElement);
+        if (componentBreaker != undefined){
+            $("#btnSkip").on("click",() => {
+                console.log("Clicked on skip!")
+                componentBreaker.notifyTurnSkip();
+            });
+        }
     }
 
     renderCardHeader = (cardData: HeroeType | ConsumibleType): void => {
@@ -34,7 +45,7 @@ export default class CardView {
         `)
     }
 
-    renderHeroeLifeBar = (life:number): void => {
+    renderHeroeLifeBar = (life: number): void => {
         this.cardElement.append(`
         <!--Sección: barra de vida-->
         <div class="container-fluid cardComponent-lifebar">
@@ -66,9 +77,11 @@ export default class CardView {
         <div class="cardComponent-section">
             <span class="cardComponent-heroe-text">Daño efectivo: 12</span>
             <img src="../assets/icons/upgrade.svg">
-            <img src="../assets/icons/skip.svg">
+            <button type="button" class="btn" id = "btnSkip"><img src="../assets/icons/skip.svg"></button>
             <img src="../assets/icons/attack.svg">
         </div>
-        `)
+        `);
     }
+
+    //Updates
 }

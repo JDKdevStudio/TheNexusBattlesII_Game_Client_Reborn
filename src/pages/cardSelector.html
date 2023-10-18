@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Nexus Battles 2</title>
     <link rel="stylesheet" href="../assets/styles/bootstrap.scss">
+    <link rel="stylesheet" href="../components/inventoryComponent/style/inventoryStyle.css">
+    <link rel="stylesheet" href="../components/cardComponent/style/cardStyle.css">
     <link rel="stylesheet" href="../assets/styles/gameView.css">
     <script src="../utils/pageCommonInit.ts" type="module"></script>
 </head>
@@ -18,52 +20,14 @@
     <main>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-10" id="game">
-                    <div class="card container-nexus">
+                <div class="col-9" id="game">
+                    <div class="card container-nexus" id="game-view">
                         <div class="card-header">
                             <h4>Placeholder</h4>
                         </div>
-                        <div class="card-body">
-                            <!-- Vista selector de cartas -->
-                            <div class="row selector-text">
-                                <p>Selecciona tus cartas...</p>
-                            </div>
-                            <div class="container-fluid selection">
-                                <div class="row" id="cardlist">
-                                    <!-- Listado de cartas -->
-                                    <!-- LIMPIAR!!! -->
-                                    <div class="col-2 card-col" id="card1">1</div>
-                                    <div class="col-2 card-col" id="card2">2</div>
-                                    <div class="col-2 card-col" id="card3">3</div>
-                                    <div class="col-2 card-col" id="card4">4</div>
-                                    <div class="col-2 card-col" id="card5">5</div>
-                                    <div class="col-2 card-col" id="card6">6</div>
-                                    <div class="col-2 card-col" id="card7">7</div>
-                                    <div class="col-2 card-col" id="card8">8</div>
-                                    <div class="col-2 card-col" id="card9">9</div>
-                                    <div class="col-2 card-col" id="card10">10</div>
-                                    <div class="col-2 card-col" id="card11">11</div>
-                                    <div class="col-2 card-col" id="card12">12</div>
-                                    <div class="col-2 card-col" id="card13">13</div>
-                                    <div class="col-2 card-col" id="card14">14</div>
-                                    <div class="col-2 card-col" id="card15">15</div>
-                                    <div class="col-2 card-col" id="card16">16</div>
-                                    <!-- Listado de cartas -->
-                                </div>
-                            </div>
-                            <!-- Vista selector de cartas -->
-                        </div>
-                        <div class="card-footer">
-                            <div class="row justify-content-right">
-                                <div class="col-12">
-                                    <button type="button" class="btn btn-nexus float-end" id="ready-button">Estoy listo!</button>
-                                    <p><b>Héroe: 0/1<br>Armas: 0/8 | Armaduras: 0/4 | Ítems: 0/4 | Épicas: 0/14</b></p>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
-                <div class="col-2" id="chat">
+                <div class="col-3" id="chat">
                     <div class="card container-nexus">
                         <div class="card-header">
                             <h2>Chat Global</h2>
@@ -94,6 +58,7 @@
         </div>
     </main>
 
+    <script src="../components/inventoryComponent/inventoryComponent.ts" type="module"></script>
 </body>
 
 </html>

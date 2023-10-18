@@ -21,7 +21,7 @@ export default class GameDialog implements Mediator{
         this.chatComponent = new Chat(this);
         this.stateMachine = new gameStateContext(this);        
         this.turnManager = new TurnManager(this);
-        this.gameViewHandler = new GameViewHandler(this);
+        this.gameViewHandler = new GameViewHandler(this,this.nexusClient.sessionId);
         this.inventoryManager = new InventoryManager(this);
     }
 
@@ -58,12 +58,12 @@ export default class GameDialog implements Mediator{
             break;
 
             case "yourTurn":
-                this.stateMachine.communicatorBreaker("yourTurn");    
+                this.gameViewHandler.enableButtonsForTurnAction();    
             break;
 
             case "notYourTurn":
                 this.stateMachine.drawAnnouncer("Turno: " + args.turn);  
-                this.stateMachine.communicatorBreaker("notYourTurn");    
+                this.gameViewHandler.disableButtonsForTurnAction();
             break;
 
             case "updateCounterData":
@@ -90,7 +90,7 @@ export default class GameDialog implements Mediator{
 
             case "ClientSkipAction":
                 this.turnManager.actionFinishTurn();
-                break;
+            break;
         }
     }
 
@@ -130,20 +130,29 @@ export default class GameDialog implements Mediator{
             break;
 
             case "nexusRoomReady":
-                //this.stateMachine.changeMachineState(stateType.Inventory);
-                //this.stateMachine.drawToScreen();                
+                this.stateMachine.changeMachineState(stateType.Inventory);
+                this.stateMachine.drawToScreen();                
+            break;
+
+            case "nexusFinishInventory":
                 this.stateMachine.changeMachineState(stateType.Gameplay);
-                this.stateMachine.communicatorBreaker("init");
+                this.stateMachine.drawToScreen();
+                this.gameViewHandler.drawLocalPlayer();
             break;
             
             case "nexusGetTurn":
-                this.stateMachine.communicatorBreaker("matchStart");
-                this.stateMachine.communicatorBreaker("notYourTurn");
+                this.gameViewHandler.disableButtonsForTurnAction();
+                this.nexusClient.sendLocalCardID("650f38ee7aaeb67f7dfc712e");
                 this.turnManager.setAssignerTurn(args.turn,this.nexusClient.nexusClientGetPlayers().size);
             break;
                 
             case "playerHasTerminatedTurn":
+                console.log("Message from colyseus")
                 this.turnManager.handleTurnProgress();    
+            break;
+
+            case "registerRemotePlayerCard":
+                this.gameViewHandler.drawNewPlayer(args.remoteID,args.cardID);
             break;
         }
     }
@@ -159,8 +168,8 @@ export default class GameDialog implements Mediator{
                 this.nexusClient.sendClientGameViewLoaded();
             break;
 
-            case "ClientSkipAction":
-                this.turnManager.actionFinishTurn();
+            case "getSessionID":
+                myReturn = this.nexusClient.sessionId;    
             break;
         }
         return myReturn;
