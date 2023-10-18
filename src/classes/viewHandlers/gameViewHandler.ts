@@ -47,7 +47,7 @@ export default class GameViewHandler extends Component{
             let node = "#top";
             if (this.identifier == 1) node = "#left"
             else if (this.identifier == 2) node = "#right"
-            this.playerMap.set(sessionID, new CardComponent($(node), CardStatusHandler.GameHeroe, cardID, false));
+            this.playerMap.set(sessionID, new CardComponent($(node), CardStatusHandler.GameHeroe, cardID, false,this));
             this.identifier++;
         }
     }
