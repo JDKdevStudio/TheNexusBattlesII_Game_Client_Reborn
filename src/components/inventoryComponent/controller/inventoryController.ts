@@ -27,9 +27,30 @@ export default class InventoryController {
     };
 
     private cardRender = async (cardType: CardStatusHandler, cardId: string): Promise<void> => {
-        const cardData = this.model.inventoryCardMap.has(cardId) ? this.model.inventoryCardMap.get(cardId)! : await this.model.getCard(cardId)
-        if (!this.model.inventoryCardMap.has(cardId)) { this.model.inventoryCardMap.set(cardId, cardData) }
-        const card = new CardComponent(this.view.getInventoryList(), cardType, cardData, true)
-        card.controller.getCardNode().addClass("col-2 card-col")
-    }
+        if (!this.model.inventoryCardMap.has(cardId)) {
+            const cardData = await this.model.getCard(cardId);
+            this.model.inventoryCardMap.set(cardId, cardData);
+        }
+        const cardData = this.model.inventoryCardMap.get(cardId)!;
+        const card = new CardComponent(this.view.getInventoryList(), cardType, cardData, true);
+        const cardNode = card.controller.getCardNode();
+        cardNode.addClass("col-2 card-col");
+        cardNode.on("click", () => this.cardSelection(card, cardId));
+    };
+
+    private cardSelection = (cardObject: CardComponent, cardId: string) => {
+        const cardSelected = cardObject.controller.setCardSelection();
+        const currentCount = this.model.inventorySelectedCardMap.get(cardId) ?? 0;
+        if (cardSelected) {
+            this.model.inventorySelectedCardMap.set(cardId, currentCount + 1);
+        } else {
+            if (currentCount > 0) {
+                this.model.inventorySelectedCardMap.set(cardId, currentCount - 1);
+            }
+            if (this.model.inventorySelectedCardMap.get(cardId) === 0) {
+                this.model.inventorySelectedCardMap.delete(cardId);
+            }
+        }
+    };
+
 }

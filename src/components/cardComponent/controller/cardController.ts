@@ -5,6 +5,8 @@ import { CardStatusHandler } from "../enum/cardStatusEnum";
 import CardView from "../view/cardView";
 
 export default class CardController {
+    private isSelected:boolean = false
+
     constructor(private readonly view: CardView) { }
 
     init = (node: JQuery<HTMLElement>, cardType: CardStatusHandler, cardData: HeroeType | ConsumibleType, isLocalCard: boolean, componentBreaker:CardComponent): void => {
@@ -46,5 +48,15 @@ export default class CardController {
 
     public getCardNode = ():JQuery<HTMLElement>=>{
         return this.view.getCardElement
+    }
+
+    public setCardSelection =():boolean=>{
+        this.isSelected =!this.isSelected
+        if (this.isSelected) {
+            this.getCardNode().addClass("cardComponent-selected")
+        }else{
+            this.getCardNode().removeClass("cardComponent-selected")
+        }
+        return this.isSelected
     }
 }

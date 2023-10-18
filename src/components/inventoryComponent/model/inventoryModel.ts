@@ -4,6 +4,7 @@ import { InventoryType } from "../types/inventoryType";
 
 export default class InventoryModel {
     inventoryCardMap: Map<string, HeroeType | ConsumibleType> = new Map<string, HeroeType | ConsumibleType>
+    inventorySelectedCardMap:Map<string,number> = new Map<string,number>
 
     getUserInventory = async (): Promise<InventoryType[]> => {
         //Falta logica del fetch a la api inventory
@@ -41,6 +42,13 @@ const sample_response = `
         "id_carta": "650f38ee7aaeb67f7dfc712f",
         "quantity": 2,
         "type": "Heroes"
+      },
+      {
+        "id": 28,
+        "user": "Administrador",
+        "id_carta": "650f390b7aaeb67f7dfc7134",
+        "quantity": 2,
+        "type": "Armas"
       }
   ]
 `
