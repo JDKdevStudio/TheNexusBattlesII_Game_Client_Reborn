@@ -4,6 +4,8 @@ import CardComponent from "../../cardComponent/cardComponent";
 import { CardStatusHandler } from "../../cardComponent/enum/cardStatusEnum";
 import ModalGeneral from "../../modalGeneral/modalGeneral";
 import InventoryModel from "../model/inventoryModel";
+import { InventorySelectionType } from "../types/inventorySelectionType";
+import { InventoryToDeckType } from "../types/inventoryToDeckType";
 import { InventoryType } from "../types/inventoryType";
 import InventoryView from "../view/inventoryView";
 
@@ -11,6 +13,7 @@ export default class InventoryController {
     constructor(private readonly view: InventoryView = new InventoryView(), private readonly model: InventoryModel = new InventoryModel()) { }
 
     init = (node: JQuery<HTMLElement>): void => {
+        this.view.addActionButtonListener(this.inventoryToGame)
         this.view.render(node)
         this.inventoryRender()
     }
@@ -36,6 +39,7 @@ export default class InventoryController {
         const cardNode = card.controller.getCardNode();
         cardNode.addClass("col-2 card-col");
         cardNode.on("click", () => this.validateCardSelection(card, cardData));
+        this.model.inventoryCardsInView.push(card)
     };
 
     private validateCardSelection = (cardObject: CardComponent, cardData: HeroeType | ConsumibleType): void => {
@@ -47,6 +51,7 @@ export default class InventoryController {
         const cardSelectionHandler: { [key: string]: () => void } = {
             "Heroes": () => {
                 const cardSelected = cardObject.controller.getCardSelection()
+                if (cardSelected) { return this.resetSelection() }
                 if (this.isCardMaxSelection(this.model.inventorySelectionData.heroe, cardSelected, 1, cardData.coleccion)) { return }
                 //De lo contrario, cambiar el estado de la carta y actualizar el mapa de selección
                 this.updateCardSelection(cardObject.controller.setCardSelection(), this.model.inventorySelectionData.heroe, cardData._id)
@@ -72,7 +77,6 @@ export default class InventoryController {
             "Epicas": () => {
                 const cardSelected = cardObject.controller.getCardSelection()
                 const heroeData = this.model.inventoryCardMap.get(this.model.inventorySelectionData.heroe[0])!
-                console.log(heroeData)
                 if (heroeData.clase == cardData.clase && heroeData.tipo == cardData.tipo) {
                     if (this.isCardMaxSelection(this.model.inventorySelectionData.epicasHeroe, cardSelected, 4, cardData.coleccion + " Héroe")) { return }
                     this.updateCardSelection(cardObject.controller.setCardSelection(), this.model.inventorySelectionData.epicasHeroe, cardData._id)
@@ -95,9 +99,9 @@ export default class InventoryController {
     }
 
     private checkCardTypeOfHeroe = (cardCollection: string, cardClass: string, cardType: string): boolean => {
-        if (cardCollection = "Heroes") { return true }
+        if (cardCollection == "Heroes" || cardCollection == "Epicas") { return true }
         const heroeData = this.model.inventoryCardMap.get(this.model.inventorySelectionData.heroe[0])!
-        if (heroeData.clase != cardClass && heroeData.tipo != cardType && cardCollection != "Epicas") {
+        if (heroeData.clase != cardClass || heroeData.tipo != cardType) {
             const modal = new ModalGeneral("Error Inventario", "La carta que intentas seleccionar no coincide con el con la clase y el tipo de tu héroe elegido")
             modal.toggleModal()
             return false
@@ -118,10 +122,43 @@ export default class InventoryController {
     private updateCardSelection = (cardSelection: boolean, cardArray: string[], cardId: string): void => {
         if (cardSelection) {
             cardArray.push(cardId)
-            this.view.renderFooterActions(this.model.inventorySelectionData)
+            this.view.updateFooterActions(this.model.inventorySelectionData)
         } else {
             cardArray.splice(cardArray.indexOf(cardId), 1)
-            this.view.renderFooterActions(this.model.inventorySelectionData)
+            this.view.updateFooterActions(this.model.inventorySelectionData)
         }
+    }
+
+    private resetSelection = (): void => {
+        this.model.inventoryCardsInView.map((card: CardComponent) => {
+            if (card.controller.getCardSelection()) { card.controller.setCardSelection() }
+        })
+        const resetData = { armaduras: [], armas: [], epicas: [], epicasHeroe: [], heroe: [], items: [] }
+        this.model.inventorySelectionData = resetData
+        this.view.updateFooterActions(resetData)
+    }
+
+    private multiplyCardArrays = (array: string[], veces: number): string[] => {
+        const newArray = array.flatMap(elemento => Array(veces).fill(elemento));
+        return newArray;
+    }
+
+    private inventoryToGame = (): void => {
+        const scd: InventorySelectionType = this.model.inventorySelectionData //SelectedCardData
+        if (scd.heroe.length != 1 || scd.armas.length != 2 || scd.armaduras.length != 1 || scd.items.length != 1 || scd.epicas.length != 5 || scd.epicasHeroe.length != 4) {
+            const modal = new ModalGeneral("Error Inventario", "Aún te falta seleccionar cartas para iniciar la partida")
+            return modal.toggleModal()
+        }
+        const deckGenerated: InventoryToDeckType = { heroe: this.model.inventorySelectionData.heroe[0], consumibles: [] }
+        //función para duplicar elementos
+        deckGenerated.consumibles = [
+            ...this.multiplyCardArrays(scd.armas, 4),
+            ...this.multiplyCardArrays(scd.armaduras, 4),
+            ...this.multiplyCardArrays(scd.items, 4),
+            ...this.multiplyCardArrays(scd.epicas, 2),
+            ...scd.epicasHeroe
+        ]
+        //shuffle consumibles
+        deckGenerated.consumibles.sort(() => Math.floor(Math.random() - 0.5))
     }
 }

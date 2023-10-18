@@ -4,9 +4,9 @@ import InventoryController from "./controller/inventoryController"
 export default class InventoryComponent{
     public controller:InventoryController = new InventoryController()
 
-    constructor(){
-        this.controller.init($("#game-view"))
+    constructor(node:JQuery<HTMLElement>){
+        this.controller.init(node)
     }
 }
 
-const test = new InventoryComponent()
+new InventoryComponent($("#game-view"))

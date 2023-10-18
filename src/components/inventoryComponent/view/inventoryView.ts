@@ -21,11 +21,15 @@ export default class InventoryView {
         node.append(this.inventoryElement)
     }
 
-    renderFooterActions=(a:InventorySelectionType):void=>{
+    updateFooterActions=(a:InventorySelectionType):void=>{
         this.inventoryElement.find("#footer-info").text(`Héroes: ${a.heroe.length}/1 | Armas: ${a.armas.length}/2 | Armaduras: ${a.armaduras.length}/1 | Ítems: ${a.items.length}/1 | Épicas: ${a.epicas.length}/5 | Épicas Héroe: ${a.epicasHeroe.length}/4`)
     }
 
     getInventoryList = ():JQuery<HTMLElement>=>{
         return this.inventoryElement.find("#cardlist")
+    }
+
+    addActionButtonListener = (func:Function):void=>{
+        this.inventoryElement.find("#ready-button").on("click",()=>func())
     }
 }

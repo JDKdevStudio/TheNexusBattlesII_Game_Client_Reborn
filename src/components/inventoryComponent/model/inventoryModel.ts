@@ -1,30 +1,32 @@
 import ConsumibleType from "../../../types/consumibleType";
 import HeroeType from "../../../types/heroeType";
+import CardComponent from "../../cardComponent/cardComponent";
 import { InventorySelectionType } from "../types/inventorySelectionType";
 import { InventoryType } from "../types/inventoryType";
 
 export default class InventoryModel {
-    inventoryCardMap: Map<string, HeroeType | ConsumibleType> = new Map<string, HeroeType | ConsumibleType>
-    inventorySelectionData:InventorySelectionType = {heroe:[],armas:[],armaduras:[],items:[],epicas:[],epicasHeroe:[]}
+  inventoryCardsInView: CardComponent[] = []
+  inventoryCardMap: Map<string, HeroeType | ConsumibleType> = new Map<string, HeroeType | ConsumibleType>
+  inventorySelectionData: InventorySelectionType = { heroe: [], armas: [], armaduras: [], items: [], epicas: [], epicasHeroe: [] }
 
-    getUserInventory = async (): Promise<InventoryType[]> => {
-        //Falta logica del fetch a la api inventory
-        const parsedResponse: InventoryType[] = JSON.parse(sample_response)
-        return parsedResponse
-    }
+  getUserInventory = async (): Promise<InventoryType[]> => {
+    //Falta logica del fetch a la api inventory
+    const parsedResponse: InventoryType[] = JSON.parse(sample_response)
+    return parsedResponse
+  }
 
-    getCard = async (data: string): Promise<HeroeType | ConsumibleType> => {
-        const apiUrl = `https://cards.thenexusbattles2.cloud/api/cartas/${data}`;
-        try {
-            const response = await fetch(apiUrl);
-            if (!response.ok) {
-                throw new Error('No se pudo obtener el héroe');
-            }
-            return await (response.json() as Promise<HeroeType | ConsumibleType>);
-        } catch (error) {
-            throw error;
-        }
+  getCard = async (data: string): Promise<HeroeType | ConsumibleType> => {
+    const apiUrl = `https://cards.thenexusbattles2.cloud/api/cartas/${data}`;
+    try {
+      const response = await fetch(apiUrl);
+      if (!response.ok) {
+        throw new Error('No se pudo obtener el héroe');
+      }
+      return await (response.json() as Promise<HeroeType | ConsumibleType>);
+    } catch (error) {
+      throw error;
     }
+  }
 }
 
 
