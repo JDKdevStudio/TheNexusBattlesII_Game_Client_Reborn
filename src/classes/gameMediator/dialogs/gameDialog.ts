@@ -49,6 +49,10 @@ export default class GameDialog implements Mediator{
         if(sender == this.turnManager){
             this.handleTurnManagerEvent(event,args);
         }
+
+        if(sender == this.inventoryManager){
+            this.handleInventoryManager(event,args);
+        }
     }
 
     private handleTurnManagerEvent(event:string,args:any){
@@ -100,17 +104,13 @@ export default class GameDialog implements Mediator{
 
                     case EnemyCardInteractions.Attack:
                         const players = this.nexusClient.nexusClientGetPlayers();
-                        console.log("Other: " + players.get(args.remoteID).team);
-                        console.log("Me: " + players.get(this.nexusClient.sessionId).team);
                         
                         if((players.get(args.remoteID).team != players.get(this.nexusClient.sessionId).team) || (players.get(args.remoteID).team == -1)){
-                            console.log("Attack!")
+                            //console.log("Attack!")
                             this.nexusClient.sendClientAttack(args.remoteID);
                             this.turnManager.actionFinishTurn();
                             this.gameViewHandler.setCurrentAction(EnemyCardInteractions.None);
-                        }else{
-                            console.log("Cant Attack Team Members!");      
-                        }                   
+                        }               
                     break;
                 }
             break;
@@ -197,6 +197,16 @@ export default class GameDialog implements Mediator{
 
             case "getSessionID":
                 myReturn = this.nexusClient.sessionId;    
+            break;
+        }
+        return myReturn;
+    }
+
+    private handleInventoryManager(event:string,args:any):any{
+        let myReturn = undefined;
+        switch(event){
+            case "":
+                myReturn = this.gameViewHandler; 
             break;
         }
         return myReturn;

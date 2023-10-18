@@ -1,7 +1,7 @@
 import Component from "../gameMediator/componentClass";
 import Mediator from "../gameMediator/mediatorInterface";
 import Cookies from "js-cookie";
-import $, { Callbacks } from "jquery";
+import $ from "jquery";
 import CardComponent from "../../components/cardComponent/cardComponent";
 import { CardStatusHandler } from "../../components/cardComponent/enum/cardStatusEnum";
 

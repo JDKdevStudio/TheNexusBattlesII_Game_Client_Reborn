@@ -50,12 +50,13 @@ export class stateInGame extends State {
             <div class="col-2 player-col side-1" id="left"></div> <!-- Jugador extra 1 -->
             <div class="col-2 player-col side-2" id="right"></div> <!-- Jugador extra 2 -->
             <div class="col-2 player-col user" id="bottom"></div> <!-- Jugador principal -->
-            <div class="col-2 card-deck"> <div class="deck">
-            <div class="deck-text">
-                <p id="count">Cartas Restantes: n</p>
-            </div>
-        </div></div> <!-- Baraja -->
-            <div class="col-2 card-hand"></div> <!-- Mano de juego -->
+            <div class="col-2 card-deck"> 
+                <div class="deck">
+                    <div class="deck-text"><p id="count">Cartas Restantes: n</p></div>
+                </div>
+            </div> 
+            <!-- Baraja -->
+            <div class="col-2 card-hand" id="deckGameplay"></div> <!-- Mano de juego -->
             <!-- Vista batalla -->
         </div>
         `
