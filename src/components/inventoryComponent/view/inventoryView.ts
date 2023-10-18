@@ -22,7 +22,7 @@ export default class InventoryView {
         node.append(this.inventoryElement)
     }
 
-    renderInventoryCard = ():JQuery<HTMLElement>=>{
+    getInventoryList = ():JQuery<HTMLElement>=>{
         return this.inventoryElement.find("#cardlist")
     }
 }

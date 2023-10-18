@@ -19,6 +19,7 @@ export default class CardView {
 
     get getCardElement(){return this.cardElement}
 
+    //Renders
     render = (node: JQuery<HTMLElement>, componentBreaker?: CardComponent): void => {
         node.append(this.cardElement);
         if (componentBreaker != undefined){
@@ -81,4 +82,6 @@ export default class CardView {
         </div>
         `);
     }
+
+    //Updates
 }
