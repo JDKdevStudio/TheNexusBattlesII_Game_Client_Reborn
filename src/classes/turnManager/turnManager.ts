@@ -24,15 +24,11 @@ export default class TurnManager extends Component {
         this.assignedTurn = turn;
         this.maxNumber = maxNumber;
         this.sendUpdateRoundSignal();
-        this.checkForTurnActive();
-        console.log(this.assignedTurn);
-        
+        this.checkForTurnActive();   
     }
 
     checkForTurnActive(): void {
         if (this.currentTurn == this.assignedTurn) {
-            console.log("TURNO CON");
-            
             this.dialog.notify(this, "yourTurn", { turn: this.currentRound });
             this.countdown();
         } else {
@@ -41,7 +37,6 @@ export default class TurnManager extends Component {
     }
 
     handleTurnProgress = (): void => {
-        console.log(this.currentTurn)
         this.currentTurn += 1;
         if (this.currentTurn > this.maxNumber) {
             this.currentRound += 1;

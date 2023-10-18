@@ -21,6 +21,7 @@ export default class CardView {
         node.append(this.cardElement);
         if (componentBreaker != undefined){
             $("#btnSkip").on("click",() => {
+                console.log("Clicked on skip!")
                 componentBreaker.notifyTurnSkip();
             });
         }

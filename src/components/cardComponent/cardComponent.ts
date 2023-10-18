@@ -20,6 +20,7 @@ export default class CardComponent {
     }
 
     notifyTurnSkip():void{
+        console.log("Going to the dialog!")
         if(this.viewContext != undefined)
         this.viewContext.dialog.notify(this.viewContext, "ClientSkipAction", {})
     }
