@@ -40,8 +40,6 @@
     height: 5vh;
 }
 
-
-
 .container-battle {
     display: grid;
     height: 63vh;
@@ -95,6 +93,31 @@
     grid-column-end: 3;
     width: 140px;
     justify-self: right;
+}
+
+.deck {
+    background-color: rgba(17,18,18,1);
+    background-image: url("../images/deck-background.png");
+    background-repeat: no-repeat;
+    background-position: center 20%;
+    background-size: contain;
+    border-radius: 10px;
+    border: 1px solid rgba(255,244,0,1);
+    height: 30vh; /* auto */
+    width: 190px; /* ??? */
+}
+
+.deck-text {
+    background-color: rgba(57,57,15,1);
+    color: white;
+    text-align: center;
+    font-size: 15px;
+    border: 1px solid rgba(255,244,0,1);
+    border-radius: 5px;
+    height: 6vh;
+    margin: auto 10px auto 10px;
+    position: relative;
+    top: 75%;
 }
 
 .card-hand {
