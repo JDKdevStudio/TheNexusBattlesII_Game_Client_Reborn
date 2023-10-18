@@ -1,6 +1,6 @@
 export default interface CartaType {
-    id: String,
-    nombre: String,
+    _id: string,
+    nombre: string,
     descripcion: string,
     imagen: string,
     icono: string,

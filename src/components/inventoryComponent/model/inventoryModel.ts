@@ -1,23 +1,92 @@
+import ConsumibleType from "../../../types/consumibleType";
+import HeroeType from "../../../types/heroeType";
+import CardComponent from "../../cardComponent/cardComponent";
+import { InventorySelectionType } from "../types/inventorySelectionType";
 import { InventoryType } from "../types/inventoryType";
 
-export default class InventoryModel{
+export default class InventoryModel {
+  inventoryCardsInView: CardComponent[] = []
+  inventoryCardMap: Map<string, HeroeType | ConsumibleType> = new Map<string, HeroeType | ConsumibleType>
+  inventorySelectionData: InventorySelectionType = { heroe: [], armas: [], armaduras: [], items: [], epicas: [], epicasHeroe: [] }
 
-    getUserInventory = async():Promise<InventoryType[]>=>{
-        //Falta logica del fetch a la api inventory
-        const parsedResponse:InventoryType[] = JSON.parse(sample_response)
-        return parsedResponse
+  getUserInventory = async (): Promise<InventoryType[]> => {
+    //Falta logica del fetch a la api inventory
+    const parsedResponse: InventoryType[] = JSON.parse(sample_response)
+    return parsedResponse
+  }
+
+  getCard = async (data: string): Promise<HeroeType | ConsumibleType> => {
+    const apiUrl = `https://cards.thenexusbattles2.cloud/api/cartas/${data}`;
+    try {
+      const response = await fetch(apiUrl);
+      if (!response.ok) {
+        throw new Error('No se pudo obtener el héroe');
+      }
+      return await (response.json() as Promise<HeroeType | ConsumibleType>);
+    } catch (error) {
+      throw error;
     }
+  }
 }
 
 
 const sample_response = `
 [
     {
+      "id": 25,
+      "user": "Administrador",
+      "id_carta": "650f38ee7aaeb67f7dfc712e",
+      "quantity": 4,
+      "type": "Heroes"
+    },
+    {
       "id": 26,
       "user": "Administrador",
-      "id_carta": "64e5830a09a1f203598f1801",
-      "quantity": 1,
-      "type": "Items"
+      "id_carta": "652ef8533d80adc828993dbb",
+      "quantity": 4,
+      "type": "Heroes"
     },
+    {
+        "id": 27,
+        "user": "Administrador",
+        "id_carta": "650f38ee7aaeb67f7dfc712f",
+        "quantity": 4,
+        "type": "Heroes"
+      },
+      {
+        "id": 28,
+        "user": "Administrador",
+        "id_carta": "650f390b7aaeb67f7dfc7134",
+        "quantity": 4,
+        "type": "Armas"
+      },
+      {
+        "id": 29,
+        "user": "Administrador",
+        "id_carta": "650f390b7aaeb67f7dfc7140",
+        "quantity": 4,
+        "type": "Armaduras"
+      },
+      {
+        "id": 30,
+        "user": "Administrador",
+        "id_carta": "650f390b7aaeb67f7dfc7146",
+        "quantity": 4,
+        "type": "Items"
+      },
+      {
+        "id": 31,
+        "user": "Administrador",
+        "id_carta": "650f390b7aaeb67f7dfc714b",
+        "quantity": 6,
+        "type": "Epicas"
+      },
+      {
+        "id": 31,
+        "user": "Administrador",
+        "id_carta": "650f390b7aaeb67f7dfc714e",
+        "quantity": 6,
+        "type": "Epicas"
+      }
   ]
 `
