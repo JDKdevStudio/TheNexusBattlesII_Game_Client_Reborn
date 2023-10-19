@@ -1,4 +1,3 @@
-import $ from "jquery"
 import InventoryController from "./controller/inventoryController"
 
 export default class InventoryComponent{
@@ -8,5 +7,3 @@ export default class InventoryComponent{
         this.controller.init(node)
     }
 }
-
-new InventoryComponent($("#game-view"))
