@@ -11,6 +11,22 @@
     border-radius: 10px;
 }
 
+.cardComponent-small {
+    cursor: pointer;
+    width: 140px; 
+    height: 24vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: rgb(17, 19, 18);
+    border: 1.5px solid #ffff00;
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    padding: 1px;
+}
+
 .cardComponent-selected{
     border: 1.5px solid green;
     background-color: rgb(85, 152, 85);
@@ -26,11 +42,31 @@
     background-color: rgb(56, 57, 15);
     border: inherit;
     border-radius: 3px;
+    padding: 0px;
+}
+
+.cardComponent-section-small {
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+    width: 90%;
+    background-color: rgb(56, 57, 15);
+    border: inherit;
+    border-radius: 3px;
+    padding: 0px;
 }
 
 .cardComponent-text {
     color: white;
     font-weight: bold;
+}
+
+.cardComponent-text-small {
+    color: white;
+    font-weight: bold;
+    font-size: 70%;
 }
 
 .cardComponent-image {
@@ -86,11 +122,24 @@
     font-size: x-small;
 }
 
-
-
 .cardComponent-desc-text {
     padding: 5px;
     overflow: hidden;
     color: white;
     font-size: x-small;
+}
+
+.cardComponent-desc-text-small {
+    padding: 5px;
+    color: white;
+    font-size: 50%;
+    overflow: scroll;
+}
+
+.grow { 
+    transition: all .2s ease-in-out; 
+}
+    
+.grow:hover { 
+    transform: scale(1.5); 
 }
