@@ -33,8 +33,8 @@ export class stateInventory extends State {
     drawToScreen(): void {
         this.machine.drawAnnouncer("Inventario");
         $("#main-game-view").empty();
-        new InventoryComponent($("#main-game-view"),(args:any)=>{
-            this.machine.dialog.notify(this.machine,"getDataFromInventory",args);
+        new InventoryComponent($("#main-game-view"), (args: any) => {
+            this.machine.dialog.notify(this.machine, "getDataFromInventory", args);
         });
     }
 }
@@ -43,28 +43,52 @@ export class stateInGame extends State {
     constructor(machine: gameStateContext) {
         super(machine);
     }
-    
+
     drawToScreen(): void {
         this.machine.drawAnnouncer("Esperando Inicio de Partida...");
         $("#main-game-view").empty();
         $('#main-game-view').append(
             `<div class="container-battle">
             <!-- Vista batalla -->
-            <div class="col-2 player-col enemy" id="top"></div> <!-- Jugador enemigo -->
-            <div class="col-2 player-col side-1" id="left"></div> <!-- Jugador extra 1 -->
-            <div class="col-2 player-col side-2" id="right"></div> <!-- Jugador extra 2 -->
-            <div class="col-2 player-col user" id="bottom"></div> <!-- Jugador principal -->
-            <div class="col-2 card-deck"> 
+            <div class="player-col enemy" id="top"></div> <!-- Jugador enemigo -->
+            <div class="player-col side-1" id="left"></div> <!-- Jugador extra 1 -->
+            <div class="player-col side-2" id="right"></div> <!-- Jugador extra 2 -->
+            <div class="player-col user" id="bottom"></div> <!-- Jugador principal -->
+            <div class="card-deck">
                 <div class="deck">
-                    <div class="deck-text"><p id="count">Cartas Restantes: n</p></div>
+                    <div class="deck-text">
+                        <p id="count">Cartas Restantes: n</p>
+                    </div>
                 </div>
-            </div> 
+            </div>
             <!-- Baraja -->
-            <div class="col-2 card-hand" id="deckGameplay"></div> <!-- Mano de juego -->
-            <!-- Vista batalla -->
+            <!-- <div class="card-hand" id="deckGameplay"></div> -->
+            <div class="row card-hand">
+        
+                <div class="deck">
+                    <div class="deck-text">
+                        <p id="count">Cartas Restantes: n</p>
+                    </div>
+                </div>
+        
+                <div class="deck">
+                    <div class="deck-text">
+                        <p id="count">Cartas Restantes: n</p>
+                    </div>
+                </div>
+        
+                <div class="deck">
+                    <div class="deck-text">
+                        <p id="count">Cartas Restantes: n</p>
+                    </div>
+                </div>
+        
+            </div> <!-- Mano de juego -->
         </div>
+        
+        <!-- Vista batalla -->
         `
-        );   
+        );
         this.machine.dialog.notify(this.machine, "clientLoadedGameView", {});
     }
 }
