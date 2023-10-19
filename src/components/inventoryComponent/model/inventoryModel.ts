@@ -50,51 +50,58 @@ const sample_response = `
     {
       "id": 26,
       "user": "Administrador",
-      "id_carta": "650f38ee7aaeb67f7dfc712e",
-      "quantity": 4,
+      "id_carta": "650f38ee7aaeb67f7dfc7130",
+      "quantity": 1,
       "type": "Heroes"
     },
     {
-        "id": 27,
-        "user": "Administrador",
-        "id_carta": "650f38ee7aaeb67f7dfc712f",
-        "quantity": 4,
-        "type": "Heroes"
-      },
-      {
-        "id": 28,
-        "user": "Administrador",
-        "id_carta": "650f390b7aaeb67f7dfc7134",
-        "quantity": 4,
-        "type": "Armas"
-      },
-      {
-        "id": 29,
-        "user": "Administrador",
-        "id_carta": "650f390b7aaeb67f7dfc7140",
-        "quantity": 4,
-        "type": "Armaduras"
-      },
-      {
-        "id": 30,
-        "user": "Administrador",
-        "id_carta": "650f390b7aaeb67f7dfc7146",
-        "quantity": 4,
-        "type": "Items"
-      },
-      {
-        "id": 31,
-        "user": "Administrador",
-        "id_carta": "650f390b7aaeb67f7dfc714b",
-        "quantity": 6,
-        "type": "Epicas"
-      },
-      {
-        "id": 31,
-        "user": "Administrador",
-        "id_carta": "650f390b7aaeb67f7dfc714e",
-        "quantity": 6,
-        "type": "Epicas"
-      }
+      "id": 26,
+      "user": "Administrador",
+      "id_carta": "650f390b7aaeb67f7dfc7138",
+      "quantity": 2,
+      "type": "Armas"
+    },
+    {
+      "id": 26,
+      "user": "Administrador",
+      "id_carta": "650f390b7aaeb67f7dfc7139",
+      "quantity": 2,
+      "type": "Armas"
+    },
+    {
+      "id": 26,
+      "user": "Administrador",
+      "id_carta": "650f390b7aaeb67f7dfc7142",
+      "quantity": 3,
+      "type": "Armaduras"
+    },
+    {
+      "id": 26,
+      "user": "Administrador",
+      "id_carta": "650f390b7aaeb67f7dfc7148",
+      "quantity": 3,
+      "type": "Items"
+    },
+    {
+      "id": 26,
+      "user": "Administrador",
+      "id_carta": "650f390b7aaeb67f7dfc714b",
+      "quantity": 3,
+      "type": "Epicas"
+    },
+    {
+      "id": 26,
+      "user": "Administrador",
+      "id_carta": "650f390b7aaeb67f7dfc714d",
+      "quantity": 5,
+      "type": "Epicas"
+    },
+    {
+      "id": 26,
+      "user": "Administrador",
+      "id_carta": "650f390b7aaeb67f7dfc7150",
+      "quantity": 3,
+      "type": "Epicas"
+    },
   ]
 `
