@@ -7,18 +7,23 @@ import { GameViewHandler } from "../viewHandlers/gameViewHandler";
 
 export default class InventoryManager{
     currentGameCards:Map<string,CardComponent>;
-    deckStoredCards:string[];
+    deckStoredCards:Array<string> = [];
     cardRepository:Map<string,HeroeType|ConsumibleType>;
     heroInitial:HeroeType;
     heroInitialID:string;
+    
+    updateDeckNumber:(ammount:string)=>void;
 
-    constructor(private dialog: GameViewHandler) {}
+    constructor(private dialog: GameViewHandler,updateDeckNumber:(ammount:string)=>void) {
+        this.updateDeckNumber = updateDeckNumber;
+    }
 
     setFromInventory(deckStoredCards:Map<string,HeroeType|ConsumibleType>,fromInventory:InventoryToDeckType){
         this.cardRepository = deckStoredCards;
         this.deckStoredCards = fromInventory.consumibles;
         this.heroInitial =  this.cardRepository.get(fromInventory.heroe) as HeroeType;
         this.heroInitialID = fromInventory.heroe;
+        this.updateDeckWithRemainingCards();
     }
 
     insertNewCardToActive():void{
@@ -27,15 +32,21 @@ export default class InventoryManager{
             const currentCard = new CardComponent($("#deckGameplay"),CardStatusHandler.GameConsumible,{} as ConsumibleType,true,this.dialog);
             this.currentGameCards.set(fromDeck,currentCard);
         }
+        this.updateDeckWithRemainingCards();
     }
 
     deleteCardFromActive(id:string):void{
         //TODO: BUSCA EL NODO, LO ELIMINA DEL DOM Y ELIMINA EL REGISTRO DEL MAPA
         this.currentGameCards.delete(id);
+        this.updateDeckWithRemainingCards();
     }
 
     getLocalHeroData():HeroeType{
         return this.heroInitial;
+    }
+
+    updateDeckWithRemainingCards():void{
+        this.updateDeckNumber(this.deckStoredCards.length.toString());
     }
 
     async getCardDataByID(id:string):Promise<HeroeType|ConsumibleType>{

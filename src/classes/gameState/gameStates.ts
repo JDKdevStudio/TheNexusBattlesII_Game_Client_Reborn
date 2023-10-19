@@ -56,7 +56,7 @@ export class stateInGame extends State {
             <div class="col-2 player-col user" id="bottom"></div> <!-- Jugador principal -->
             <div class="col-2 card-deck"> 
                 <div class="deck">
-                    <div class="deck-text"><p id="count">Cartas Restantes: n</p></div>
+                    <div class="deck-text"><p id="count">Restantes: 0</p></div>
                 </div>
             </div> 
             <!-- Baraja -->
