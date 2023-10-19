@@ -34,6 +34,8 @@ export class stateInventory extends State {
         this.machine.drawAnnouncer("Inventario");
         $("#main-game-view").empty();
         new InventoryComponent($("#main-game-view"), (args: any) => {
+            console.log(args);
+            
             this.machine.dialog.notify(this.machine, "getDataFromInventory", args);
         });
     }

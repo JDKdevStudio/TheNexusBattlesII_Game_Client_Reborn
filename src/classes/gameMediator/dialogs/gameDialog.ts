@@ -129,7 +129,7 @@ export default class GameDialog implements Mediator{
 
             case "nexusJoinedRoom":
                 this.stateMachine.init();
-                this.gameViewHandler.setMyLocalSessionID(this.nexusClient.sessionId);
+                this.gameViewHandler.setMyLocalSessionID(this.nexusClient.colyseusRoom.sessionId);
             break;
 
             case "nexusClientJoinedRoom":
@@ -147,6 +147,7 @@ export default class GameDialog implements Mediator{
             break;
 
             case "nexusRoomReady":
+                this.gameViewHandler.setMyLocalSessionID(this.nexusClient.colyseusRoom.sessionId);
                 this.stateMachine.changeMachineState(stateType.Inventory);
                 this.stateMachine.drawToScreen();                
             break;
@@ -189,6 +190,8 @@ export default class GameDialog implements Mediator{
             break;
 
             case "getDataFromInventory":
+                console.log(args);
+                
                 this.gameViewHandler.inventoryManager.setFromInventory(args.cardDictionary,args.cardDeck);
                 this.stateMachine.changeMachineState(stateType.Gameplay);
                 this.stateMachine.drawToScreen();

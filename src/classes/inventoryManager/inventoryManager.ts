@@ -9,7 +9,7 @@ import { GameViewHandler } from "../viewHandlers/gameViewHandler";
 import $ from "jquery";
 
 export default class InventoryManager{
-    currentGameCards:Map<string,CardComponent>;
+    //currentGameCards:Map<string,CardComponent>;
     deckStoredCards:Array<string> = [];
     cardRepository:Map<string,HeroeType|ConsumibleType>;
     nodeConsumableControl:Map<JQuery<HTMLElement>,boolean>;
@@ -21,7 +21,7 @@ export default class InventoryManager{
 
     constructor(private dialog: GameViewHandler,updateDeckNumber:(ammount:string)=>void) {
         this.updateDeckNumber = updateDeckNumber;
-        this.currentGameCards = new Map<string,CardComponent>();
+        //this.currentGameCards = new Map<string,CardComponent>();
     }
 
     setFromInventory(deckStoredCards:Map<string,HeroeType|ConsumibleType>,fromInventory:InventoryToDeckType){
@@ -42,14 +42,19 @@ export default class InventoryManager{
         if(fromDeck != undefined){
             const currentCard = new CardComponent($("#deckGameplay"),CardStatusHandler.GameConsumible,this.cardRepository.get(fromDeck) as ConsumibleType,CardOwner.Consumible,this.dialog);
             new CardDraggableWrapper(currentCard,true,this.cardRepository.get(fromDeck) as ConsumibleType);
-            this.currentGameCards.set(fromDeck,currentCard);
+            //this.currentGameCards.set(fromDeck,currentCard);
         }
         this.updateDeckWithRemainingCards();
     }
 
-    deleteCardFromActive(id:string):void{
-        //TODO: BUSCA EL NODO, LO ELIMINA DEL DOM Y ELIMINA EL REGISTRO DEL MAPA
-        this.currentGameCards.delete(id);
+    deleteCardFromActive(cardComponent:CardComponent):void{
+        console.log(cardComponent.controller.getCardNode());
+        
+        
+        
+
+
+        //this.currentGameCards.delete(id);
         this.updateDeckWithRemainingCards();
     }
 
