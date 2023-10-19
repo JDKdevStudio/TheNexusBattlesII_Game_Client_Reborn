@@ -5,6 +5,7 @@ import $ from "jquery";
 import CardComponent from "../../components/cardComponent/cardComponent";
 import { CardStatusHandler } from "../../components/cardComponent/enum/cardStatusEnum";
 import InventoryManager from "../inventoryManager/inventoryManager";
+import HeroDecoratorInterface from "../heroDecorator/decoratorInterface";
 
 export enum EnemyCardInteractions {
     None,
@@ -13,6 +14,7 @@ export enum EnemyCardInteractions {
 
 export class GameViewHandler extends Component {
     playerMap: Map<string, any>;
+    decoratorMap:Map<string,HeroDecoratorInterface>;
     localSessionID: string;
     identifier: number = 0;
     current_action: EnemyCardInteractions = EnemyCardInteractions.None;
@@ -22,6 +24,7 @@ export class GameViewHandler extends Component {
         super(dialog);
         this.localSessionID = localSessionID;
         this.playerMap = new Map<string, any>();
+        this.decoratorMap = new Map<string,HeroDecoratorInterface>;
         this.inventoryManager = new InventoryManager(this, this.updateTextForDeck);
     }
 
@@ -69,6 +72,10 @@ export class GameViewHandler extends Component {
                 });
             });
         }
+    }
+
+    registerPlayerDecorator = (sessionID:string):void=>{
+
     }
 
     enableButtonsForTurnAction = (): void => {
