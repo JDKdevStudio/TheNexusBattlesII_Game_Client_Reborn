@@ -61,15 +61,12 @@ export class GameViewHandler extends Component {
         currentCard.update(stats);
     }
 
-    drawLocalPlayer = (): void => {
-        
+    drawLocalPlayer = (): void => {    
         this.playerMap.set(this.localSessionID,
             new CardComponent($("#bottom"), CardStatusHandler.GameHeroe, this.inventoryManager.getLocalHeroData(), CardOwner.Local, this));
         new CardDraggableWrapper(this.playerMap.get(this.localSessionID),false,undefined,this.handleOnDrop);
-
-        
+        console.log(this.inventoryManager.getLocalHeroData())
         this.decoratorMap.set(this.localSessionID,new HeroDecoratorBase(this.inventoryManager.getLocalHeroData()));
-
         this.updateTextForDeck("30");
     }
 
@@ -94,8 +91,8 @@ export class GameViewHandler extends Component {
     }
 
     registerPlayerDecorator = (data:HeroeType):void=>{
-        this.decoratorMap.set(this.localSessionID,new HeroDecorator(data,
-                this.decoratorMap.get(this.localSessionID) as HeroDecoratorInterface,-1));
+        const tmpDer = new HeroDecorator(data,this.decoratorMap.get(this.localSessionID) as HeroDecoratorInterface,-1)
+        this.decoratorMap.set(this.localSessionID,tmpDer);
         const localCard = this.playerMap.get(this.localSessionID) as CardComponent;
         localCard.controller.updateCardStats(this.inventoryManager.getLocalHeroData(),this.decoratorMap.get(this.localSessionID) as HeroDecorator);
     }

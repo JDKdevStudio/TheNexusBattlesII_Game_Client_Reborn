@@ -33,6 +33,7 @@ export default class CardDraggableWrapper{
 
     onDropFunction=(ev:JQuery.DropEvent):void=>{
         const cardData:ConsumibleType=JSON.parse(ev.originalEvent!.dataTransfer!.getData("text/plain"));
+        console.log(cardData)
         this.handleOnDrop(cardData);
     }
 }
