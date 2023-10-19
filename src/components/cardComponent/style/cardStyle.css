@@ -13,7 +13,7 @@
 
 .cardComponent-small {
     cursor: pointer;
-    width: 140px; 
+    width: 138px; 
     height: 24vh;
     display: flex;
     align-items: center;
@@ -130,4 +130,13 @@
     padding: auto 5px auto 5px;
     color: white;
     font-size: 50%;
+}
+
+.grow { 
+    transition: all .2s ease-in-out; 
+}
+    
+.grow:hover { 
+    z-index: 2;
+    transform: scale(1.5);
 }
