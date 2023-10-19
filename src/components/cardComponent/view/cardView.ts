@@ -17,18 +17,18 @@ export default class CardView {
     </div>
     `)
 
-    get getCardElement(){return this.cardElement}
+    get getCardElement() { return this.cardElement }
 
     //Renders
     render = (node: JQuery<HTMLElement>, componentBreaker?: CardComponent): void => {
         node.append(this.cardElement);
-        if (componentBreaker != undefined){
-            $("#btnSkip").on("click",() => {
+        if (componentBreaker != undefined) {
+            $("#btnSkip").on("click", () => {
                 console.log("Clicked on skip!")
                 componentBreaker.notifyTurnSkip();
             });
 
-            $("#btnAttack").on("click",() => {
+            $("#btnAttack").on("click", () => {
                 console.log("En Guardia!")
                 componentBreaker.notifyAttackButtonPressed();
             });
@@ -54,8 +54,8 @@ export default class CardView {
         this.cardElement.append(`
         <!--Sección: barra de vida-->
         <div class="container-fluid cardComponent-lifebar">
-            <span style="z-index: 1; font-size: xx-small;">${life}</span>
-            <span class="cardComponent-lifebar-progress"></span>
+            <span style="z-index: 1; font-size: xx-small;" id="vida-stat">${life}</span>
+            <span class="cardComponent-lifebar-progress" id="vida-bar-stat"></span>
         </div>
         `)
     }
@@ -65,28 +65,40 @@ export default class CardView {
         <!--Sección: Estadísticas tipo héroe-->
         <div class="container-fluid cardComponent-section">
             <div class="cardComponent-heroe-section">
-                <span class="cardComponent-heroe-text">Ataque: <span>${cardData.ataqueBase}</span></span>
-                <span class="cardComponent-heroe-text">Daño: ${cardData.daño}</span>
+                <span class="cardComponent-heroe-text">Ataque: <span id="ataque-stat">${cardData.ataqueBase}</span></span>
+                <span class="cardComponent-heroe-text">Daño: <span id="daño-stat">${cardData.daño}</span></span>
             </div>
             <div class="cardComponent-heroe-section">
-                <span class="cardComponent-heroe-text">Poder: ${cardData.poder}</span>
-                <span class="cardComponent-heroe-text">Defensa: ${cardData.defensa}</span>
+                <span class="cardComponent-heroe-text">Poder: <span id="poder-stat">${cardData.poder}</span></span>
+                <span class="cardComponent-heroe-text">Defensa: <span id="defensa-stat">${cardData.defensa}</span></span>
             </div>
         </div>
         `)
     }
 
-    renderHeroeButtons = (): void => {
+    renderHeroeActionBar = (): void => {
         this.cardElement.append(`
         <!--Sección: Botónes de interacción héroe-->
-        <div class="cardComponent-section">
-            <span class="cardComponent-heroe-text">Daño efectivo: 12</span>
-            <img src="../assets/icons/upgrade.svg">
-            <a id = "btnSkip"><img src="../assets/icons/skip.svg"></a>
-            <a id = "btnAttack"><img src="../assets/icons/attack.svg"></a>
+        <div class="cardComponent-section" id="card-actions">
+            <span class="cardComponent-heroe-text">Daño efectivo: <span id="daño-efectivo-stat">12</span></span>
         </div>
         `);
     }
 
+    renderHeroeButtons = (): void => {
+        this.cardElement.find("#card-actions").append(`
+            <a id = "btnUpgrade"><img src="../assets/icons/upgrade.svg"></a>
+            <a id = "btnSkip"><img src="../assets/icons/skip.svg"></a>
+            <a id = "btnAttack"><img src="../assets/icons/attack.svg"></a>
+            `);
+    }
+
     //Updates
+    updatePlayerName = (name: string): void => {
+        this.cardElement.find("#cardTitle").text(name)
+    }
+
+    getToUpdateStats = (stat: string): JQuery<HTMLElement> => {
+        return this.cardElement.find(`#${stat}-stat`)
+    }
 }
