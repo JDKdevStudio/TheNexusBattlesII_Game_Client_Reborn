@@ -1,6 +1,7 @@
 import ConsumibleType from "../../../types/consumibleType";
 import HeroeType from "../../../types/heroeType";
 import CardComponent from "../../cardComponent/cardComponent";
+import { CardOwner } from "../../cardComponent/enum/cardOwnerEnum";
 import { CardStatusHandler } from "../../cardComponent/enum/cardStatusEnum";
 import ModalGeneral from "../../modalGeneral/modalGeneral";
 import InventoryModel from "../model/inventoryModel";
@@ -37,7 +38,7 @@ export default class InventoryController {
             this.model.inventoryCardMap.set(cardId, cardData);
         }
         const cardData = this.model.inventoryCardMap.get(cardId)!;
-        const card = new CardComponent(this.view.getInventoryList(), cardType, cardData, true);
+        const card = new CardComponent(this.view.getInventoryList(), cardType, cardData, CardOwner.Consumible);
         const cardNode = card.controller.getCardNode();
         cardNode.addClass("col-2 card-col");
         cardNode.on("click", () => this.validateCardSelection(card, cardData));
