@@ -28,6 +28,7 @@ export enum ColyseusMessagesTypes {
     ClientHasTerminatedTurn = 4,
     ClientSyncHeroCard = 5,
     ClientSendAttackedWho = 6,
+    ClientSendDecoratorData = 7,
 }
 
 enum ColyseusChatMessageTypes {
@@ -170,6 +171,10 @@ export class NexusClient extends Component {
         this.colyseusRoom.onMessage(ColyseusMessagesTypes.ClientSendAttackedWho,(message)=>{
             this.dialog.notify(this,"remoteAttackRecieved",message);
         });
+
+        this.colyseusRoom.onMessage(ColyseusMessagesTypes.ClientSendDecoratorData,(message)=>{
+            this.dialog.notify(this,"recievedDecoratorNotif",message);
+        });
     }
 
     private handleGlobalJoinAction = (): void => {
@@ -231,5 +236,9 @@ export class NexusClient extends Component {
         this.colyseusRoom.send(ColyseusMessagesTypes.ClientSendAttackedWho,{
             remoteID: remoteID
         })
+    }
+
+    sendClientCreatedDecorator = (args:any):void =>{
+        this.colyseusRoom.send(ColyseusMessagesTypes.ClientSendDecoratorData,args);
     }
 }

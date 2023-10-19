@@ -1,7 +1,7 @@
 import Component from "../gameMediator/componentClass";
 import Mediator from "../gameMediator/mediatorInterface";
 import Cookies from "js-cookie";
-import $ from "jquery";
+import $, { removeData } from "jquery";
 import CardComponent from "../../components/cardComponent/cardComponent";
 import { CardStatusHandler } from "../../components/cardComponent/enum/cardStatusEnum";
 import InventoryManager from "../inventoryManager/inventoryManager";
@@ -81,10 +81,13 @@ export class GameViewHandler extends Component {
                 this.playerMap.set(sessionID, new CardComponent($(node), CardStatusHandler.GameHeroe,
                     card, CardOwner.Enemy, this));
                 this.identifier++;
+                this.inventoryManager.cardRepository.set(cardID,card);
+                this.decoratorMap.set(sessionID,new HeroDecoratorBase(card as HeroeType));
+
                 this.playerMap.get(sessionID).controller.getCardNode().on("click", () => {
                     this.dialog.notify(this, "rivalCardPressed", {
                         currentAction: this.current_action,
-                        remoteID: sessionID
+                        remoteID: sessionID,
                     });
                 });
             });
@@ -96,10 +99,21 @@ export class GameViewHandler extends Component {
         this.decoratorMap.set(this.localSessionID,tmpDer);
         const localCard = this.playerMap.get(this.localSessionID) as CardComponent;
         localCard.controller.updateCardStats(this.inventoryManager.getLocalHeroData(),this.decoratorMap.get(this.localSessionID) as HeroDecorator);
+        this.dialog.notify(this,"createdLocalDecorator",{
+            remoteID: this.localSessionID,
+            heroe:data,
+            turnos:validTurns,
+            remoteCardID: this.inventoryManager.heroInitialID
+        });
     }
 
-    registerRemoteDecorator = ():void =>{
-
+    registerRemoteDecorator = (remoteID:string, data:HeroeType,validTurns:number,remoteCardID:string):void =>{
+        this.inventoryManager.getCardDataByID(remoteCardID).then((card) => {            
+            const tmpDer = new HeroDecorator(data,this.decoratorMap.get(remoteID) as HeroDecoratorInterface,validTurns)
+            this.decoratorMap.set(remoteID,tmpDer);
+            const localCard = this.playerMap.get(remoteID) as CardComponent;
+            localCard.controller.updateCardStats(card as HeroeType,this.decoratorMap.get(remoteID) as HeroDecorator);
+        });
     }
 
     enableButtonsForTurnAction = (): void => {
@@ -143,6 +157,7 @@ export class GameViewHandler extends Component {
 
         this.strategyContext.executeStrategy(data,this.registerPlayerDecorator,true);
         this.inventoryManager.deleteCardFromActive(cardComponent);   
+        this.dialog.notify(this,"ClientSkipAction",{});
     }
 
     strategyGenerator = (id:number):void =>{

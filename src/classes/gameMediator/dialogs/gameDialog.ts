@@ -108,6 +108,11 @@ export default class GameDialog implements Mediator{
                     break;
                 }
             break;
+
+            case "createdLocalDecorator":
+                console.log("SENT!")
+                this.nexusClient.sendClientCreatedDecorator(args);
+            break;
         }
     }
 
@@ -161,7 +166,7 @@ export default class GameDialog implements Mediator{
             break;
                 
             case "playerHasTerminatedTurn":
-                console.log("Message from colyseus")
+                console.log("End Turn Signal")
                 this.turnManager.handleTurnProgress();    
             break;
 
@@ -171,6 +176,10 @@ export default class GameDialog implements Mediator{
 
             case "remoteAttackRecieved":
                 this.gameViewHandler.handleRemoteAnim(args.remoteID);
+            break;
+
+            case "recievedDecoratorNotif":
+                this.gameViewHandler.registerRemoteDecorator(args.remoteID,args.heroe,args.turnos,args.remoteCardID);    
             break;
         }
     }
@@ -190,9 +199,7 @@ export default class GameDialog implements Mediator{
                 myReturn = this.nexusClient.sessionId;    
             break;
 
-            case "getDataFromInventory":
-                console.log(args);
-                
+            case "getDataFromInventory":                
                 this.gameViewHandler.inventoryManager.setFromInventory(args.cardDictionary,args.cardDeck);
                 this.stateMachine.changeMachineState(stateType.Gameplay);
                 this.stateMachine.drawToScreen();
