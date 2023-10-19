@@ -8,10 +8,16 @@ import CardView from "../view/cardView";
 
 export default class CardController {
     private isSelected: boolean = false
+    private cardTypeRender: CardStatusHandler
+    public clase:string
+    public tipo:string
 
     constructor(private readonly view: CardView) { }
 
     init = (node: JQuery<HTMLElement>, cardType: CardStatusHandler, cardData: HeroeType | ConsumibleType, cardOwner: CardOwner, componentBreaker: CardComponent): void => {
+        this.cardTypeRender = cardType
+        this.clase = cardData.clase
+        this.tipo = cardData.tipo
         const cardTypeHandler: { [key in CardStatusHandler]: () => void } = {
             [CardStatusHandler.InventoryHeroe]: () => this.renderInventoryHeroe(node, cardData as HeroeType),
             [CardStatusHandler.InventoryConsumible]: () => this.renderInventoryConsumible(node, cardData as ConsumibleType),
@@ -50,6 +56,9 @@ export default class CardController {
     }
 
     public getCardNode = (): JQuery<HTMLElement> => {
+        if (this.cardTypeRender == CardStatusHandler.GameConsumible) {
+            return this.view.getSmallCardElement
+        }
         return this.view.getCardElement
     }
     public getCardSelection = (): boolean => { return this.isSelected }
@@ -77,7 +86,7 @@ export default class CardController {
         this.view.getToUpdateStats("vida").text(actualCard.getVida())
         const healthRate: number = ((actualCard.getVida() * 100) / referenceCard.vida)
         this.view.getToUpdateStats("vida-bar").css("background-color", healthRate > 60 ? "rgb(115, 188, 88)" : healthRate >= 40 ? "rgb(185, 207, 60)" : "rgb(230, 67, 86)")
-        this.view.getToUpdateStats("vida-bar").css("width", `${healthRate}%`)
+        this.view.getToUpdateStats("vida-bar").css("width", `${healthRate > 100 ? 100 : healthRate}%`)
         //Actualizar stats
         this.updateSingleStat("ataque", referenceCard.ataqueBase, actualCard.getAtaque())
         this.updateSingleStat("daño", referenceCard.daño, actualCard.getDano())
@@ -89,5 +98,17 @@ export default class CardController {
         const statObject = this.view.getToUpdateStats(statName)
         statObject.text((actualStat > referenceStat ? "↑" : actualStat < referenceStat ? "↓" : "") + actualStat)
         actualStat > referenceStat ? statObject.css("color", "rgb(115, 188, 88)") : actualStat < referenceStat ? statObject.css("color", "rgb(230, 67, 86)") : statObject.css("color", "white")
+    }
+
+    public setButtonsAction = (action: boolean): void => {
+        if (action) {
+            this.getCardNode().find("#btnUpgrade").show()
+            this.getCardNode().find("#btnSkip").show()
+            this.getCardNode().find("#btnAttack").show()
+        } else {
+            this.getCardNode().find("#btnUpgrade").hide()
+            this.getCardNode().find("#btnSkip").hide()
+            this.getCardNode().find("#btnAttack").hide()
+        }
     }
 }

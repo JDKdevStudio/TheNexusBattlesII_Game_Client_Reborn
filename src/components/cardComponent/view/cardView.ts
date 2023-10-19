@@ -18,7 +18,7 @@ export default class CardView {
     `)
 
     private smallCardElement:JQuery<HTMLDivElement>=$(`
-    <div class="card cardComponent-small grow">
+    <div class="card cardComponent-small">
     <!--Sección: título de la carta-->
     <div class="container-fluid cardComponent-section-small cardComponent-text-small text-center" id="cardTitle"></div>
     <!--Sección: imagen de la carta-->

@@ -28,6 +28,8 @@ export enum ColyseusMessagesTypes {
     ClientHasTerminatedTurn = 4,
     ClientSyncHeroCard = 5,
     ClientSendAttackedWho = 6,
+    ClientSendDecoratorData = 7,
+    AttackData = 8
 }
 
 enum ColyseusChatMessageTypes {
@@ -38,7 +40,7 @@ enum ColyseusChatMessageTypes {
 
 export class NexusClient extends Component {
     colyseusNexusClient: Client = new Client(import.meta.env.VITE_COLYSEUS_URL);
-    private colyseusRoom: Room;
+    colyseusRoom: Room;
     private localUsername: string = "Nexus Player";
     sessionId: string;
     private playerMap: Map<string, any> = new Map<string, any>();
@@ -167,8 +169,12 @@ export class NexusClient extends Component {
             this.dialog.notify(this,"registerRemotePlayerCard",message);
         });
 
-        this.colyseusRoom.onMessage(ColyseusMessagesTypes.ClientSendAttackedWho,(message)=>{
+        this.colyseusRoom.onMessage(ColyseusMessagesTypes.AttackData,(message)=>{
             this.dialog.notify(this,"remoteAttackRecieved",message);
+        });
+
+        this.colyseusRoom.onMessage(ColyseusMessagesTypes.ClientSendDecoratorData,(message)=>{
+            this.dialog.notify(this,"recievedDecoratorNotif",message);
         });
     }
 
@@ -227,9 +233,14 @@ export class NexusClient extends Component {
         })
     }
 
-    sendClientAttack = (remoteID:string):void =>{
-        this.colyseusRoom.send(ColyseusMessagesTypes.ClientSendAttackedWho,{
-            remoteID: remoteID
+    sendClientAttack = (remoteID:string,dmg:number):void =>{
+        this.colyseusRoom.send(ColyseusMessagesTypes.AttackData,{
+            remoteID: remoteID,
+            dmg:dmg
         })
+    }
+
+    sendClientCreatedDecorator = (args:any):void =>{
+        this.colyseusRoom.send(ColyseusMessagesTypes.ClientSendDecoratorData,args);
     }
 }
