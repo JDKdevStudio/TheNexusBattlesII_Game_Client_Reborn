@@ -66,6 +66,10 @@ export default class TurnManager extends Component {
         clearInterval(this.intervID);
     }
 
+    actionAttack = () => {
+        
+    }
+
     actionFinishTurn = () => {
         this.removeTimer();
         this.dialog.notify(this,"actionFinishTurn",{});

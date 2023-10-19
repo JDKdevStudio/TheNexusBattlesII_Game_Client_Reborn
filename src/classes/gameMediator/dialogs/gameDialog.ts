@@ -5,8 +5,7 @@ import Component from "../componentClass";
 import Mediator from "../mediatorInterface";
 import { gameStateContext, stateType } from "../../gameState/gameStateMachine";
 import TurnManager from "../../turnManager/turnManager";
-import GameViewHandler from "../../viewHandlers/gameViewHandler";
-import InventoryManager from "../../inventoryManager/inventoryManager";
+import {GameViewHandler, EnemyCardInteractions} from "../../viewHandlers/gameViewHandler";
 
 export default class GameDialog implements Mediator{
     private nexusClient:NexusClient;
@@ -14,7 +13,6 @@ export default class GameDialog implements Mediator{
     private stateMachine: gameStateContext;
     private turnManager:TurnManager;
     private gameViewHandler:GameViewHandler;
-    private inventoryManager:InventoryManager;
 
     constructor(){
         this.nexusClient = new NexusClient(this);
@@ -22,7 +20,6 @@ export default class GameDialog implements Mediator{
         this.stateMachine = new gameStateContext(this);        
         this.turnManager = new TurnManager(this);
         this.gameViewHandler = new GameViewHandler(this,this.nexusClient.sessionId);
-        this.inventoryManager = new InventoryManager(this);
     }
 
     init = () =>{
@@ -91,6 +88,25 @@ export default class GameDialog implements Mediator{
             case "ClientSkipAction":
                 this.turnManager.actionFinishTurn();
             break;
+
+            case "rivalCardPressed":
+                switch(args.currentAction){
+                    case EnemyCardInteractions.None:
+                        console.log("None!");
+                    break;
+
+                    case EnemyCardInteractions.Attack:
+                        const players = this.nexusClient.nexusClientGetPlayers();
+                        
+                        if((players.get(args.remoteID).team != players.get(this.nexusClient.sessionId).team) || (players.get(args.remoteID).team == -1)){
+                            //console.log("Attack!")
+                            this.nexusClient.sendClientAttack(args.remoteID);
+                            this.turnManager.actionFinishTurn();
+                            this.gameViewHandler.setCurrentAction(EnemyCardInteractions.None);
+                        }               
+                    break;
+                }
+            break;
         }
     }
 
@@ -133,16 +149,10 @@ export default class GameDialog implements Mediator{
                 this.stateMachine.changeMachineState(stateType.Inventory);
                 this.stateMachine.drawToScreen();                
             break;
-
-            case "nexusFinishInventory":
-                this.stateMachine.changeMachineState(stateType.Gameplay);
-                this.stateMachine.drawToScreen();
-                this.gameViewHandler.drawLocalPlayer();
-            break;
             
             case "nexusGetTurn":
                 this.gameViewHandler.disableButtonsForTurnAction();
-                this.nexusClient.sendLocalCardID("650f38ee7aaeb67f7dfc712e");
+                this.nexusClient.sendLocalCardID(this.gameViewHandler.inventoryManager.heroInitialID);
                 this.turnManager.setAssignerTurn(args.turn,this.nexusClient.nexusClientGetPlayers().size);
             break;
                 
@@ -153,6 +163,10 @@ export default class GameDialog implements Mediator{
 
             case "registerRemotePlayerCard":
                 this.gameViewHandler.drawNewPlayer(args.remoteID,args.cardID);
+            break;
+
+            case "remoteAttackRecieved":
+                this.gameViewHandler.handleRemoteAnim(args.remoteID);
             break;
         }
     }
@@ -170,6 +184,13 @@ export default class GameDialog implements Mediator{
 
             case "getSessionID":
                 myReturn = this.nexusClient.sessionId;    
+            break;
+
+            case "getDataFromInventory":
+                this.gameViewHandler.inventoryManager.setFromInventory(args.cardDictionary,args.cardDeck);
+                this.stateMachine.changeMachineState(stateType.Gameplay);
+                this.stateMachine.drawToScreen();
+                this.gameViewHandler.drawLocalPlayer();
             break;
         }
         return myReturn;

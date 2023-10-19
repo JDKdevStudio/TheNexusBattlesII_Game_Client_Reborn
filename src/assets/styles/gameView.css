@@ -40,18 +40,11 @@
     height: 5vh;
 }
 
-
-
 .container-battle {
     display: grid;
-    height: 63vh;
-    grid-template-columns: 20% 10% 20% 10% 20% 10%;
-    grid-template-rows: 30% 24% 20%;
-    justify-content: center;
-}
-
-.player-col { /* Tamaño de las cartas en mockup de battle.html, eliminar si es necesario */
-    height: auto;
+    height: 78vh;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: 1fr 1fr 1fr;
 }
 
 /* Quitar colores!! */
@@ -70,6 +63,7 @@
     grid-column-start: 3;
     grid-column-end: 4;
     justify-self: center;
+    align-self: end;
 }
 
 .side-1 {
@@ -88,6 +82,28 @@
     justify-self: right;
 }
 
+.card-deck {
+    /* background-color: rgba(177, 223, 71, 0.7); */
+    grid-row-start: 3;
+    grid-column-start: 2;
+    grid-column-end: 3;
+    justify-self: right;
+    align-self: end;
+}
+
+.card-hand {
+    /* background-color: rgba(91, 160, 240, 0.7); */
+    grid-row-start: 3;
+    grid-column-start: 4;
+    grid-column-end: 6;
+    grid-column: span 2;
+    justify-self: left;
+    align-self: end;
+    margin-left: 5px;
+    /* width: 200px; */
+    
+}
+
 .deck {
     background-color: rgba(17,18,18,1);
     background-image: url("../images/deck-background.png");
@@ -96,46 +112,27 @@
     background-size: contain;
     border-radius: 10px;
     border: 1px solid rgba(255,244,0,1);
-    height: 30vh; /* auto */
-    width: 190px; /* ??? */
+    height: 20vh; /* auto */
+    width: 120px; /* ??? */
 }
 
 .deck-text {
     background-color: rgba(57,57,15,1);
     color: white;
     text-align: center;
-    font-size: 15px;
+    font-size: 66%;
     border: 1px solid rgba(255,244,0,1);
     border-radius: 5px;
-    height: 6vh;
+    height: 4vh;
     margin: auto 10px auto 10px;
     position: relative;
     top: 75%;
-}
-
-.card-deck {
-    background-color: rgba(177, 223, 71, 0.7);
-    grid-row-start: 3;
-    grid-column-start: 2;
-    grid-column-end: 3;
-    width: 140px;
-    justify-self: right;
-}
-
-.card-hand {
-    background-color: rgba(91, 160, 240, 0.7);
-    grid-row-start: 3;
-    grid-column-start: 4;
-    grid-column-end: 5;
-    width: 200px;
-    justify-self: left;
 }
 
 .playerIcon {
     background-color: #f2f28d;
     margin: 10px;
     margin-top: 15px;
- 
     font-size: 150%;
     padding-top: 0.5%;
     padding-bottom: 0.5%;

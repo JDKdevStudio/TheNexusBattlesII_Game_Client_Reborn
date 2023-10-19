@@ -26,7 +26,8 @@ export enum ColyseusMessagesTypes {
     ClientGameViewLoaded = 2,
     RemoteGetOrder = 3,
     ClientHasTerminatedTurn = 4,
-    ClientSyncHeroCard = 5
+    ClientSyncHeroCard = 5,
+    ClientSendAttackedWho = 6,
 }
 
 enum ColyseusChatMessageTypes {
@@ -84,7 +85,8 @@ export class NexusClient extends Component {
                 numero_creditos: Cookies.get("NumeroRecompensa"),
                 numero_jugadores: Cookies.get("NumeroJugadores"),
                 nombre_sala: Cookies.get("NombreSala"),
-                equipos: Cookies.get("SetEquipos")
+                equipos: Cookies.get("SetEquipos"),
+                username: this.localUsername
             };
 
             this.colyseusNexusClient.create("room_battle", cookie_data).then((room: Room) => {
@@ -103,7 +105,7 @@ export class NexusClient extends Component {
         try {
             const joining_id = Cookies.get("Join");
             if (joining_id != undefined) {
-                this.colyseusNexusClient.joinById(joining_id, {}).then((room: Room) => {
+                this.colyseusNexusClient.joinById(joining_id, {username:this.localUsername}).then((room: Room) => {
                     this.colyseusRoom = room;
                     this.sessionId = room.sessionId;
                     this.handleJoinAction();
@@ -142,7 +144,7 @@ export class NexusClient extends Component {
 
         this.colyseusRoom.onMessage(ColyseusMessagesTypes.RoomHasReachedPlayerMax, () => {
             setTimeout(() => {
-                this.dialog.notify(this,"nexusFinishInventory",{});
+                this.dialog.notify(this,"nexusRoomReady",{});
             }, 1000);
         });
 
@@ -163,6 +165,10 @@ export class NexusClient extends Component {
 
         this.colyseusRoom.onMessage(ColyseusMessagesTypes.ClientSyncHeroCard,(message)=>{
             this.dialog.notify(this,"registerRemotePlayerCard",message);
+        });
+
+        this.colyseusRoom.onMessage(ColyseusMessagesTypes.ClientSendAttackedWho,(message)=>{
+            this.dialog.notify(this,"remoteAttackRecieved",message);
         });
     }
 
@@ -218,6 +224,12 @@ export class NexusClient extends Component {
     sendLocalCardID = (cardID:string):void =>{
         this.colyseusRoom.send(ColyseusMessagesTypes.ClientSyncHeroCard,{
             cardID: cardID
+        })
+    }
+
+    sendClientAttack = (remoteID:string):void =>{
+        this.colyseusRoom.send(ColyseusMessagesTypes.ClientSendAttackedWho,{
+            remoteID: remoteID
         })
     }
 }
