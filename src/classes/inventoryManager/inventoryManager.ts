@@ -4,11 +4,14 @@ import { InventoryToDeckType } from "../../components/inventoryComponent/types/i
 import ConsumibleType from "../../types/consumibleType";
 import HeroeType from "../../types/heroeType";
 import { GameViewHandler } from "../viewHandlers/gameViewHandler";
+import $ from "jquery";
 
 export default class InventoryManager{
     currentGameCards:Map<string,CardComponent>;
     deckStoredCards:Array<string> = [];
     cardRepository:Map<string,HeroeType|ConsumibleType>;
+    nodeConsumableControl:Map<JQuery<HTMLElement>,boolean>;
+
     heroInitial:HeroeType;
     heroInitialID:string;
     
@@ -16,6 +19,7 @@ export default class InventoryManager{
 
     constructor(private dialog: GameViewHandler,updateDeckNumber:(ammount:string)=>void) {
         this.updateDeckNumber = updateDeckNumber;
+        this.currentGameCards = new Map<string,CardComponent>();
     }
 
     setFromInventory(deckStoredCards:Map<string,HeroeType|ConsumibleType>,fromInventory:InventoryToDeckType){
@@ -26,10 +30,15 @@ export default class InventoryManager{
         this.updateDeckWithRemainingCards();
     }
 
+    initializeFirstCards():void{
+        for(let i = 0; i < 3; i ++) this.insertNewCardToActive();
+    }
+
     insertNewCardToActive():void{
         const fromDeck:string|undefined = this.deckStoredCards.shift();
+
         if(fromDeck != undefined){
-            const currentCard = new CardComponent($("#deckGameplay"),CardStatusHandler.GameConsumible,{} as ConsumibleType,true,this.dialog);
+            const currentCard = new CardComponent($("#deckGameplay"),CardStatusHandler.GameConsumible,this.cardRepository.get(fromDeck) as ConsumibleType,true,this.dialog);
             this.currentGameCards.set(fromDeck,currentCard);
         }
         this.updateDeckWithRemainingCards();

@@ -154,6 +154,7 @@ export default class GameDialog implements Mediator{
                 this.gameViewHandler.disableButtonsForTurnAction();
                 this.nexusClient.sendLocalCardID(this.gameViewHandler.inventoryManager.heroInitialID);
                 this.turnManager.setAssignerTurn(args.turn,this.nexusClient.nexusClientGetPlayers().size);
+                this.gameViewHandler.inventoryManager.initializeFirstCards();
             break;
                 
             case "playerHasTerminatedTurn":

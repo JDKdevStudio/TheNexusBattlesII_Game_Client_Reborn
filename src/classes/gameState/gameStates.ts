@@ -61,9 +61,9 @@ export class stateInGame extends State {
             </div>
             <!-- Baraja -->
             <!-- <div class="card-hand" id="deckGameplay"></div> -->
-            <div class="row card-hand">
+            <div class="row card-hand" id="deckGameplay">
         
-                <div class="deck">
+            <!-- <div class="deck">
                     <div class="deck-text">
                         <p id="count">Cartas Restantes: n</p>
                     </div>
@@ -79,7 +79,7 @@ export class stateInGame extends State {
                     <div class="deck-text">
                         <p id="count">Cartas Restantes: n</p>
                     </div>
-                </div>
+                </div>-->
         
             </div> <!-- Mano de juego -->
         </div>

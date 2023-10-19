@@ -112,8 +112,8 @@
     background-size: contain;
     border-radius: 10px;
     border: 1px solid rgba(255,244,0,1);
-    height: 20vh; /* auto */
-    width: 120px; /* ??? */
+    height: 20vh; 
+    width: 120px;
 }
 
 .deck-text {
