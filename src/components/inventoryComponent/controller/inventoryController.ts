@@ -162,7 +162,8 @@ export default class InventoryController {
             ...scd.epicasHeroe
         ]
         //shuffle consumibles
-        deckGenerated.consumibles.sort(() => Math.floor(Math.random() - 0.5));
+        const currentSeconds = new Date().getSeconds();
+        deckGenerated.consumibles.sort(() => Math.floor(Math.random() * currentSeconds - 0.5));
         
         this.functionBreaker({
             cardDictionary: this.model.inventoryCardMap,

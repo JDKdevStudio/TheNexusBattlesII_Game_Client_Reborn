@@ -106,6 +106,7 @@ export class GameViewHandler extends Component {
     }
 
     disableButtonsForTurnAction = (): void => {
+        
         console.error("IMPLEMENTATION MISSING FOR DISABLE BUTTONS!");
     }
 
@@ -128,7 +129,7 @@ export class GameViewHandler extends Component {
         $("#count").text(`Restantes:${ammount}`)
     }
 
-    handleOnDrop =(data:ConsumibleType):void =>{
+    handleOnDrop =(data:ConsumibleType, cardComponent:CardComponent):void =>{
         switch(data.efecto.id_estrategia){
             //Modifica una estadistica del jugador
             case 0:
@@ -142,5 +143,7 @@ export class GameViewHandler extends Component {
         }
 
         this.strategyContext.executeStrategy(data,this.registerPlayerDecorator);
+        this.inventoryManager.deleteCardFromActive(cardComponent);
+        
     }
 }
