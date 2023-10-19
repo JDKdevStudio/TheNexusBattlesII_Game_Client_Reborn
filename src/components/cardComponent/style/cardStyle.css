@@ -131,11 +131,3 @@
     color: white;
     font-size: 50%;
 }
-
-.grow { 
-    transition: all .2s ease-in-out; 
-}
-    
-.grow:hover { 
-    transform: scale(1.5); 
-}
