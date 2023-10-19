@@ -11,7 +11,6 @@ export default class InventoryModel {
   inventorySelectionData: InventorySelectionType = { heroe: [], armas: [], armaduras: [], items: [], epicas: [], epicasHeroe: [] }
 
   getUserInventory = async (): Promise<InventoryType[]> => {
-    try {
       let headersList = {
         "Authorization": Cookies.get("access_token")!
        }
@@ -20,13 +19,14 @@ export default class InventoryModel {
          method: "GET",
          headers: headersList
        });
-
-       const parsedResponse:InventoryType[] = JSON.parse(await response.text())
-       return parsedResponse
-    } catch (error) {
+       if (response.status==200) {
+         const parsedResponse:InventoryType[] = JSON.parse(await response.text())
+         return parsedResponse
+       }
+  
       const parsedResponse: InventoryType[] = JSON.parse(sample_response)
       return parsedResponse
-    }
+
 
   }
 
