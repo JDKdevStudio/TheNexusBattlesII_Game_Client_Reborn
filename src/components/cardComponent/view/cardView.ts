@@ -11,17 +11,29 @@ export default class CardView {
         <div class="container-fluid cardComponent-section cardComponent-text text-center" id="cardTitle"></div>
         <!--Sección: imagen de la carta-->
         <div class="container-fluid cardComponent-section">
-            <img class="cardComponent-image" style="height: 100px;">
+            <img class="cardComponent-image" style="height: 120px;">
             <img class="cardComponent-icon">
         </div>
     </div>
     `)
 
-    get getCardElement() { return this.cardElement }
+    private smallCardElement:JQuery<HTMLDivElement>=$(`
+    <div class="card cardComponent-small grow">
+    <!--Sección: título de la carta-->
+    <div class="container-fluid cardComponent-section-small cardComponent-text-small text-center" id="cardTitle"></div>
+    <!--Sección: imagen de la carta-->
+    <div class="container-fluid cardComponent-section-small">
+        <img class="cardComponent-image" style="height: 120px;">
+        <img class="cardComponent-icon">
+    </div>
+</div>
+    `)
 
+    get getCardElement() { return this.cardElement }
+    get getSmallCardElement() { return this.smallCardElement }
     //Renders
-    render = (node: JQuery<HTMLElement>, componentBreaker?: CardComponent): void => {
-        node.append(this.cardElement);
+    render = (node: JQuery<HTMLElement>,nodeToRender:JQuery<HTMLElement>, componentBreaker?: CardComponent): void => {
+        node.append(nodeToRender);
         if (componentBreaker != undefined) {
             $("#btnSkip").on("click", () => {
                 console.log("Clicked on skip!")
@@ -35,16 +47,25 @@ export default class CardView {
         }
     }
 
-    renderCardHeader = (cardData: HeroeType | ConsumibleType): void => {
-        this.cardElement.find("#cardTitle").text(cardData.nombre.toString())
-        this.cardElement.find(".cardComponent-image").attr("src", `https://cards.thenexusbattles2.cloud/assets/${cardData.imagen}`)
-        this.cardElement.find(".cardComponent-icon").attr("src", cardData.icono)
+    renderCardHeader = (node:JQuery<HTMLElement>,cardData: HeroeType | ConsumibleType): void => {
+        node.find("#cardTitle").text(cardData.nombre.toString())
+        node.find(".cardComponent-image").attr("src", `https://cards.thenexusbattles2.cloud/assets/${cardData.imagen}`)
+        node.find(".cardComponent-icon").attr("src", cardData.icono)
     }
 
     renderCardDesc = (desc: string): void => {
         this.cardElement.append(`
         <!--Sección: descripción de la carta-->
         <div class="container-fluid cardComponent-section cardComponent-desc-text">
+        ${desc}
+        </div>
+        `)
+    }
+
+    renderSmallCardDesc = (desc: string): void => {
+        this.smallCardElement.append(`
+        <!--Sección: descripción de la carta-->
+        <div class="container-fluid cardComponent-section-small cardComponent-desc-text-small">
         ${desc}
         </div>
         `)
