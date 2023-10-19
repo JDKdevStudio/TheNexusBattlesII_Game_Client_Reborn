@@ -9,11 +9,15 @@ import CardView from "../view/cardView";
 export default class CardController {
     private isSelected: boolean = false
     private cardTypeRender: CardStatusHandler
+    public clase:string
+    public tipo:string
 
     constructor(private readonly view: CardView) { }
 
     init = (node: JQuery<HTMLElement>, cardType: CardStatusHandler, cardData: HeroeType | ConsumibleType, cardOwner: CardOwner, componentBreaker: CardComponent): void => {
         this.cardTypeRender = cardType
+        this.clase = cardData.clase
+        this.tipo = cardData.tipo
         const cardTypeHandler: { [key in CardStatusHandler]: () => void } = {
             [CardStatusHandler.InventoryHeroe]: () => this.renderInventoryHeroe(node, cardData as HeroeType),
             [CardStatusHandler.InventoryConsumible]: () => this.renderInventoryConsumible(node, cardData as ConsumibleType),
