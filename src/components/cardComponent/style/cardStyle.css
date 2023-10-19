@@ -130,10 +130,9 @@
 }
 
 .cardComponent-desc-text-small {
-    padding: 5px;
+    padding: auto 5px auto 5px;
     color: white;
     font-size: 50%;
-    overflow: scroll;
 }
 
 .grow { 
