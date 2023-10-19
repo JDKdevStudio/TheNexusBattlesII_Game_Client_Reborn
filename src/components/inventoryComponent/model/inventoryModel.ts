@@ -102,6 +102,6 @@ const sample_response = `
       "id_carta": "650f390b7aaeb67f7dfc7150",
       "quantity": 3,
       "type": "Epicas"
-    },
+    }
   ]
 `
