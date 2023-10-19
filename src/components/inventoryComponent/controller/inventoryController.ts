@@ -10,11 +10,13 @@ import { InventoryType } from "../types/inventoryType";
 import InventoryView from "../view/inventoryView";
 
 export default class InventoryController {
+    functionBreaker:(args:any)=>void;
     constructor(private readonly view: InventoryView = new InventoryView(), private readonly model: InventoryModel = new InventoryModel()) { }
 
-    init = (node: JQuery<HTMLElement>): void => {
+    init = (node: JQuery<HTMLElement>,sendControllerDataToMediator:(args:any)=>void): void => {
         this.view.addActionButtonListener(this.inventoryToGame)
         this.view.render(node)
+        this.functionBreaker = sendControllerDataToMediator;
         this.inventoryRender()
     }
 
@@ -159,7 +161,12 @@ export default class InventoryController {
             ...scd.epicasHeroe
         ]
         //shuffle consumibles
-        deckGenerated.consumibles.sort(() => Math.floor(Math.random() - 0.5))
+        deckGenerated.consumibles.sort(() => Math.floor(Math.random() - 0.5));
+        this.functionBreaker({
+            cardDictionary: this.model.inventoryCardMap,
+            cardDeck: deckGenerated
+        });
+        this.view.deleteRenderFooter();
         //Integración a la stateMachine/InventoryManager here--->
     }
 }
