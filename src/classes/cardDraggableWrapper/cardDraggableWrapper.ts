@@ -4,11 +4,14 @@ import ConsumibleType from "../../types/consumibleType";
 export default class CardDraggableWrapper{
     private cardComponent:CardComponent
     private consumibleData?:ConsumibleType
+    private handleOnDrop:(data:ConsumibleType)=>void 
 
-    constructor(cardComponent:CardComponent,isDraggableHandler:boolean,consumibleData?:ConsumibleType){
+    constructor(cardComponent:CardComponent,isDraggableHandler:boolean,consumibleData?:ConsumibleType,handleOnDrop?:(data:ConsumibleType)=>void){
         this.cardComponent=cardComponent
         this.consumibleData=consumibleData
         this.init(isDraggableHandler)
+        if(handleOnDrop != undefined)
+        this.handleOnDrop = handleOnDrop;
     }
 
     init=(isDraggableHandler:boolean):void=>{
@@ -29,7 +32,7 @@ export default class CardDraggableWrapper{
     }
 
     onDropFunction=(ev:JQuery.DropEvent):void=>{
-       const cardData:ConsumibleType=JSON.parse(ev.originalEvent!.dataTransfer!.getData("text/plain"))
-       console.log(cardData)
+        const cardData:ConsumibleType=JSON.parse(ev.originalEvent!.dataTransfer!.getData("text/plain"));
+        this.handleOnDrop(cardData);
     }
 }

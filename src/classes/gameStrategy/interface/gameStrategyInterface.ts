@@ -1,3 +1,3 @@
-export default interface gameStrategyInterface{
-    strategyExecutable(data:any):any;
+export default interface GameStrategyInterface{
+    strategyExecutable(data:any,registerDecorator:any):any;
 }

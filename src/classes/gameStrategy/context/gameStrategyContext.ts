@@ -1,15 +1,15 @@
-import gameStrategyInterface from "../interface/gameStrategyInterface";
+import GameStrategyInterface from "../interface/gameStrategyInterface";
 
 export default class StrategyContext{
-    strategy:gameStrategyInterface;
+    strategy:GameStrategyInterface;
 
     constructor(){}
 
-    setStrategy(newStrategy:gameStrategyInterface):void{
+    setStrategy(newStrategy:GameStrategyInterface):void{
         this.strategy = newStrategy;
     }
 
-    executeStrategy(data:any):void{
-        this.strategy.strategyExecutable(data);
+    executeStrategy(data:any,registerDecorator:any):void{
+        this.strategy.strategyExecutable(data,registerDecorator);
     }
 }

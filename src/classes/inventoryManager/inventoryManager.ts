@@ -3,6 +3,7 @@ import { CardStatusHandler } from "../../components/cardComponent/enum/cardStatu
 import { InventoryToDeckType } from "../../components/inventoryComponent/types/inventoryToDeckType";
 import ConsumibleType from "../../types/consumibleType";
 import HeroeType from "../../types/heroeType";
+import CardDraggableWrapper from "../cardDraggableWrapper/cardDraggableWrapper";
 import { GameViewHandler } from "../viewHandlers/gameViewHandler";
 import $ from "jquery";
 
@@ -39,6 +40,7 @@ export default class InventoryManager{
 
         if(fromDeck != undefined){
             const currentCard = new CardComponent($("#deckGameplay"),CardStatusHandler.GameConsumible,this.cardRepository.get(fromDeck) as ConsumibleType,true,this.dialog);
+            new CardDraggableWrapper(currentCard,true,this.cardRepository.get(fromDeck) as ConsumibleType);
             this.currentGameCards.set(fromDeck,currentCard);
         }
         this.updateDeckWithRemainingCards();

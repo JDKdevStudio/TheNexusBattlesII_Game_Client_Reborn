@@ -6,6 +6,12 @@ import CardComponent from "../../components/cardComponent/cardComponent";
 import { CardStatusHandler } from "../../components/cardComponent/enum/cardStatusEnum";
 import InventoryManager from "../inventoryManager/inventoryManager";
 import HeroDecoratorInterface from "../heroDecorator/decoratorInterface";
+import CardDraggableWrapper from "../cardDraggableWrapper/cardDraggableWrapper";
+import ConsumibleType from "../../types/consumibleType";
+import StrategyContext from "../gameStrategy/context/gameStrategyContext";
+import AddBuffStrategy from "../gameStrategy/strategies/addBuffStrategy";
+import HeroDecorator from "../heroDecorator/decoratorHero";
+import HeroeType from "../../types/heroeType";
 
 export enum EnemyCardInteractions {
     None,
@@ -19,6 +25,7 @@ export class GameViewHandler extends Component {
     identifier: number = 0;
     current_action: EnemyCardInteractions = EnemyCardInteractions.None;
     inventoryManager: InventoryManager;
+    strategyContext: StrategyContext;
 
     constructor(dialog: Mediator, localSessionID: string) {
         super(dialog);
@@ -26,6 +33,7 @@ export class GameViewHandler extends Component {
         this.playerMap = new Map<string, any>();
         this.decoratorMap = new Map<string,HeroDecoratorInterface>;
         this.inventoryManager = new InventoryManager(this, this.updateTextForDeck);
+        this.strategyContext =  new StrategyContext();
     }
 
     init = async (): Promise<void> => {
@@ -51,6 +59,7 @@ export class GameViewHandler extends Component {
     drawLocalPlayer = (): void => {
         this.playerMap.set(this.localSessionID,
             new CardComponent($("#bottom"), CardStatusHandler.GameHeroe, this.inventoryManager.getLocalHeroData(), true, this));
+            new CardDraggableWrapper(this.playerMap.get(this.localSessionID),false,undefined,this.handleOnDrop);
         this.updateTextForDeck("30");
     }
 
@@ -63,6 +72,7 @@ export class GameViewHandler extends Component {
             this.inventoryManager.getCardDataByID(cardID).then((card) => {
                 this.playerMap.set(sessionID, new CardComponent($(node), CardStatusHandler.GameHeroe,
                     card, false, this));
+                
                 this.identifier++;
                 this.playerMap.get(sessionID).controller.getCardNode().on("click", () => {
                     this.dialog.notify(this, "rivalCardPressed", {
@@ -74,7 +84,12 @@ export class GameViewHandler extends Component {
         }
     }
 
-    registerPlayerDecorator = (sessionID:string):void=>{
+    registerPlayerDecorator = (data:HeroeType):void=>{
+        this.decoratorMap.set(this.localSessionID,new HeroDecorator(data,
+                this.decoratorMap.get(this.localSessionID) as HeroDecoratorInterface,-1));
+    }
+
+    registerRemoteDecorator = ():void =>{
 
     }
 
@@ -103,5 +118,21 @@ export class GameViewHandler extends Component {
 
     updateTextForDeck = (ammount: string) => {
         $("#count").text(`Restantes:${ammount}`)
+    }
+
+    handleOnDrop =(data:ConsumibleType):void =>{
+        switch(data.efecto.id_estrategia){
+            //Modifica una estadistica del jugador
+            case 0:
+                console.log("Vamos a modificar una estadística del jugador");
+                this.strategyContext.setStrategy(new AddBuffStrategy());
+            break;
+
+            //Modifica una estadística del oponente
+            case 1:
+            break;
+        }
+
+        this.strategyContext.executeStrategy(data,this.registerPlayerDecorator);
     }
 }
