@@ -48,16 +48,9 @@ export default class InventoryModel {
 const sample_response = `
 [
     {
-      "id": 25,
-      "user": "Administrador",
-      "id_carta": "650f38ee7aaeb67f7dfc712e",
-      "quantity": 4,
-      "type": "Heroes"
-    },
-    {
       "id": 26,
       "user": "Administrador",
-      "id_carta": "652ef8533d80adc828993dbb",
+      "id_carta": "650f38ee7aaeb67f7dfc712e",
       "quantity": 4,
       "type": "Heroes"
     },
