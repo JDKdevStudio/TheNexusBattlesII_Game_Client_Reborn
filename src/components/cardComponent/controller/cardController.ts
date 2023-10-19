@@ -8,7 +8,7 @@ import CardView from "../view/cardView";
 
 export default class CardController {
     private isSelected: boolean = false
-    private cardTypeRender:CardStatusHandler
+    private cardTypeRender: CardStatusHandler
 
     constructor(private readonly view: CardView) { }
 
@@ -94,5 +94,17 @@ export default class CardController {
         const statObject = this.view.getToUpdateStats(statName)
         statObject.text((actualStat > referenceStat ? "↑" : actualStat < referenceStat ? "↓" : "") + actualStat)
         actualStat > referenceStat ? statObject.css("color", "rgb(115, 188, 88)") : actualStat < referenceStat ? statObject.css("color", "rgb(230, 67, 86)") : statObject.css("color", "white")
+    }
+
+    public setButtonsAction = (action: boolean): void => {
+        if (action) {
+            this.getCardNode().find("#btnUpgrade").show()
+            this.getCardNode().find("#btnSkip").show()
+            this.getCardNode().find("#btnAttack").show()
+        } else {
+            this.getCardNode().find("#btnUpgrade").hide()
+            this.getCardNode().find("#btnSkip").hide()
+            this.getCardNode().find("#btnAttack").hide()
+        }
     }
 }
