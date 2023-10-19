@@ -79,7 +79,7 @@ const sample_response = `
       "id": 26,
       "user": "Administrador",
       "id_carta": "650f390b7aaeb67f7dfc7148",
-      "quantity": 3,
+      "quantity": 1,
       "type": "Items"
     },
     {
