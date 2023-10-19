@@ -8,9 +8,13 @@
     
     
     
+    
   <script type="module" crossorigin src="/assets/pageCommonInit-9ea57622.js"></script>
+  <script type="module" crossorigin src="/assets/modalGeneral-91a492db.js"></script>
+  <script type="module" crossorigin src="/assets/inventoryComponent-1050096a.js"></script>
   <link rel="stylesheet" href="/assets/pageCommonInit-4c3504b5.css">
-  <link rel="stylesheet" href="/assets/gameView-23b98644.css">
+  <link rel="stylesheet" href="/assets/inventoryComponent-e2fc33e2.css">
+  <link rel="stylesheet" href="/assets/gameView-f50718d2.css">
 </head>
 
 <body>
@@ -21,42 +25,14 @@
     <main>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-10" id="game">
-                    <div class="card container-nexus">
+                <div class="col-9" id="game">
+                    <div class="card container-nexus" id="game-view">
                         <div class="card-header">
                             <h4>Placeholder</h4>
                         </div>
-                        <div class="card-body">
-                            <!-- Vista sala de espera -->
-                            <div class="container-fluid container-player" id="j1">
-                                <div class="row">
-                                    <div class="col-2"><p class="playerIcon">J1</p></div>
-                                    <div class="col-10"><p class="center">Player name</p></div>
-                                </div>
-                            </div>
-                            <div class="container-fluid container-player" id="j2">
-                                <div class="row">
-                                    <div class="col-2"><p class="playerIcon">J2</p></div>
-                                    <div class="col-10"><p class="center">Player name</p></div>
-                                </div>
-                            </div>
-                            <div class="container-fluid container-player" id="j3">
-                                <div class="row">
-                                    <div class="col-2"><p class="playerIcon">J3</p></div>
-                                    <div class="col-10"><p class="center">Player name</p></div>
-                                </div>
-                            </div>
-                            <div class="container-fluid container-player" id="j4">
-                                <div class="row">
-                                    <div class="col-2"><p class="playerIcon">J4</p></div>
-                                    <div class="col-10"><p class="center">Player name</p></div>
-                                </div>
-                            </div>
-                            <!-- Vista sala de espera-->
-                        </div>
                     </div>
                 </div>
-                <div class="col-2" id="chat">
+                <div class="col-3" id="chat">
                     <div class="card container-nexus">
                         <div class="card-header">
                             <h2>Chat Global</h2>
@@ -87,6 +63,7 @@
         </div>
     </main>
 
+    
 </body>
 
 </html>

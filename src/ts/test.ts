@@ -83,8 +83,8 @@ test1Card.controller.updateCardName("soy zarate.dkf")
 const ConsumibleCard = new CardComponent($("body"),CardStatusHandler.GameConsumible,consumibleSample,CardOwner.Consumible)
 
 //CardDraggableWrapper
-const wrapReceptorCard = new CardDraggableWrapper(testCard,false)
-const wrapDraggableCard = new CardDraggableWrapper(ConsumibleCard,true,consumibleSample)
+new CardDraggableWrapper(testCard,false)
+new CardDraggableWrapper(ConsumibleCard,true,consumibleSample)
 
 //Decorador Creado
 const decBase = new HeroDecoratorBase(dataSample)

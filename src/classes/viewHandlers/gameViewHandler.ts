@@ -129,7 +129,7 @@ export class GameViewHandler extends Component {
         this.current_action = newAction;
     }
 
-    handleRemoteAnim = (sessionID: string) => {
+    handleRemoteAnim = (_sessionID: string) => {
         /*let effectToPlay = "";
         if (sessionID == this.localSessionID) {
             effectToPlay = "pulsate"
@@ -144,7 +144,7 @@ export class GameViewHandler extends Component {
         $("#count").text(`Restantes:${ammount}`)
     }
 
-    handleOnDrop =(data:ConsumibleType, cardComponent:CardComponent):void =>{
+    handleOnDrop =(data:ConsumibleType, _cardComponent:CardComponent):void =>{
         this.strategyGenerator(data.efecto.id_estrategia);
         this.strategyContext.executeStrategy(data,this.registerPlayerDecorator);
 
