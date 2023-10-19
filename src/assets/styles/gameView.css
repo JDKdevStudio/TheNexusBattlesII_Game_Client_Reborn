@@ -101,7 +101,6 @@
     align-self: end;
     margin-left: 5px;
     /* width: 200px; */
-    
 }
 
 .deck {
@@ -112,8 +111,8 @@
     background-size: contain;
     border-radius: 10px;
     border: 1px solid rgba(255,244,0,1);
-    height: 20vh; /* auto */
-    width: 120px; /* ??? */
+    height: 24vh; /* auto */
+    width: 140px; /* ??? */
 }
 
 .deck-text {
