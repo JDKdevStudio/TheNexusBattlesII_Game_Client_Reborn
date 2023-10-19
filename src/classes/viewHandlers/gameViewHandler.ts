@@ -156,7 +156,7 @@ export class GameViewHandler extends Component {
         }
 
         this.strategyContext.executeStrategy(data,this.registerPlayerDecorator,true);
-        this.inventoryManager.deleteCardFromActive(cardComponent);   
+        this.inventoryManager.deleteCardFromActive(data);   
         this.dialog.notify(this,"ClientSkipAction",{});
     }
 
