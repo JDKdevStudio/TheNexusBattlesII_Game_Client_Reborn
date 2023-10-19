@@ -22,31 +22,31 @@ export default class CardController {
     }
 
     private renderInventoryHeroe = async (node: JQuery<HTMLElement>, cardData: HeroeType): Promise<void> => {
-        this.view.renderCardHeader(cardData)
+        this.view.renderCardHeader(this.view.getCardElement, cardData)
         this.view.renderHeroeStats(cardData)
         this.view.renderCardDesc(cardData.descripcion)
-        this.view.render(node)
+        this.view.render(node, this.view.getCardElement)
     }
 
     private renderInventoryConsumible = async (node: JQuery<HTMLElement>, cardData: ConsumibleType): Promise<void> => {
-        this.view.renderCardHeader(cardData)
+        this.view.renderCardHeader(this.view.getCardElement, cardData)
         this.view.renderCardDesc(cardData.descripcion)
-        this.view.render(node)
+        this.view.render(node, this.view.getCardElement)
     }
 
     private renderGameHeroe = async (node: JQuery<HTMLElement>, cardData: HeroeType, cardOwner: CardOwner, componentBreaker: CardComponent): Promise<void> => {
-        this.view.renderCardHeader(cardData)
+        this.view.renderCardHeader(this.view.getCardElement, cardData)
         this.view.renderHeroeLifeBar(cardData.vida)
         this.view.renderHeroeStats(cardData)
         this.view.renderHeroeActionBar()
         if (cardOwner == CardOwner.Local) { this.view.renderHeroeButtons() }
-        this.view.render(node, componentBreaker)
+        this.view.render(node, this.view.getCardElement, componentBreaker)
     }
 
-    private renderGameConsumible = async (node: JQuery<HTMLElement>, cardData: ConsumibleType): Promise<void> => {
-        this.view.renderCardHeader(cardData)
-        this.view.renderCardDesc(cardData.descripcion)
-        this.view.render(node)
+    private renderGameConsumible = (node: JQuery<HTMLElement>, cardData: ConsumibleType): void => {
+        this.view.renderCardHeader(this.view.getSmallCardElement, cardData)
+        this.view.renderSmallCardDesc(cardData.descripcion)
+        this.view.render(node, this.view.getSmallCardElement)
     }
 
     public getCardNode = (): JQuery<HTMLElement> => {
@@ -68,7 +68,7 @@ export default class CardController {
         this.view.updatePlayerName(name)
     }
 
-    public updateEfectiveDamage = (num:number):void=>{
+    public updateEfectiveDamage = (num: number): void => {
         this.view.getToUpdateStats("daño-efectivo").text(num)
     }
 
