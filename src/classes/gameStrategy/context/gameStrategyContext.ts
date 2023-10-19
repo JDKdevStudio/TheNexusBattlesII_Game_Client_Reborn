@@ -9,7 +9,7 @@ export default class StrategyContext{
         this.strategy = newStrategy;
     }
 
-    executeStrategy(data:any,registerDecorator:any):void{
-        this.strategy.strategyExecutable(data,registerDecorator);
+    executeStrategy(data:any,registerDecorator:any,c:boolean = false):void{
+        this.strategy.strategyExecutable(data,registerDecorator,c);
     }
 }

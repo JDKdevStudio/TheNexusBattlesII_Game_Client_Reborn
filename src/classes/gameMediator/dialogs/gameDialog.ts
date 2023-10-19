@@ -52,6 +52,7 @@ export default class GameDialog implements Mediator{
         switch(event){
             case "newRound":
                 this.stateMachine.drawAnnouncer("Turno: " + args.turn);  
+                this.gameViewHandler.updateDecorators();
             break;
 
             case "yourTurn":

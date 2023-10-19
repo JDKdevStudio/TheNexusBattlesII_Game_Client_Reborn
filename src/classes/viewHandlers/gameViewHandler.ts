@@ -65,6 +65,7 @@ export class GameViewHandler extends Component {
         this.playerMap.set(this.localSessionID,
             new CardComponent($("#bottom"), CardStatusHandler.GameHeroe, this.inventoryManager.getLocalHeroData(), CardOwner.Local, this));
         new CardDraggableWrapper(this.playerMap.get(this.localSessionID),false,undefined,this.handleOnDrop);
+        this.disableButtonsForTurnAction();
         console.log(this.inventoryManager.getLocalHeroData())
         this.decoratorMap.set(this.localSessionID,new HeroDecoratorBase(this.inventoryManager.getLocalHeroData()));
         this.updateTextForDeck("30");
@@ -90,8 +91,8 @@ export class GameViewHandler extends Component {
         }
     }
 
-    registerPlayerDecorator = (data:HeroeType):void=>{
-        const tmpDer = new HeroDecorator(data,this.decoratorMap.get(this.localSessionID) as HeroDecoratorInterface,-1)
+    registerPlayerDecorator = (data:HeroeType,validTurns:number):void=>{
+        const tmpDer = new HeroDecorator(data,this.decoratorMap.get(this.localSessionID) as HeroDecoratorInterface,validTurns)
         this.decoratorMap.set(this.localSessionID,tmpDer);
         const localCard = this.playerMap.get(this.localSessionID) as CardComponent;
         localCard.controller.updateCardStats(this.inventoryManager.getLocalHeroData(),this.decoratorMap.get(this.localSessionID) as HeroDecorator);
@@ -102,12 +103,12 @@ export class GameViewHandler extends Component {
     }
 
     enableButtonsForTurnAction = (): void => {
-        console.error("IMPLEMENTATION MISSING FOR ENABLE BUTTONS! ENABLED BY DEFAULT?");
+        this.playerMap.get(this.localSessionID).controller.setButtonsAction(true);
+        //console.error("IMPLEMENTATION MISSING FOR ENABLE BUTTONS! ENABLED BY DEFAULT?");
     }
 
     disableButtonsForTurnAction = (): void => {
-        
-        console.error("IMPLEMENTATION MISSING FOR DISABLE BUTTONS!");
+        this.playerMap.get(this.localSessionID).controller.setButtonsAction(false);
     }
 
     setCurrentAction = (newAction: EnemyCardInteractions): void => {
@@ -130,10 +131,24 @@ export class GameViewHandler extends Component {
     }
 
     handleOnDrop =(data:ConsumibleType, cardComponent:CardComponent):void =>{
-        switch(data.efecto.id_estrategia){
+        this.strategyGenerator(data.efecto.id_estrategia);
+        this.strategyContext.executeStrategy(data,this.registerPlayerDecorator);
+
+        if(data.efectoHeroe != undefined){
+            const myCard = this.playerMap.get(this.localSessionID);
+            if(data.clase == myCard.clase && data.tipo == myCard.tipo){
+                this.strategyGenerator(data.efectoHeroe.id_estrategia);
+            }
+        }
+
+        this.strategyContext.executeStrategy(data,this.registerPlayerDecorator,true);
+        this.inventoryManager.deleteCardFromActive(cardComponent);   
+    }
+
+    strategyGenerator = (id:number):void =>{
+        switch(id){
             //Modifica una estadistica del jugador
             case 0:
-                console.log("Vamos a modificar una estadística del jugador");
                 this.strategyContext.setStrategy(new AddBuffStrategy());
             break;
 
@@ -141,9 +156,11 @@ export class GameViewHandler extends Component {
             case 1:
             break;
         }
+    }
 
-        this.strategyContext.executeStrategy(data,this.registerPlayerDecorator);
-        this.inventoryManager.deleteCardFromActive(cardComponent);
-        
+    updateDecorators = ():void =>{
+        this.decoratorMap.forEach((value,_)=>{
+            value.reduceTurnsRemaining();
+        });
     }
 }

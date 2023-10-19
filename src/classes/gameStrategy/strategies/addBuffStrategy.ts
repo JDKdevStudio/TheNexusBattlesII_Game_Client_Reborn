@@ -3,7 +3,10 @@ import HeroeType from "../../../types/heroeType";
 import GameStrategyInterface from "../interface/gameStrategyInterface";
 
 export default class AddBuffStrategy implements GameStrategyInterface{
-    strategyExecutable(data: ConsumibleType,registerDecorator:(data:HeroeType)=>void) {
+    strategyExecutable(data: ConsumibleType,registerDecorator:(data:HeroeType,validTurns:number)=>void,check:boolean) {
+        
+        let _efecto = check == false ? data.efecto : data.efectoHeroe;
+        
         let tmpDecor = {
             poder: 0,
             vida: 0,
@@ -12,23 +15,24 @@ export default class AddBuffStrategy implements GameStrategyInterface{
             ataqueRnd: 0,
             daño: 0
         } as HeroeType;
-        switch(data.efecto.estadistica){
+
+        switch(_efecto?.estadistica){
             case "Ataque":
-                tmpDecor.ataqueBase = data.efecto.valorAfectado;
+                tmpDecor.ataqueBase = _efecto.valorAfectado;
                 break;
             case "Defensa":
-                tmpDecor.defensa = data.efecto.valorAfectado;
+                tmpDecor.defensa = _efecto.valorAfectado;
                 break;
             case "Daño":
-                tmpDecor.daño = data.efecto.valorAfectado;
+                tmpDecor.daño = _efecto.valorAfectado;
                 break;
             case "Vida":
-                tmpDecor.vida = data.efecto.valorAfectado;
+                tmpDecor.vida = _efecto.valorAfectado;
             break;
             case "Poder":
-                tmpDecor.poder = data.efecto.valorAfectado;
+                tmpDecor.poder = _efecto.valorAfectado;
             break;
         }
-        registerDecorator(tmpDecor);
+        registerDecorator(tmpDecor,Number(_efecto?.turnosValidos));
     }
 }
