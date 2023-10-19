@@ -8,10 +8,12 @@
     
     
     
-  <script type="module" crossorigin src="/assets/general-5e851a10.js"></script>
+  <script type="module" crossorigin src="/assets/general-c73c9a0a.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/pageCommonInit-9ea57622.js">
+  <link rel="modulepreload" crossorigin href="/assets/modalGeneral-91a492db.js">
+  <link rel="modulepreload" crossorigin href="/assets/nexusClient-88cb175b.js">
   <link rel="stylesheet" href="/assets/pageCommonInit-4c3504b5.css">
-  <link rel="stylesheet" href="/assets/general-d94101b3.css">
+  <link rel="stylesheet" href="/assets/general-e31fbe2e.css">
 </head>
 
 <body>
@@ -27,7 +29,7 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
-                                    <h2>Lista de Partidas</h2>
+                                    <h2><b>Lista de Partidas</b></h2>
                                 </div>
                                 <div class="col-4">
                                     <button type="button" id="btn-create-room" class="btn btn-nexus float-end">Crear una
@@ -37,7 +39,6 @@
                         </div>
                         <div class="card-body scroll-body">
                             <div class="row">
-                                  
                                 <div class="col-12">
                                     <ul class="party-list" id="party-list">
 
@@ -54,34 +55,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-4">
-                    <div class="card container-nexus">
-                        <div class="card-header">
-                            <h2>Chat Global</h2>
-                        </div>
-                        <div class="card-body scroll-body">
-                            <ul class="party-list" id="chat-list">
-
-                            </ul>
-                        </div>
-                        <div class="card-footer text-body-secondary">
-                            <div class="row">
-                                <div class="col-10 chat-footer">
-                                    <input type="text" class="form-control" id="chat-input" aria-describedby="Chat"
-                                        placeholder="Escribe un mensaje ...">
-                                </div>
-                                <div class="col-2">
-                                    <button type="button" class="btn btn-nexus">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
-                                            <path
-                                                d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col-4" id="chat-insert">
+                    
                 </div>
             </div>
         </div>
