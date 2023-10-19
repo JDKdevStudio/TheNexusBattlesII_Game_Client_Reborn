@@ -16,12 +16,13 @@ export class GameViewHandler extends Component {
     localSessionID: string;
     identifier: number = 0;
     current_action: EnemyCardInteractions = EnemyCardInteractions.None;
-    inventoryManager: InventoryManager = new InventoryManager(this);
+    inventoryManager: InventoryManager;
 
     constructor(dialog: Mediator, localSessionID: string) {
         super(dialog);
         this.localSessionID = localSessionID;
         this.playerMap = new Map<string, any>();
+        this.inventoryManager = new InventoryManager(this, this.updateTextForDeck);
     }
 
     init = async (): Promise<void> => {
@@ -47,6 +48,7 @@ export class GameViewHandler extends Component {
     drawLocalPlayer = (): void => {
         this.playerMap.set(this.localSessionID,
             new CardComponent($("#bottom"), CardStatusHandler.GameHeroe, this.inventoryManager.getLocalHeroData(), true, this));
+        this.updateTextForDeck("30");
     }
 
     drawNewPlayer = (sessionID: string, cardID: string) => {
@@ -91,4 +93,8 @@ export class GameViewHandler extends Component {
 
         this.playerMap.get(sessionID).controller.getCardNode().effect(effectToPlay);*/
     };
+
+    updateTextForDeck = (ammount: string) => {
+        $("#count").text(`Restantes:${ammount}`)
+    }
 }
