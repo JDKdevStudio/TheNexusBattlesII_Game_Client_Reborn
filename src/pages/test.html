@@ -6,20 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test</title>
     <link rel="stylesheet" href="../assets/styles/bootstrap.scss">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+    </style>
 </head>
 
-<body style="display: flex; flex-direction: column-reverse;">
-    <div class="card cardComponent">
-        <!--Sección: título de la carta-->
-        <div class="container-fluid cardComponent-section cardComponent-text text-center">Olaf el guerrero</div>
-        <!--Sección: imagen de la carta-->
-        <div class="container-fluid cardComponent-section">
-            <img src="../assets/images/card_sample.webp" class="cardComponent-image" alt="..." style="height: 150px;">
-            <img src="../assets/icons/icono_sample.png" class="cardComponent-icon">
-        </div>
-    </div>
-
-    <script src="../components/cardComponent/cardComponent.ts" type="module"></script>
+<body style="display: flex; justify-content: space-between; align-items: center;">
+    <script src="../ts/test.ts" type="module"></script>
 </body>
 
 </html>
