@@ -191,7 +191,7 @@ export default class GameDialog implements Mediator{
                         } as HeroeType,-1
                     );
                 }    
-                //this.gameViewHandler.updateClientEffectiveDamage(args.remoteID, args.dmg);
+                this.gameViewHandler.updateClientEffectiveDamage(args.remoteID, args.dmg);
             break;
 
             case "recievedDecoratorNotif":

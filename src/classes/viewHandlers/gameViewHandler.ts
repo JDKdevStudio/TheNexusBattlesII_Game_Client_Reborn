@@ -150,12 +150,12 @@ export class GameViewHandler extends Component {
 
         if(data.efectoHeroe != undefined){
             const myCard = this.playerMap.get(this.localSessionID);
-            if(data.clase == myCard.clase && data.tipo == myCard.tipo){
+            if(data.clase == myCard.controller.clase && data.tipo == myCard.controller.tipo){
                 this.strategyGenerator(data.efectoHeroe.id_estrategia);
+                this.strategyContext.executeStrategy(data,this.registerPlayerDecorator,true);
             }
         }
 
-        this.strategyContext.executeStrategy(data,this.registerPlayerDecorator,true);
         this.inventoryManager.deleteCardFromActive(data);   
         this.dialog.notify(this,"ClientSkipAction",{});
     }

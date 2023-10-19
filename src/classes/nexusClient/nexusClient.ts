@@ -29,6 +29,7 @@ export enum ColyseusMessagesTypes {
     ClientSyncHeroCard = 5,
     ClientSendAttackedWho = 6,
     ClientSendDecoratorData = 7,
+    AttackData = 8
 }
 
 enum ColyseusChatMessageTypes {
@@ -168,7 +169,7 @@ export class NexusClient extends Component {
             this.dialog.notify(this,"registerRemotePlayerCard",message);
         });
 
-        this.colyseusRoom.onMessage(ColyseusMessagesTypes.ClientSendAttackedWho,(message)=>{
+        this.colyseusRoom.onMessage(ColyseusMessagesTypes.AttackData,(message)=>{
             this.dialog.notify(this,"remoteAttackRecieved",message);
         });
 
@@ -233,7 +234,7 @@ export class NexusClient extends Component {
     }
 
     sendClientAttack = (remoteID:string,dmg:number):void =>{
-        this.colyseusRoom.send(ColyseusMessagesTypes.ClientSendAttackedWho,{
+        this.colyseusRoom.send(ColyseusMessagesTypes.AttackData,{
             remoteID: remoteID,
             dmg:dmg
         })

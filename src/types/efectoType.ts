@@ -1,6 +1,6 @@
 export default interface EfectoType {
     estadistica: String,
-    valorAfectado: number,
-    turnosValidos: number,
+    valorafectado: number,
+    turnosvalidos: number,
     id_estrategia: number
 }

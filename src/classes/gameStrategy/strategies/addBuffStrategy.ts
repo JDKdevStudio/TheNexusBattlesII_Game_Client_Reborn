@@ -18,21 +18,21 @@ export default class AddBuffStrategy implements GameStrategyInterface{
 
         switch(_efecto?.estadistica){
             case "Ataque":
-                tmpDecor.ataqueBase = _efecto.valorAfectado;
+                tmpDecor.ataqueBase = _efecto.valorafectado;
                 break;
             case "Defensa":
-                tmpDecor.defensa = _efecto.valorAfectado;
+                tmpDecor.defensa = _efecto.valorafectado;
                 break;
             case "Daño":
-                tmpDecor.daño = _efecto.valorAfectado;
+                tmpDecor.daño = _efecto.valorafectado;
                 break;
             case "Vida":
-                tmpDecor.vida = _efecto.valorAfectado;
+                tmpDecor.vida = _efecto.valorafectado;
             break;
             case "Poder":
-                tmpDecor.poder = _efecto.valorAfectado;
+                tmpDecor.poder = _efecto.valorafectado;
             break;
         }
-        registerDecorator(tmpDecor,Number(_efecto?.turnosValidos));
+        registerDecorator(tmpDecor,Number(_efecto?.turnosvalidos));
     }
 }
