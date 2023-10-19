@@ -3,6 +3,7 @@ import HeroeType from "../../../types/heroeType";
 import CardComponent from "../../cardComponent/cardComponent";
 import { InventorySelectionType } from "../types/inventorySelectionType";
 import { InventoryType } from "../types/inventoryType";
+import Cookies from "js-cookie";
 
 export default class InventoryModel {
   inventoryCardsInView: CardComponent[] = []
@@ -10,9 +11,23 @@ export default class InventoryModel {
   inventorySelectionData: InventorySelectionType = { heroe: [], armas: [], armaduras: [], items: [], epicas: [], epicasHeroe: [] }
 
   getUserInventory = async (): Promise<InventoryType[]> => {
-    //Falta logica del fetch a la api inventory
-    const parsedResponse: InventoryType[] = JSON.parse(sample_response)
-    return parsedResponse
+    try {
+      let headersList = {
+        "Authorization": Cookies.get("access_token")!
+       }
+       
+       let response = await fetch("https://webserver.thenexusbattles2.cloud/ver-inventario", { 
+         method: "GET",
+         headers: headersList
+       });
+
+       const parsedResponse:InventoryType[] = JSON.parse(await response.text())
+       return parsedResponse
+    } catch (error) {
+      const parsedResponse: InventoryType[] = JSON.parse(sample_response)
+      return parsedResponse
+    }
+
   }
 
   getCard = async (data: string): Promise<HeroeType | ConsumibleType> => {
