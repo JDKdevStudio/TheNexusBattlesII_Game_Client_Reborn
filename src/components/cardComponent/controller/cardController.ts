@@ -82,7 +82,7 @@ export default class CardController {
         this.view.getToUpdateStats("vida").text(actualCard.getVida())
         const healthRate: number = ((actualCard.getVida() * 100) / referenceCard.vida)
         this.view.getToUpdateStats("vida-bar").css("background-color", healthRate > 60 ? "rgb(115, 188, 88)" : healthRate >= 40 ? "rgb(185, 207, 60)" : "rgb(230, 67, 86)")
-        this.view.getToUpdateStats("vida-bar").css("width", `${healthRate}%`)
+        this.view.getToUpdateStats("vida-bar").css("width", `${healthRate > 100 ? 100 : healthRate}%`)
         //Actualizar stats
         this.updateSingleStat("ataque", referenceCard.ataqueBase, actualCard.getAtaque())
         this.updateSingleStat("daño", referenceCard.daño, actualCard.getDano())
