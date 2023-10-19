@@ -19,7 +19,7 @@ export default class GameDialog implements Mediator{
         this.chatComponent = new Chat(this);
         this.stateMachine = new gameStateContext(this);        
         this.turnManager = new TurnManager(this);
-        this.gameViewHandler = new GameViewHandler(this,this.nexusClient.sessionId);
+        this.gameViewHandler = new GameViewHandler(this);
     }
 
     init = () =>{
@@ -129,6 +129,7 @@ export default class GameDialog implements Mediator{
 
             case "nexusJoinedRoom":
                 this.stateMachine.init();
+                this.gameViewHandler.setMyLocalSessionID(this.nexusClient.sessionId);
             break;
 
             case "nexusClientJoinedRoom":

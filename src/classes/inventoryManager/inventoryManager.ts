@@ -1,4 +1,5 @@
 import CardComponent from "../../components/cardComponent/cardComponent"
+import { CardOwner } from "../../components/cardComponent/enum/cardOwnerEnum";
 import { CardStatusHandler } from "../../components/cardComponent/enum/cardStatusEnum";
 import { InventoryToDeckType } from "../../components/inventoryComponent/types/inventoryToDeckType";
 import ConsumibleType from "../../types/consumibleType";
@@ -13,7 +14,7 @@ export default class InventoryManager{
     cardRepository:Map<string,HeroeType|ConsumibleType>;
     nodeConsumableControl:Map<JQuery<HTMLElement>,boolean>;
 
-    heroInitial:HeroeType;
+    private heroInitial:HeroeType;
     heroInitialID:string;
     
     updateDeckNumber:(ammount:string)=>void;
@@ -39,7 +40,7 @@ export default class InventoryManager{
         const fromDeck:string|undefined = this.deckStoredCards.shift();
 
         if(fromDeck != undefined){
-            const currentCard = new CardComponent($("#deckGameplay"),CardStatusHandler.GameConsumible,this.cardRepository.get(fromDeck) as ConsumibleType,true,this.dialog);
+            const currentCard = new CardComponent($("#deckGameplay"),CardStatusHandler.GameConsumible,this.cardRepository.get(fromDeck) as ConsumibleType,CardOwner.Consumible,this.dialog);
             new CardDraggableWrapper(currentCard,true,this.cardRepository.get(fromDeck) as ConsumibleType);
             this.currentGameCards.set(fromDeck,currentCard);
         }

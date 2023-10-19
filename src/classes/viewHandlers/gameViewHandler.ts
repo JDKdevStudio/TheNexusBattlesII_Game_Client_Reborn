@@ -12,6 +12,8 @@ import StrategyContext from "../gameStrategy/context/gameStrategyContext";
 import AddBuffStrategy from "../gameStrategy/strategies/addBuffStrategy";
 import HeroDecorator from "../heroDecorator/decoratorHero";
 import HeroeType from "../../types/heroeType";
+import { CardOwner } from "../../components/cardComponent/enum/cardOwnerEnum";
+import HeroDecoratorBase from "../heroDecorator/decoratorBase";
 
 export enum EnemyCardInteractions {
     None,
@@ -27,11 +29,10 @@ export class GameViewHandler extends Component {
     inventoryManager: InventoryManager;
     strategyContext: StrategyContext;
 
-    constructor(dialog: Mediator, localSessionID: string) {
+    constructor(dialog: Mediator) {
         super(dialog);
-        this.localSessionID = localSessionID;
         this.playerMap = new Map<string, any>();
-        this.decoratorMap = new Map<string,HeroDecoratorInterface>;
+        this.decoratorMap = new Map<string,HeroDecoratorInterface>();
         this.inventoryManager = new InventoryManager(this, this.updateTextForDeck);
         this.strategyContext =  new StrategyContext();
     }
@@ -51,15 +52,24 @@ export class GameViewHandler extends Component {
             });
     }
 
+    setMyLocalSessionID(id:string){
+        this.localSessionID = id;
+    }
+
     updateCardStats(id: string, stats: any) {
         const currentCard = this.playerMap.get(id);
         currentCard.update(stats);
     }
 
     drawLocalPlayer = (): void => {
+        
         this.playerMap.set(this.localSessionID,
-            new CardComponent($("#bottom"), CardStatusHandler.GameHeroe, this.inventoryManager.getLocalHeroData(), true, this));
-            new CardDraggableWrapper(this.playerMap.get(this.localSessionID),false,undefined,this.handleOnDrop);
+            new CardComponent($("#bottom"), CardStatusHandler.GameHeroe, this.inventoryManager.getLocalHeroData(), CardOwner.Local, this));
+        new CardDraggableWrapper(this.playerMap.get(this.localSessionID),false,undefined,this.handleOnDrop);
+
+        
+        this.decoratorMap.set(this.localSessionID,new HeroDecoratorBase(this.inventoryManager.getLocalHeroData()));
+
         this.updateTextForDeck("30");
     }
 
@@ -71,8 +81,7 @@ export class GameViewHandler extends Component {
 
             this.inventoryManager.getCardDataByID(cardID).then((card) => {
                 this.playerMap.set(sessionID, new CardComponent($(node), CardStatusHandler.GameHeroe,
-                    card, false, this));
-                
+                    card, CardOwner.Enemy, this));
                 this.identifier++;
                 this.playerMap.get(sessionID).controller.getCardNode().on("click", () => {
                     this.dialog.notify(this, "rivalCardPressed", {
@@ -87,6 +96,8 @@ export class GameViewHandler extends Component {
     registerPlayerDecorator = (data:HeroeType):void=>{
         this.decoratorMap.set(this.localSessionID,new HeroDecorator(data,
                 this.decoratorMap.get(this.localSessionID) as HeroDecoratorInterface,-1));
+        const localCard = this.playerMap.get(this.localSessionID) as CardComponent;
+        localCard.controller.updateCardStats(this.inventoryManager.getLocalHeroData(),this.decoratorMap.get(this.localSessionID) as HeroDecorator);
     }
 
     registerRemoteDecorator = ():void =>{

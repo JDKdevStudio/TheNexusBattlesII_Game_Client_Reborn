@@ -38,7 +38,7 @@ enum ColyseusChatMessageTypes {
 
 export class NexusClient extends Component {
     colyseusNexusClient: Client = new Client(import.meta.env.VITE_COLYSEUS_URL);
-    private colyseusRoom: Room;
+    colyseusRoom: Room;
     private localUsername: string = "Nexus Player";
     sessionId: string;
     private playerMap: Map<string, any> = new Map<string, any>();
