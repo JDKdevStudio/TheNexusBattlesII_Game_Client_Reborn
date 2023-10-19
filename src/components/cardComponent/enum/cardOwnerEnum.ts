@@ -1,5 +1,6 @@
 export enum CardOwner{
     Ally,
     Local,
-    Enemy
+    Enemy,
+    Consumible
 }
