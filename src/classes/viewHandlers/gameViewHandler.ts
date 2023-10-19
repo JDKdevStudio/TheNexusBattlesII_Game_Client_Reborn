@@ -1,7 +1,7 @@
 import Component from "../gameMediator/componentClass";
 import Mediator from "../gameMediator/mediatorInterface";
 import Cookies from "js-cookie";
-import $, { removeData } from "jquery";
+import $ from "jquery";
 import CardComponent from "../../components/cardComponent/cardComponent";
 import { CardStatusHandler } from "../../components/cardComponent/enum/cardStatusEnum";
 import InventoryManager from "../inventoryManager/inventoryManager";
@@ -177,5 +177,23 @@ export class GameViewHandler extends Component {
         this.decoratorMap.forEach((value,_)=>{
             value.reduceTurnsRemaining();
         });
+    }
+
+    getDamageValue = (enemy:string):number =>{
+        const cartaLocal = this.decoratorMap.get(this.localSessionID);
+        const enemyCard = this.decoratorMap.get(enemy)
+        let daño = 0;
+        if(cartaLocal != undefined && enemyCard != undefined){
+            const ataque = cartaLocal.getAtaque() + Math.floor(Math.random() * (cartaLocal.getAtaque() - 1 + 1) + 1);
+            if(ataque > enemyCard.getDefensa()){
+                daño = Math.floor(Math.random() * (cartaLocal.getDano() - 1 + 1) + 1);
+            }
+        }
+        this.updateClientEffectiveDamage(this.localSessionID,daño)
+        return daño;
+    }
+
+    updateClientEffectiveDamage(id:string,num:number){
+        this.playerMap.get(id).controller.updateEfectiveDamage(num);
     }
 }
