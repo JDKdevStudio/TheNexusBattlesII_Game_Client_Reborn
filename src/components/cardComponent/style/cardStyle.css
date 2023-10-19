@@ -137,9 +137,6 @@
 }
     
 .grow:hover { 
+    z-index: 2;
     transform: scale(1.5);
-}
-
-.grow:click {
-    position: absolute;
 }
