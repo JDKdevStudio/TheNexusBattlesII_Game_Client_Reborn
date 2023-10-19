@@ -6,6 +6,7 @@ import Mediator from "../mediatorInterface";
 import { gameStateContext, stateType } from "../../gameState/gameStateMachine";
 import TurnManager from "../../turnManager/turnManager";
 import {GameViewHandler, EnemyCardInteractions} from "../../viewHandlers/gameViewHandler";
+import HeroeType from "../../../types/heroeType";
 
 export default class GameDialog implements Mediator{
     private nexusClient:NexusClient;
@@ -100,8 +101,11 @@ export default class GameDialog implements Mediator{
                         const players = this.nexusClient.nexusClientGetPlayers();
                         
                         if((players.get(args.remoteID).team != players.get(this.nexusClient.sessionId).team) || (players.get(args.remoteID).team == -1)){
-                            //console.log("Attack!")
-                            this.nexusClient.sendClientAttack(args.remoteID);
+                            console.log("Attack!")
+                            
+                            let dmg = this.gameViewHandler.getDamageValue(args.remoteID);
+                            
+                            this.nexusClient.sendClientAttack(args.remoteID,dmg);
                             this.turnManager.actionFinishTurn();
                             this.gameViewHandler.setCurrentAction(EnemyCardInteractions.None);
                         }               
@@ -175,7 +179,19 @@ export default class GameDialog implements Mediator{
             break;
 
             case "remoteAttackRecieved":
-                this.gameViewHandler.handleRemoteAnim(args.remoteID);
+                if(this.nexusClient.sessionId == args.remoteID){
+                    this.gameViewHandler.registerPlayerDecorator(
+                        {
+                            poder:0,
+                            vida: -args.dmg,
+                            defensa: 0,
+                            ataqueBase: 0,
+                            ataqueRnd: 0,
+                            daño:0
+                        } as HeroeType,-1
+                    );
+                }    
+                //this.gameViewHandler.updateClientEffectiveDamage(args.remoteID, args.dmg);
             break;
 
             case "recievedDecoratorNotif":

@@ -232,9 +232,10 @@ export class NexusClient extends Component {
         })
     }
 
-    sendClientAttack = (remoteID:string):void =>{
+    sendClientAttack = (remoteID:string,dmg:number):void =>{
         this.colyseusRoom.send(ColyseusMessagesTypes.ClientSendAttackedWho,{
-            remoteID: remoteID
+            remoteID: remoteID,
+            dmg:dmg
         })
     }
 
